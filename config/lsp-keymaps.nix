@@ -44,7 +44,18 @@ end
     {
       mode = "n";
       key = "<leader>cf";
-      action.__raw = ''function() vim.lsp.buf.format({ async = true }) end'';
+      action.__raw = ''function()
+  -- Prefer a client that supports formatting and avoid tsserver which doesn't provide formatting
+  vim.lsp.buf.format({
+    async = true,
+    filter = function(client)
+      if client.supports_method then
+        return client.supports_method('textDocument/formatting') and client.name ~= 'tsserver'
+      end
+      return (client.server_capabilities and client.server_capabilities.documentFormattingProvider) and client.name ~= 'tsserver'
+    end,
+  })
+end'';
       options = { desc = "Format buffer"; silent = true; };
     }
 
