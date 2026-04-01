@@ -14,28 +14,23 @@
       defaults = { buffer = nil },
     })
 
+    -- Register mappings using the newer which-key spec (array of descriptors)
     wk.register({
-      [" "] = "Find files (root dir)",
-      e = "Toggle Neo-tree (root dir)",
-      E = "Toggle Neo-tree (cwd)",
-      ["/"] = "Grep current buffer",
-      f = {
-        name = "Find",
-        f = "Find files (root dir)",
-        F = "Find files (cwd)",
-        g = "Grep (root dir)",
-        G = "Grep (cwd)",
-        e = "Focus Neo-tree (root dir)",
-        E = "Focus Neo-tree (cwd)",
-      },
-      g = {
-        name = "Git",
-        u = "Open Neogit",
-      },
-      s = {
-        name = "Search",
-        g = "Grep (root dir)",
-      },
-    }, { prefix = "<leader>" })
+      { "<leader> ", desc = "Find files (root dir)" },
+      { "<leader>/", desc = "Grep current buffer" },
+      { "<leader>E", desc = "Toggle Neo-tree (cwd)" },
+      { "<leader>e", desc = "Toggle Neo-tree (root dir)" },
+      { "<leader>f", group = "Find" },
+      { "<leader>fE", desc = "Focus Neo-tree (cwd)" },
+      { "<leader>fF", desc = "Find files (cwd)" },
+      { "<leader>fG", desc = "Grep (cwd)" },
+      { "<leader>fe", desc = "Focus Neo-tree (root dir)" },
+      { "<leader>ff", desc = "Find files (root dir)" },
+      { "<leader>fg", desc = "Grep (root dir)" },
+      { "<leader>g", group = "Git" },
+      { "<leader>gu", desc = "Open Neogit" },
+      { "<leader>s", group = "Search" },
+      { "<leader>sg", desc = "Grep (root dir)" },
+    })
   '';
 }
