@@ -13,6 +13,7 @@
     ./formatters.nix
     ./which-key.nix
     ./vue-macros.nix
+    ./lsp-keymaps.nix
   ];
 
   globals.mapleader = " ";
