@@ -13,6 +13,15 @@
       vue_ls = {
         enable = true;
         tslsIntegration = true;
+        # Workaround: disable semantic tokens from the vue language server
+        # to avoid crashes in the vue-component-semantic-tokens plugin.
+        on_attach = ''function(client, bufnr)
+          if client and client.name then
+            if client.name == "vue_ls" or client.name:match("volar") or client.name:match("vue-language-server") then
+              client.server_capabilities.semanticTokensProvider = nil
+            end
+          end
+        end'';
       };
 
       # vtsls — handles <script>/<script setup> and all TS/JS features in .vue files
