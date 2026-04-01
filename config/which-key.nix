@@ -37,13 +37,13 @@
       { "<leader>mj", desc = "Go To Definition Alias" },
       { "<leader>mp", desc = "Props to Refs" },
       { "<leader>ma", desc = "Destruct" },
-      { "<leader>l", group = "LSP" },
-      { "<leader>la", desc = "Code Action" },
-      { "<leader>lA", desc = "Apply fixAll (eslint if available)" },
-      { "<leader>lf", desc = "Format buffer" },
-      { "<leader>lr", desc = "Rename symbol" },
-      { "<leader>ld", desc = "Line diagnostics" },
-      { "<leader>lq", desc = "Diagnostics → loclist" },
+      { "<leader>c", group = "LSP" },
+      { "<leader>ca", desc = "Code Action" },
+      { "<leader>cA", desc = "Apply fixAll (eslint if available)" },
+      { "<leader>cf", desc = "Format buffer" },
+      { "<leader>cr", desc = "Rename symbol" },
+      { "<leader>cd", desc = "Line diagnostics" },
+      { "<leader>xl", desc = "Diagnostics → loclist" },
     })
   '';
 }

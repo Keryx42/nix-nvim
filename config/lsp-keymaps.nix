@@ -4,7 +4,7 @@
     # Code action (open code action menu)
     {
       mode = "n";
-      key = "<leader>la";
+      key = "<leader>ca";
       action.__raw = ''function() vim.lsp.buf.code_action() end'';
       options = { desc = "Code Action"; silent = true; };
     }
@@ -12,7 +12,7 @@
     # Try to apply source.fixAll (ESLint / fix-all actions) automatically if available
     {
       mode = "n";
-      key = "<leader>lA";
+      key = "<leader>cA";
       action.__raw = ''
 function()
   local params = vim.lsp.util.make_range_params()
@@ -43,7 +43,7 @@ end
     # Format buffer
     {
       mode = "n";
-      key = "<leader>lf";
+      key = "<leader>cf";
       action.__raw = ''function() vim.lsp.buf.format({ async = true }) end'';
       options = { desc = "Format buffer"; silent = true; };
     }
@@ -51,7 +51,7 @@ end
     # Rename
     {
       mode = "n";
-      key = "<leader>lr";
+      key = "<leader>cr";
       action.__raw = ''function() vim.lsp.buf.rename() end'';
       options = { desc = "Rename symbol"; silent = true; };
     }
@@ -59,7 +59,7 @@ end
     # Line diagnostics (float)
     {
       mode = "n";
-      key = "<leader>ld";
+      key = "<leader>cd";
       action.__raw = ''function() vim.diagnostic.open_float(nil, { scope = "line" }) end'';
       options = { desc = "Line diagnostics (float)"; silent = true; };
     }
@@ -67,7 +67,7 @@ end
     # Put diagnostics in loclist
     {
       mode = "n";
-      key = "<leader>lq";
+      key = "<leader>xl";
       action = "<cmd>lua vim.diagnostic.setloclist()<cr>";
       options = { desc = "Diagnostics → loclist"; silent = true; };
     }
