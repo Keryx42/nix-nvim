@@ -19,6 +19,7 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── treesitter.nix  # Treesitter grammars & settings
     ├── lsp.nix         # Language servers
     ├── formatters.nix  # Formatters via none-ls
+    ├── which-key.nix   # Keybinding hints
     └── auto-save.nix   # Auto-save (extraPlugin — not in nixvim)
 ```
 
@@ -68,6 +69,13 @@ Leader key: `<Space>`
 | Key | Action |
 |---|---|
 | `<leader>gu` | Open Neogit |
+
+### Which Key Hints (which-key)
+
+Which-key registers leader-key groups to surface the existing keybindings for discoverability (no new keybinds introduced). Notable hints:
+- `<leader>e` / `<leader>E` / `<leader>fe` / `<leader>fE` — Neo-tree toggles and focus
+- `<leader><space>` / `<leader>ff` / `<leader>fF` / `<leader>fg` / `<leader>fG` — fzf file/find/grep actions
+- `<leader>gu` — Neogit
 
 ## Plugins
 

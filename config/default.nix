@@ -11,6 +11,7 @@
     ./treesitter.nix
     ./lsp.nix
     ./formatters.nix
+    ./which-key.nix
   ];
 
   globals.mapleader = " ";
