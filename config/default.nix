@@ -1,6 +1,6 @@
 {
   # Import all your configuration modules here
-  imports = [ ./catppuccin.nix ./bufferline.nix ./lualine.nix ./neo-tree.nix ./fzf.nix ];
+  imports = [ ./catppuccin.nix ./bufferline.nix ./lualine.nix ./neo-tree.nix ./fzf.nix ./neogit.nix ];
 
   globals.mapleader = " ";
 }
