@@ -31,6 +31,12 @@
       { "<leader>gu", desc = "Open Neogit" },
       { "<leader>s", group = "Search" },
       { "<leader>sg", desc = "Grep (root dir)" },
+      { "<leader>m", group = "Macros" },
+      { "<leader>ms", desc = "Wrap StoreToRefs" },
+      { "<leader>mc", desc = "Wrap Composable" },
+      { "<leader>mj", desc = "Go To Definition Alias" },
+      { "<leader>mp", desc = "Props to Refs" },
+      { "<leader>ma", desc = "Destruct" },
     })
   '';
 }
