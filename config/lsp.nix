@@ -4,6 +4,11 @@
     enable = true;
 
     servers = {
+      # Nix language server for .nix / flake support
+      nixd = {
+        enable = true;
+      };
+
       # Vue language server — handles <template> and <style> sections (hybrid mode)
       vue_ls = {
         enable = true;

@@ -103,23 +103,27 @@ Git UI opened with `<leader>gu`.
 
 ### LSP (`config/lsp.nix`)
 
-Three servers configured for Vue + TypeScript projects:
+Four servers configured for Vue/TypeScript and Nix projects:
 
 | Server | Purpose |
 |---|---|
 | `vue_ls` | HTML/CSS sections of `.vue` files (hybrid mode) |
 | `vtsls` | TypeScript/JavaScript + Vue via `@vue/typescript-plugin` |
 | `eslint` | Linting for JS/TS/Vue/JSON via `vscode-langservers-extracted` |
+| `nixd` | Semantic completions/diagnostics for `.nix` + flake files |
 
 `vtsls` has `@vue/typescript-plugin` wired to the nix store path of `pkgs.vue-language-server` so no manual path resolution is needed.
 
 ### formatters (`config/formatters.nix`)
 
-`none-ls` is used to run formatters as an LSP source. Currently configured:
+`none-ls` is used to run formatter/diagnostic sources. Currently configured:
 
-| Formatter | Source |
+| Source | Type |
 |---|---|
-| `prettier` | `pkgs.nodePackages.prettier` |
+| `prettier` | formatter (`pkgs.nodePackages.prettier`) |
+| `nixfmt` | formatter for `.nix` files |
+| `statix` | diagnostics for Nix projects |
+| `deadnix` | diagnostics for dead code in Nix flake graphs |
 
 ### auto-save (`config/auto-save.nix`)
 
@@ -136,4 +140,4 @@ After completing any task in this project, **always run `/update-docs`** to keep
 
 ### treesitter (`config/treesitter.nix`)
 
-Treesitter configuration for syntax highlighting and indentation. The file enables `nvim-treesitter` and includes grammars for `vue`, `typescript`, `javascript`, `tsx`, `css`, `html`, `json`, `jsdoc`, `lua`, and `bash`.
+Treesitter configuration for syntax highlighting and indentation. The file enables `nvim-treesitter` and includes grammars for `vue`, `typescript`, `javascript`, `tsx`, `css`, `html`, `json`, `jsdoc`, `lua`, `bash`, and `nix`.
