@@ -3,6 +3,17 @@
   plugins.lsp = {
     enable = true;
 
+    # Global onAttach hook — used to apply client-specific workarounds such as
+    # disabling semanticTokens for the vue language server which can crash
+    # for certain .vue templates (workaround for volar/vue-language-server bug).
+    onAttach = ''function(client, bufnr)
+      if client and client.name then
+        if client.name == "vue_ls" or client.name:match("volar") or client.name:match("vue-language-server") then
+          client.server_capabilities.semanticTokensProvider = nil
+        end
+      end
+    end'';
+
     servers = {
       # Nix language server for .nix / flake support
       nixd = {
@@ -13,15 +24,7 @@
       vue_ls = {
         enable = true;
         tslsIntegration = true;
-        # Workaround: disable semantic tokens from the vue language server
-        # to avoid crashes in the vue-component-semantic-tokens plugin.
-        on_attach = ''function(client, bufnr)
-          if client and client.name then
-            if client.name == "vue_ls" or client.name:match("volar") or client.name:match("vue-language-server") then
-              client.server_capabilities.semanticTokensProvider = nil
-            end
-          end
-        end'';
+        # semantic-tokens workaround moved to top-level `plugins.lsp.onAttach`
       };
 
       # vtsls — handles <script>/<script setup> and all TS/JS features in .vue files

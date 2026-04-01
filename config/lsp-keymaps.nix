@@ -45,14 +45,11 @@ end
       mode = "n";
       key = "<leader>cf";
       action.__raw = ''function()
-  -- Prefer a client that supports formatting and avoid tsserver which doesn't provide formatting
+  -- Prefer null-ls (none-ls) as the formatter to ensure consistent formatting
   vim.lsp.buf.format({
     async = true,
     filter = function(client)
-      if client.supports_method then
-        return client.supports_method('textDocument/formatting') and client.name ~= 'tsserver'
-      end
-      return (client.server_capabilities and client.server_capabilities.documentFormattingProvider) and client.name ~= 'tsserver'
+      return client and client.name == 'null-ls'
     end,
   })
 end'';
