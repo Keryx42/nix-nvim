@@ -23,6 +23,13 @@
           silent = true;
         };
       };
+      "<leader>sg" = {
+        action = "live_grep";
+        options = {
+          desc = "Grep (root dir)";
+          silent = true;
+        };
+      };
       "<leader>/" = {
         action = "lgrep_curbuf";
         options = {
