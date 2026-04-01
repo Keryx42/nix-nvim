@@ -16,6 +16,7 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── neo-tree.nix    # File explorer
     ├── fzf.nix         # Fuzzy finder
     ├── neogit.nix      # Git UI
+    ├── treesitter.nix  # Treesitter grammars & settings
     ├── lsp.nix         # Language servers
     ├── formatters.nix  # Formatters via none-ls
     └── auto-save.nix   # Auto-save (extraPlugin — not in nixvim)
@@ -58,6 +59,7 @@ Leader key: `<Space>`
 | `<leader>ff` | Find files (root dir) |
 | `<leader>fF` | Find files (cwd) |
 | `<leader>fg` | Live grep (root dir) |
+| `<leader>sg` | Live grep (root dir) |
 | `<leader>fG` | Live grep (cwd) |
 | `<leader>/` | Grep current buffer |
 
@@ -131,3 +133,7 @@ After completing any task in this project, **always run `/update-docs`** to keep
 - Changing a keybind
 - Modifying LSP, formatter, or colorscheme config
 - Any change to `config/default.nix`
+
+### treesitter (`config/treesitter.nix`)
+
+Treesitter configuration for syntax highlighting and indentation. The file enables `nvim-treesitter` and includes grammars for `vue`, `typescript`, `javascript`, `tsx`, `css`, `html`, `json`, `jsdoc`, `lua`, and `bash`.

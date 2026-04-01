@@ -8,6 +8,7 @@
     ./fzf.nix
     ./neogit.nix
     ./auto-save.nix
+    ./treesitter.nix
     ./lsp.nix
     ./formatters.nix
   ];
