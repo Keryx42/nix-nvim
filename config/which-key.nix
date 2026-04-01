@@ -44,6 +44,7 @@
       { "<leader>cr", desc = "Rename symbol" },
       { "<leader>cd", desc = "Line diagnostics" },
       { "<leader>xl", desc = "Diagnostics → loclist" },
+      { "<leader>p", desc = "Open Yank History" },
     })
   '';
 }

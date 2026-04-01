@@ -14,6 +14,7 @@
     ./which-key.nix
     ./vue-macros.nix
     ./lsp-keymaps.nix
+    ./yanky.nix
   ];
 
   globals.mapleader = " ";
