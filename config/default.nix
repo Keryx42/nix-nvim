@@ -7,6 +7,7 @@
     ./neo-tree.nix
     ./fzf.nix
     ./neogit.nix
+    ./gitsigns.nix
     ./auto-save.nix
     ./treesitter.nix
     ./lsp.nix
