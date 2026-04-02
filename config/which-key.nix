@@ -8,14 +8,11 @@
     local wk = require("which-key")
 
     wk.setup({
-      window = { border = "rounded" },
-      triggers = "auto",
-      plugins = { marks = true, registers = true, spelling = { enabled = true } },
-      defaults = { buffer = nil },
+      preset = "classic",
+      icons = { mappings = false },
     })
 
-    -- Register mappings using the newer which-key spec (array of descriptors)
-    wk.register({
+    wk.add({
       { "<leader> ", desc = "Find files (root dir)" },
       { "<leader>/", desc = "Grep current buffer" },
       { "<leader>E", desc = "Toggle Neo-tree (cwd)" },
