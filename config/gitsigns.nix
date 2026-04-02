@@ -6,7 +6,7 @@
     # Next hunk (respect diff windows)
     {
       mode = "n";
-      key = "]h";
+      key = "<leader>]h";
       action.__raw = ''
 function()
   if vim.wo.diff then return "]h" end
@@ -19,7 +19,7 @@ end
     # Prev hunk
     {
       mode = "n";
-      key = "[h";
+      key = "<leader>[h";
       action.__raw = ''
 function()
   if vim.wo.diff then return "[h" end
@@ -32,7 +32,7 @@ end
     # Stage hunk
     {
       mode = "n";
-      key = "ghs";
+      key = "<leader>ghs";
       action.__raw = ''function() require("gitsigns").stage_hunk() end'';
       options = { desc = "Stage hunk"; silent = true; };
     }
@@ -40,7 +40,7 @@ end
     # Reset hunk
     {
       mode = "n";
-      key = "ghr";
+      key = "<leader>ghr";
       action.__raw = ''function() require("gitsigns").reset_hunk() end'';
       options = { desc = "Reset hunk"; silent = true; };
     }
@@ -48,7 +48,7 @@ end
     # Stage buffer
     {
       mode = "n";
-      key = "ghS";
+      key = "<leader>ghS";
       action.__raw = ''function() require("gitsigns").stage_buffer() end'';
       options = { desc = "Stage buffer"; silent = true; };
     }
@@ -56,7 +56,7 @@ end
     # Reset buffer
     {
       mode = "n";
-      key = "ghR";
+      key = "<leader>ghR";
       action.__raw = ''function() require("gitsigns").reset_buffer() end'';
       options = { desc = "Reset buffer"; silent = true; };
     }
@@ -64,7 +64,7 @@ end
     # Preview hunk
     {
       mode = "n";
-      key = "ghp";
+      key = "<leader>ghp";
       action.__raw = ''function() require("gitsigns").preview_hunk() end'';
       options = { desc = "Preview hunk"; silent = true; };
     }
@@ -72,7 +72,7 @@ end
     # Blame line (full)
     {
       mode = "n";
-      key = "ghb";
+      key = "<leader>ghb";
       action.__raw = ''
 function()
   require("gitsigns").blame_line({ full = true })
