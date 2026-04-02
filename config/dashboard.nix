@@ -29,7 +29,7 @@
         local c = 0
         for i = 1, 6 do c = c * 2 + (x:sub(i, i) == "1" and 1 or 0) end
         return b:sub(c+1, c+1)
-      end) .. ({ "", "==", "=" })[#data % 3 + 1]
+      end) .. ({ "", "==", "=" })[#data % 3 + 1])
     end
 
     local function emit_kitty_image_b64(path)
