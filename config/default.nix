@@ -3,6 +3,7 @@
   imports = [
     ./catppuccin.nix
     ./lualine.nix
+    ./preinit.nix
     ./neo-tree.nix
     ./fzf.nix
     ./neogit.nix
