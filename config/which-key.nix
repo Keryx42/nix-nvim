@@ -26,8 +26,8 @@
       { "<leader>fg", desc = "Grep (root dir)" },
       { "<leader>g", group = "Git" },
       { "<leader>gu", desc = "Open Neogit" },
-      -- g (normal) mappings from gitsigns (prefixed with <leader>)
-      { "<leader>g", group = "Git (g)" },
+      -- gitsigns mappings grouped under <leader>g h (Hunks)
+      { "<leader>gh", group = "Hunks" },
       { "<leader>ghs", desc = "Stage current hunk" },
       { "<leader>ghr", desc = "Reset current hunk" },
       { "<leader>ghS", desc = "Stage buffer" },
