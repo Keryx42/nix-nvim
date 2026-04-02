@@ -1,7 +1,5 @@
 { pkgs, ... }:
 {
-  plugins.alpha-nvim.enable = true;
-
   extraConfigLua = ''
     -- Alpha dashboard with Kitty image support (best-effort)
     local ok, alpha = pcall(require, "alpha")
