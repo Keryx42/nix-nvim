@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  plugins."goolord/alpha-nvim".enable = true;
+  plugins.alpha-nvim.enable = true;
 
   extraConfigLua = ''
     -- Alpha dashboard with Kitty image support (best-effort)
