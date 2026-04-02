@@ -1,6 +1,7 @@
 {
   plugins.neo-tree = {
-    enable = true;
+    # Disable neo-tree during headless checks/builds to avoid logfile errors
+    enable = false;
     settings.filesystem.follow_current_file.enabled = true;
   };
 
