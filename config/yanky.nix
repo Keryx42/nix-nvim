@@ -10,14 +10,14 @@
     {
       mode = "n";
       key = "<leader>p";
-      action = "<cmd>lua require('yanky').history()<cr>";
+      action = "<cmd>YankyRingHistory<cr>";
       options = { desc = "Open Yank History"; silent = true; };
     }
     {
       mode = "x";
       key = "<leader>p";
-      action = "<cmd>lua require('yanky').history()<cr>";
+      action = "<cmd>YankyRingHistory<cr>";
       options = { desc = "Open Yank History"; silent = true; };
     }
   ];
-}
+}  

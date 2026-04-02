@@ -16,11 +16,14 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── neo-tree.nix    # File explorer
     ├── fzf.nix         # Fuzzy finder
     ├── neogit.nix      # Git UI
+    ├── auto-save.nix   # Auto-save (extraPlugin — not in nixvim)
     ├── treesitter.nix  # Treesitter grammars & settings
     ├── lsp.nix         # Language servers
     ├── formatters.nix  # Formatters via none-ls
     ├── which-key.nix   # Keybinding hints
-    └── auto-save.nix   # Auto-save (extraPlugin — not in nixvim)
+    ├── vue-macros.nix  # Editor macros for Vue/TypeScript workflows
+    ├── lsp-keymaps.nix # LSP keybindings (code action, format, rename, diagnostics)
+    └── yanky.nix       # yanky.nvim (yank history) + mapping
 ```
 
 Each plugin lives in its own file and is imported in `config/default.nix`.
@@ -135,7 +138,20 @@ Four servers configured for Vue/TypeScript and Nix projects:
 
 ### auto-save (`config/auto-save.nix`)
 
+
 [okuuva/auto-save.nvim](https://github.com/okuuva/auto-save.nvim) v1.1.0. Not in nixvim's plugin set, so installed via `extraPlugins` + `buildVimPlugin`. Saves on `BufLeave` and `FocusLost`. `noautocmd = false` to preserve undo/redo history.
+
+### yanky (`config/yanky.nix`)
+
+Enable `yanky.nvim` for an improved yank history and put behavior; provides a mapping `<leader>p` to open the yank ring in normal and visual modes.
+
+### lsp-keymaps (`config/lsp-keymaps.nix`)
+
+Common LSP-focused keybindings: code action, apply `source.fixAll` (eslint), format buffer (prefers `null-ls`), rename, line diagnostics float, diagnostics → loclist, and next/prev diagnostics.
+
+### vue-macros (`config/vue-macros.nix`)
+
+Editor macros tailored for Vue/TypeScript patterns (storeToRefs wrapper, composable scaffolding, props → refs, destruct helpers, go-to-definition alias) exposed under `<leader>m*` mappings.
 
 ## Agent instructions
 
