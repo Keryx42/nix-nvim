@@ -172,6 +172,8 @@ Editor macros tailored for Vue/TypeScript patterns (storeToRefs wrapper, composa
 
 After completing any task in this project, **always run `/update-docs`** to keep `AGENTS.md` accurate. This includes:
 
+the update-docs command is under .opencode/commands/update-docs.md
+
 - Adding a new plugin or config file
 - Changing a keybind
 - Modifying LSP, formatter, or colorscheme config
