@@ -1,18 +1,15 @@
 { pkgs, ... }:
 {
-  extraConfigLua = ''
-    -- Custom lightweight dashboard (no alpha dependency)
-    local logo_path = vim.fn.expand("~/.config/assets/logo.jpeg")
+  # Enable alpha (LazyVim-like dashboard plugin)
+  plugins.alpha-nvim.enable = true;
 
-    local function try_show_kitty(path)
-      if vim.fn.executable("kitty") == 1 then
-        local cmd = string.format('kitty +kitten icat --transfer-mode=stream %q', path)
-        -- Use os.execute so output goes to the terminal, not captured
-        local ok = os.execute(cmd)
-        return ok == 0 or ok == true
-      end
-      return false
+  extraConfigLua = ''
+    local ok, alpha = pcall(require, "alpha")
+    if not ok then
+      return
     end
+
+    local dashboard = require("alpha.themes.dashboard")
 
     local ascii_header = {
       "  _   _  ___  __  __ ",
@@ -22,50 +19,24 @@
       " |_| \\_|\\___/|_|  |_|",
     }
 
+    dashboard.section.header.val = ascii_header
+
+    dashboard.section.buttons.val = {
+      dashboard.button("f", "Find file", ":lua require('fzf-lua').files()<CR>"),
+      dashboard.button("r", "Recent files", ":lua require('fzf-lua').files({ cwd = vim.fn.stdpath('data') })<CR>"),
+      dashboard.button("c", "Config", ":edit $MYVIMRC<CR>"),
+      dashboard.button("g", "Neogit", ":Neogit<CR>"),
+      dashboard.button("q", "Quit", ":qa<CR>"),
+    }
+
+    alpha.setup(dashboard.opts)
+
+    -- Open dashboard on VimEnter when no files were passed
     vim.api.nvim_create_autocmd("VimEnter", {
-      once = true,
       callback = function()
-        vim.defer_fn(function()
-          if vim.fn.argc() ~= 0 then return end
-
-          local displayed = false
-          if logo_path ~= "" then
-            pcall(function() displayed = try_show_kitty(logo_path) end)
-          end
-
-          -- Open a new scratch buffer
-          vim.cmd("enew")
-          local buf = vim.api.nvim_get_current_buf()
-          vim.bo[buf].buftype = "nofile"
-          vim.bo[buf].bufhidden = "wipe"
-          vim.bo[buf].swapfile = false
-          vim.bo[buf].modifiable = true
-
-          local header = displayed and {" "} or ascii_header
-          local buttons = {
-            "",
-            "[f] Find file    [r] Recent files    [c] Config    [g] Neogit    [q] Quit",
-            "",
-            "Press the key in brackets to run the action",
-          }
-
-          local lines = {}
-          for _, l in ipairs(header) do table.insert(lines, l) end
-          for _, l in ipairs(buttons) do table.insert(lines, l) end
-
-          vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-          vim.bo[buf].modifiable = false
-
-          local map = function(lhs, fn)
-            vim.keymap.set('n', lhs, fn, { buffer = buf, silent = true, nowait = true })
-          end
-
-          map('f', function() require('fzf-lua').files() end)
-          map('r', function() require('fzf-lua').files({ cwd = vim.fn.stdpath('data') }) end)
-          map('c', function() vim.cmd('edit ' .. vim.fn.expand('$MYVIMRC')) end)
-          map('g', function() vim.cmd('Neogit') end)
-          map('q', function() vim.cmd('qa') end)
-        end, 50)
+        if vim.fn.argc() == 0 then
+          vim.schedule(function() alpha.start(true) end)
+        end
       end,
     })
   '';
