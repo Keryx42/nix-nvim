@@ -1,104 +1,70 @@
 { pkgs, ... }:
 {
   extraConfigLua = ''
-    -- Alpha dashboard with Kitty image support (best-effort)
-    local ok, alpha = pcall(require, "alpha")
-    if not ok then return end
-    local dashboard = require("alpha.themes.dashboard")
-
+    -- Custom lightweight dashboard (no alpha dependency)
     local logo_path = vim.fn.expand("~/.config/assets/logo.jpeg")
 
-    local function try_kitty_icat(path)
+    local function try_show_kitty(path)
       if vim.fn.executable("kitty") == 1 then
         local cmd = string.format('kitty +kitten icat --transfer-mode=stream %q', path)
-        -- attempt to run icat; ignore errors
-        local res = vim.fn.system(cmd)
-        if vim.v.shell_error == 0 then return true end
+        -- Use os.execute so output goes to the terminal, not captured
+        local ok = os.execute(cmd)
+        return ok == 0 or ok == true
       end
       return false
     end
 
-    local function b64_encode(data)
-      local b = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-      return ((data:gsub(".", function(x)
-        local r, bits = string.byte(x), ""
-        for i = 8, 1, -1 do bits = bits .. (r % 2^i - r % 2^(i-1) > 0 and "1" or "0") end
-        return bits
-      end) .. "0000"):gsub("%d%d%d?%d?%d?%d?", function(x)
-        if #x < 6 then return "" end
-        local c = 0
-        for i = 1, 6 do c = c * 2 + (x:sub(i, i) == "1" and 1 or 0) end
-        return b:sub(c+1, c+1)
-      end) .. ({ "", "==", "=" })[#data % 3 + 1])
-    end
-
-    local function emit_kitty_image_b64(path)
-      local f = io.open(path, 'rb')
-      if not f then return false end
-      local data = f:read('*a')
-      f:close()
-      local b64 = b64_encode(data)
-      local esc = string.char(27)
-      -- compose kitty inline image sequence
-      local header = esc .. '_Gf=100,t=d;' .. ' ' -- f=100 quality, t=d raw
-      local tail = esc .. '\\'
-      -- write to stdout so terminal renders it
-      pcall(function() io.write(header .. b64 .. tail) end)
-      return true
-    end
-
-    local displayed = false
-    if logo_path and logo_path ~= "" then
-      displayed = try_kitty_icat(logo_path)
-      if not displayed then
-        pcall(emit_kitty_image_b64, logo_path)
-      end
-    end
-
-    if displayed then
-      dashboard.section.header.val = { ' ' }
-    else
-      dashboard.section.header.val = {
-        '  _   _  ___  __  __ ',
-        ' | \ | |/ _ \|  \/  |',
-        ' |  \| | | | | |\/| |',
-        ' | |\  | |_| | |  | |',
-        ' |_| \_|\___/|_|  |_|',
-      }
-    end
-
-    dashboard.section.buttons.val = {
-      dashboard.button('f', '󰈞  Find file', ":lua require('fzf-lua').files()<CR>"),
-      dashboard.button('r', '  Recent files', ":lua require('fzf-lua').files({ cwd = vim.fn.stdpath('data') })<CR>"),
-      dashboard.button('c', '  Config', ':edit $MYVIMRC<CR>'),
-      dashboard.button('g', '  Neogit', ':Neogit<CR>'),
-      dashboard.button('q', '  Quit', ':qa<CR>'),
+    local ascii_header = {
+      "  _   _  ___  __  __ ",
+      " | \\ | |/ _ \\|  \/  |",
+      " |  \\| | | | | |\\/| |",
+      " | |\\  | |_| | |  | |",
+      " |_| \\_|\\___/|_|  |_|",
     }
 
-    alpha.setup(dashboard.config)
-    -- Ensure the dashboard opens on startup when no files are passed
     vim.api.nvim_create_autocmd("VimEnter", {
       once = true,
       callback = function()
-        -- Defer start slightly to ensure UI is ready and other startup actions complete
         vim.defer_fn(function()
-          local argc = vim.fn.argc()
-          if argc == 0 then
-            local ok, err = pcall(function() require('alpha').start(true) end)
-            if not ok then
-              vim.schedule(function()
-                vim.notify("alpha.start failed: " .. tostring(err), vim.log.levels.ERROR)
-              end)
-            else
-              vim.schedule(function()
-                vim.notify("dashboard: opened (argc=" .. tostring(argc) .. ")", vim.log.levels.INFO)
-              end)
-            end
-          else
-            vim.schedule(function()
-              vim.notify("dashboard: not opened (files passed on CLI)", vim.log.levels.DEBUG)
-            end)
+          if vim.fn.argc() ~= 0 then return end
+
+          local displayed = false
+          if logo_path ~= "" then
+            pcall(function() displayed = try_show_kitty(logo_path) end)
           end
+
+          -- Open a new scratch buffer
+          vim.cmd("enew")
+          local buf = vim.api.nvim_get_current_buf()
+          vim.bo[buf].buftype = "nofile"
+          vim.bo[buf].bufhidden = "wipe"
+          vim.bo[buf].swapfile = false
+          vim.bo[buf].modifiable = true
+
+          local header = displayed and {" "} or ascii_header
+          local buttons = {
+            "",
+            "[f] Find file    [r] Recent files    [c] Config    [g] Neogit    [q] Quit",
+            "",
+            "Press the key in brackets to run the action",
+          }
+
+          local lines = {}
+          for _, l in ipairs(header) do table.insert(lines, l) end
+          for _, l in ipairs(buttons) do table.insert(lines, l) end
+
+          vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+          vim.bo[buf].modifiable = false
+
+          local map = function(lhs, fn)
+            vim.keymap.set('n', lhs, fn, { buffer = buf, silent = true, nowait = true })
+          end
+
+          map('f', function() require('fzf-lua').files() end)
+          map('r', function() require('fzf-lua').files({ cwd = vim.fn.stdpath('data') }) end)
+          map('c', function() vim.cmd('edit ' .. vim.fn.expand('$MYVIMRC')) end)
+          map('g', function() vim.cmd('Neogit') end)
+          map('q', function() vim.cmd('qa') end)
         end, 50)
       end,
     })
