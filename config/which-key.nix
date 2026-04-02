@@ -52,6 +52,8 @@
       { "<leader>cd", desc = "Line diagnostics" },
       { "<leader>xl", desc = "Diagnostics → loclist" },
       { "<leader>p", desc = "Open Yank History" },
+      { "gd", desc = "Go to definition (LSP)" },
+      { "gD", desc = "Go to declaration (LSP)" },
     })
   '';
 }

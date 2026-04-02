@@ -93,5 +93,87 @@ end'';
       action = "<cmd>lua vim.diagnostic.goto_prev()<cr>";
       options = { desc = "Prev diagnostic"; silent = true; };
     }
+
+    # Go to definition with LSP; single result -> edit, multiple -> fzf-lua picker
+    {
+      mode = "n";
+      key = "gd";
+      action.__raw = ''
+function()
+  local params = vim.lsp.util.make_position_params()
+  vim.lsp.buf_request(0, "textDocument/definition", params, function(err, result)
+    if err or not result or vim.tbl_isempty(result) then return end
+
+    local function get_uri_and_range(item)
+      if item.uri then return item.uri, item.range end
+      if item.targetUri then return item.targetUri, item.targetSelectionRange end
+      return nil, nil
+    end
+
+    if vim.tbl_islist(result) and #result == 1 then
+      local uri, range = get_uri_and_range(result[1])
+      if uri then
+        local fname = vim.uri_to_fname(uri)
+        vim.cmd('edit ' .. vim.fn.fnameescape(fname))
+        if range then vim.api.nvim_win_set_cursor(0, { range.start.line + 1, range.start.character }) end
+        return
+      end
+    end
+
+    local ok, fzf = pcall(require, 'fzf-lua')
+    if ok and fzf.lsp_definitions then
+      fzf.lsp_definitions()
+      return
+    end
+
+    local items = vim.lsp.util.locations_to_items(result)
+    vim.fn.setqflist({}, ' ', { title = 'LSP Definitions', items = items })
+    vim.cmd('copen')
+  end)
+end
+'';
+      options = { desc = "Go to definition (LSP + fzf-lua fallback)"; silent = true; };
+    }
+
+    # Go to declaration with LSP; same behavior as gd
+    {
+      mode = "n";
+      key = "gD";
+      action.__raw = ''
+function()
+  local params = vim.lsp.util.make_position_params()
+  vim.lsp.buf_request(0, "textDocument/declaration", params, function(err, result)
+    if err or not result or vim.tbl_isempty(result) then return end
+
+    local function get_uri_and_range(item)
+      if item.uri then return item.uri, item.range end
+      if item.targetUri then return item.targetUri, item.targetSelectionRange end
+      return nil, nil
+    end
+
+    if vim.tbl_islist(result) and #result == 1 then
+      local uri, range = get_uri_and_range(result[1])
+      if uri then
+        local fname = vim.uri_to_fname(uri)
+        vim.cmd('edit ' .. vim.fn.fnameescape(fname))
+        if range then vim.api.nvim_win_set_cursor(0, { range.start.line + 1, range.start.character }) end
+        return
+      end
+    end
+
+    local ok, fzf = pcall(require, 'fzf-lua')
+    if ok and fzf.lsp_declarations then
+      fzf.lsp_declarations()
+      return
+    end
+
+    local items = vim.lsp.util.locations_to_items(result)
+    vim.fn.setqflist({}, ' ', { title = 'LSP Declarations', items = items })
+    vim.cmd('copen')
+  end)
+end
+'';
+      options = { desc = "Go to declaration (LSP + fzf-lua fallback)"; silent = true; };
+    }
   ];
 }
