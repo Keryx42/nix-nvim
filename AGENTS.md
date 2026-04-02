@@ -78,22 +78,24 @@ Leader key: `<Space>`
 
 | Key | Action |
 |---|---|
-| `]h` | Next git hunk |
-| `[h` | Prev git hunk |
-| `ghs` | Stage current hunk |
-| `ghr` | Reset current hunk |
-| `ghS` | Stage buffer |
-| `ghR` | Reset buffer |
-| `ghp` | Preview hunk |
-| `ghb` | Blame line (full) |
+| `<leader>]h` | Next git hunk |
+| `<leader>[h` | Prev git hunk |
+| `<leader>ghs` | Stage current hunk |
+| `<leader>ghr` | Reset current hunk |
+| `<leader>ghS` | Stage buffer |
+| `<leader>ghR` | Reset buffer |
+| `<leader>ghp` | Preview hunk |
+| `<leader>ghb` | Blame line (full) |
 
 ### Which Key Hints (which-key)
 
 Which-key registers leader-key groups to surface the existing keybindings for discoverability (no new keybinds introduced). Notable hints:
 - `<leader>e` / `<leader>E` / `<leader>fe` / `<leader>fE` — Neo-tree toggles and focus
 - `<leader><space>` / `<leader>ff` / `<leader>fF` / `<leader>fg` / `<leader>fG` — fzf file/find/grep actions
-- `<leader>gu` — Neogit
-- `gh*` — gitsigns hunk actions (stage/reset/preview/blame)
+ - `<leader>gu` — Neogit
+ - `<leader>gh*` — gitsigns hunk actions (stage/reset/preview/blame)
+ - `gd` — Go to definition (LSP)
+ - `gD` — Go to declaration (LSP)
 
 ## Plugins
 
@@ -163,6 +165,8 @@ Enable `yanky.nvim` for an improved yank history and put behavior; provides a ma
 ### lsp-keymaps (`config/lsp-keymaps.nix`)
 
 Common LSP-focused keybindings: code action, apply `source.fixAll` (eslint), format buffer (prefers `null-ls`), rename, line diagnostics float, diagnostics → loclist, and next/prev diagnostics.
+
+Additionally, plain `gd` and `gD` mappings are provided to go to definition/declaration. Single LSP results open in the current window; multiple results open a picker via `fzf-lua` (with a quickfix fallback).
 
 ### vue-macros (`config/vue-macros.nix`)
 
