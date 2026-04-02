@@ -1,7 +1,6 @@
 {
   # Import all your configuration modules here
   imports = [
-    ./preinit.nix
     ./catppuccin.nix
     ./lualine.nix
     ./neo-tree.nix

@@ -16,7 +16,7 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── fzf.nix         # Fuzzy finder
     ├── neogit.nix      # Git UI
     ├── gitsigns.nix   # Git hunks & keymaps (gitsigns.nvim)
-    ├── dashboard.nix  # Start screen (alpha-nvim) with ASCII header (no image)
+    ├── dashboard.nix  # Start screen (alpha-nvim) with kitty logo support
     ├── auto-save.nix   # Auto-save (extraPlugin — not in nixvim)
     ├── treesitter.nix  # Treesitter grammars & settings
     ├── lsp.nix         # Language servers
@@ -124,10 +124,6 @@ Fuzzy finder for files and live grep. Root-dir variants use built-in `keymaps`, 
 ### neogit (`config/neogit.nix`)
 
 Git UI opened with `<leader>gu`.
-
-### dashboard (`config/dashboard.nix`)
-
-Start screen using `alpha-nvim` with a provided ASCII-art header. Autostarts on `VimEnter` when Neovim is launched without files.
 
 ### LSP (`config/lsp.nix`)
 
