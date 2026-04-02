@@ -16,6 +16,7 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── neo-tree.nix    # File explorer
     ├── fzf.nix         # Fuzzy finder
     ├── neogit.nix      # Git UI
+    ├── gitsigns.nix   # Git hunks & keymaps (gitsigns.nvim)
     ├── auto-save.nix   # Auto-save (extraPlugin — not in nixvim)
     ├── treesitter.nix  # Treesitter grammars & settings
     ├── lsp.nix         # Language servers
@@ -73,12 +74,26 @@ Leader key: `<Space>`
 |---|---|
 | `<leader>gu` | Open Neogit |
 
+### Git (gitsigns)
+
+| Key | Action |
+|---|---|
+| `]h` | Next git hunk |
+| `[h` | Prev git hunk |
+| `ghs` | Stage current hunk |
+| `ghr` | Reset current hunk |
+| `ghS` | Stage buffer |
+| `ghR` | Reset buffer |
+| `ghp` | Preview hunk |
+| `ghb` | Blame line (full) |
+
 ### Which Key Hints (which-key)
 
 Which-key registers leader-key groups to surface the existing keybindings for discoverability (no new keybinds introduced). Notable hints:
 - `<leader>e` / `<leader>E` / `<leader>fe` / `<leader>fE` — Neo-tree toggles and focus
 - `<leader><space>` / `<leader>ff` / `<leader>fF` / `<leader>fg` / `<leader>fG` — fzf file/find/grep actions
 - `<leader>gu` — Neogit
+- `gh*` — gitsigns hunk actions (stage/reset/preview/blame)
 
 ## Plugins
 
