@@ -16,7 +16,6 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── fzf.nix         # Fuzzy finder
     ├── neogit.nix      # Git UI
     ├── gitsigns.nix   # Git hunks & keymaps (gitsigns.nvim)
-    ├── dashboard.nix  # Start screen (alpha-nvim) with kitty logo support
     ├── auto-save.nix   # Auto-save (extraPlugin — not in nixvim)
     ├── treesitter.nix  # Treesitter grammars & settings
     ├── lsp.nix         # Language servers

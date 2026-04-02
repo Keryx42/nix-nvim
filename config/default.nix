@@ -7,7 +7,6 @@
     ./fzf.nix
     ./neogit.nix
     ./gitsigns.nix
-    ./dashboard.nix
     ./auto-save.nix
     ./treesitter.nix
     ./lsp.nix
