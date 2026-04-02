@@ -12,8 +12,8 @@
       icons = { mappings = false },
     })
 
-    wk.add({
-      { "<leader> ", desc = "Find files (root dir)" },
+      wk.add({
+        { "<leader> ", desc = "Find files (root dir)" },
       { "<leader>/", desc = "Grep current buffer" },
       { "<leader>E", desc = "Toggle Neo-tree (cwd)" },
       { "<leader>e", desc = "Toggle Neo-tree (root dir)" },
@@ -26,6 +26,16 @@
       { "<leader>fg", desc = "Grep (root dir)" },
       { "<leader>g", group = "Git" },
       { "<leader>gu", desc = "Open Neogit" },
+      -- g (normal) mappings from gitsigns
+      { "g", group = "Git (g)" },
+      { "ghs", desc = "Stage current hunk" },
+      { "ghr", desc = "Reset current hunk" },
+      { "ghS", desc = "Stage buffer" },
+      { "ghR", desc = "Reset buffer" },
+      { "ghp", desc = "Preview hunk" },
+      { "ghb", desc = "Blame line (full)" },
+      { "]h", desc = "Next git hunk" },
+      { "[h", desc = "Prev git hunk" },
       { "<leader>s", group = "Search" },
       { "<leader>sg", desc = "Grep (root dir)" },
       { "<leader>m", group = "Macros" },
