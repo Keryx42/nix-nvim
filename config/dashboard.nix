@@ -80,9 +80,26 @@
     vim.api.nvim_create_autocmd("VimEnter", {
       once = true,
       callback = function()
-        if vim.fn.argc() == 0 then
-          pcall(function() require('alpha').start(true) end)
-        end
+        -- Defer start slightly to ensure UI is ready and other startup actions complete
+        vim.defer_fn(function()
+          local argc = vim.fn.argc()
+          if argc == 0 then
+            local ok, err = pcall(function() require('alpha').start(true) end)
+            if not ok then
+              vim.schedule(function()
+                vim.notify("alpha.start failed: " .. tostring(err), vim.log.levels.ERROR)
+              end)
+            else
+              vim.schedule(function()
+                vim.notify("dashboard: opened (argc=" .. tostring(argc) .. ")", vim.log.levels.INFO)
+              end)
+            end
+          else
+            vim.schedule(function()
+              vim.notify("dashboard: not opened (files passed on CLI)", vim.log.levels.DEBUG)
+            end)
+          end
+        end, 50)
       end,
     })
   '';
