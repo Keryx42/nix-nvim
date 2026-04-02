@@ -20,4 +20,9 @@
       options = { desc = "Open Yank History"; silent = true; };
     }
   ];
+
+  extraConfigLua = ''
+    -- Make all yanks copy to the system clipboard (unnamedplus)
+    vim.opt.clipboard = "unnamedplus"
+  '';
 }  
