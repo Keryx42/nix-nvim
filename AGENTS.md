@@ -11,7 +11,6 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
 └── config/
     ├── default.nix     # Entry point — imports all modules, sets globals.mapleader = " "
     ├── catppuccin.nix  # Colorscheme
-    ├── bufferline.nix  # Tab bar + web-devicons
     ├── lualine.nix     # Status line
     ├── neo-tree.nix    # File explorer
     ├── fzf.nix         # Fuzzy finder
@@ -102,10 +101,6 @@ Which-key registers leader-key groups to surface the existing keybindings for di
 ### catppuccin (`config/catppuccin.nix`)
 
 Colorscheme. Enabled via `colorschemes.catppuccin.enable = true`.
-
-### bufferline (`config/bufferline.nix`)
-
-Tab bar for open buffers. Also enables `web-devicons` for file-type icons used across all plugins.
 
 ### lualine (`config/lualine.nix`)
 
