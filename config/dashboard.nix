@@ -50,7 +50,7 @@
     end
 
     local displayed = false
-    if logo_path and logo_path ~= '' then
+    if logo_path and logo_path ~= "" then
       displayed = try_kitty_icat(logo_path)
       if not displayed then
         pcall(emit_kitty_image_b64, logo_path)
