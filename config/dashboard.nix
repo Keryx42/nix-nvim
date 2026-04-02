@@ -76,5 +76,14 @@
     }
 
     alpha.setup(dashboard.config)
+    -- Ensure the dashboard opens on startup when no files are passed
+    vim.api.nvim_create_autocmd("VimEnter", {
+      once = true,
+      callback = function()
+        if vim.fn.argc() == 0 then
+          pcall(function() require('alpha').start(true) end)
+        end
+      end,
+    })
   '';
 }
