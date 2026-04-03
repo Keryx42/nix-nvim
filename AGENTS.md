@@ -11,11 +11,12 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
 └── config/
     ├── default.nix     # Entry point — imports all modules, sets globals.mapleader = " "
     ├── catppuccin.nix  # Colorscheme
+    ├── dashboard.nix   # Startup dashboard (doom theme + quick actions)
     ├── lualine.nix     # Status line
     ├── neo-tree.nix    # File explorer
-    ├── fzf.nix         # Fuzzy finder
+    ├── fzf.nix         # Fuzzy finder (fzf-lua) + keymaps
     ├── neogit.nix      # Git UI
-    ├── gitsigns.nix   # Git hunks & keymaps (gitsigns.nvim)
+    ├── gitsigns.nix    # Git hunks & keymaps (gitsigns.nvim)
     ├── auto-save.nix   # Auto-save (extraPlugin — not in nixvim)
     ├── treesitter.nix  # Treesitter grammars & settings
     ├── lsp.nix         # Language servers
@@ -86,15 +87,22 @@ Leader key: `<Space>`
 | `<leader>ghp` | Preview hunk |
 | `<leader>ghb` | Blame line (full) |
 
+### Yank history (yanky)
+
+| Key | Action |
+|---|---|
+| `<leader>p` | Open Yank History (normal & visual) |
+
 ### Which Key Hints (which-key)
 
 Which-key registers leader-key groups to surface the existing keybindings for discoverability (no new keybinds introduced). Notable hints:
 - `<leader>e` / `<leader>E` / `<leader>fe` / `<leader>fE` — Neo-tree toggles and focus
 - `<leader><space>` / `<leader>ff` / `<leader>fF` / `<leader>fg` / `<leader>fG` — fzf file/find/grep actions
- - `<leader>gu` — Neogit
- - `<leader>gh*` — gitsigns hunk actions (stage/reset/preview/blame)
- - `gd` — Go to definition (LSP)
- - `gD` — Go to declaration (LSP)
+- `<leader>gu` — Neogit
+- `<leader>gh*` — gitsigns hunk actions (stage/reset/preview/blame)
+- `<leader>p` — Yank history (yanky.nvim)
+- `gd` — Go to definition (LSP)
+- `gD` — Go to declaration (LSP)
 
 ## Plugins
 
@@ -112,13 +120,17 @@ Status line with catppuccin theme. Sections:
 - `lualine_y`: progress
 - `lualine_z`: location
 
+### dashboard (`config/dashboard.nix`)
+
+Startup dashboard using the `doom` theme: large ASCII header, center actions for Find/Recent/Grep/New/Neogit/Config/Quit, and a footer that reports loaded plugin stats. Center actions call `fzf-lua` or builtins (e.g. `Neogit`, `enew`).
+
 ### neo-tree (`config/neo-tree.nix`)
 
-File explorer. `followCurrentFile` is enabled so the tree tracks the active buffer.
+File explorer. `followCurrentFile` is enabled so the tree tracks the active buffer; provides mappings to toggle/focus the tree for project root and current buffer (`<leader>e`, `<leader>E`, `<leader>fe`, `<leader>fE`).
 
 ### fzf-lua (`config/fzf.nix`)
 
-Fuzzy finder for files and live grep. Root-dir variants use built-in `keymaps`, cwd variants use `keymaps` with `action.__raw` (Lua function).
+Fuzzy finder for files and live grep. Provides root-dir mappings via `plugins.fzf-lua.keymaps` and cwd-aware variants implemented as `keymaps` with `action.__raw` (e.g. `<leader>fF`, `<leader>fG`).
 
 ### neogit (`config/neogit.nix`)
 
@@ -131,11 +143,11 @@ Four servers configured for Vue/TypeScript and Nix projects:
 | Server | Purpose |
 |---|---|
 | `vue_ls` | HTML/CSS sections of `.vue` files (hybrid mode) |
-| `vtsls` | TypeScript/JavaScript + Vue via `@vue/typescript-plugin` |
+| `vtsls` | TypeScript/JavaScript + Vue via `@vue/typescript-plugin` (handles <script> / TS features) |
 | `eslint` | Linting for JS/TS/Vue/JSON via `vscode-langservers-extracted` |
 | `nixd` | Semantic completions/diagnostics for `.nix` + flake files |
 
-`vtsls` has `@vue/typescript-plugin` wired to the nix store path of `pkgs.vue-language-server` so no manual path resolution is needed.
+Global `plugins.lsp.onAttach` includes a workaround that disables semantic tokens for `vue_ls`/volar to avoid known crashes. `vtsls` is configured with `@vue/typescript-plugin` wired to the nix store path of `pkgs.vue-language-server` and a set of TypeScript/JavaScript inlay/diagnostic preferences.
 
 ### formatters (`config/formatters.nix`)
 
@@ -150,18 +162,15 @@ Four servers configured for Vue/TypeScript and Nix projects:
 
 ### auto-save (`config/auto-save.nix`)
 
-
 [okuuva/auto-save.nvim](https://github.com/okuuva/auto-save.nvim) v1.1.0. Not in nixvim's plugin set, so installed via `extraPlugins` + `buildVimPlugin`. Saves on `BufLeave` and `FocusLost`. `noautocmd = false` to preserve undo/redo history.
 
 ### yanky (`config/yanky.nix`)
 
-Enable `yanky.nvim` for an improved yank history and put behavior; provides a mapping `<leader>p` to open the yank ring in normal and visual modes.
+Enable `yanky.nvim` for an improved yank history and put behavior; provides a mapping `<leader>p` to open the yank ring in normal and visual modes. The config also sets `vim.opt.clipboard = "unnamedplus"` to sync yanks to the system clipboard.
 
 ### lsp-keymaps (`config/lsp-keymaps.nix`)
 
-Common LSP-focused keybindings: code action, apply `source.fixAll` (eslint), format buffer (prefers `null-ls`), rename, line diagnostics float, diagnostics → loclist, and next/prev diagnostics.
-
-Additionally, plain `gd` and `gD` mappings are provided to go to definition/declaration. Single LSP results open in the current window; multiple results open a picker via `fzf-lua` (with a quickfix fallback).
+Common LSP-focused keybindings: code action, apply `source.fixAll` (eslint), format buffer (prefers `null-ls`), rename, line diagnostics float, diagnostics → loclist, and next/prev diagnostics. Additionally, `gd` / `gD` implement LSP definition/declaration lookups that open a single result inline or fall back to `fzf-lua` / quickfix for multiple results.
 
 ### vue-macros (`config/vue-macros.nix`)
 
