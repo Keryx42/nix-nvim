@@ -135,6 +135,14 @@ end
       options = { desc = "Go to definition (LSP + fzf-lua fallback)"; silent = true; };
     }
 
+    # Quit all — matches LazyVim's <leader>qq
+    {
+      mode = "n";
+      key = "<leader>qq";
+      action = "<cmd>qa<cr>";
+      options = { desc = "Quit All"; silent = true; };
+    }
+
     # Go to declaration with LSP; same behavior as gd
     {
       mode = "n";

@@ -104,6 +104,32 @@ Which-key registers leader-key groups to surface the existing keybindings for di
 - `gd` — Go to definition (LSP)
 - `gD` — Go to declaration (LSP)
 
+### LSP keymaps (lsp-keymaps.nix)
+
+| Key | Action |
+|---|---|
+| `<leader>ca` | Code Action |
+| `<leader>cA` | Apply `source.fixAll` (eslint if available) |
+| `<leader>cf` | Format buffer (prefers `null-ls`) |
+| `<leader>cr` | Rename symbol |
+| `<leader>cd` | Line diagnostics (float) |
+| `<leader>xl` | Diagnostics → loclist |
+| `]d` | Next diagnostic |
+| `[d` | Prev diagnostic |
+| `gd` | Go to definition (single result edits; multiple → fzf/quickfix) |
+| `gD` | Go to declaration (same behaviour as `gd`) |
+| `<leader>qq` | Quit all (`qa`) |
+
+### Vue macros (vue-macros.nix)
+
+| Key | Action |
+|---|---|
+| `<leader>ms` | Wrap StoreToRefs |
+| `<leader>mc` | Wrap Composable |
+| `<leader>mj` | Go To Definition Alias |
+| `<leader>mp` | Props to Refs |
+| `<leader>ma` | Destruct |
+
 ## Plugins
 
 ### catppuccin (`config/catppuccin.nix`)

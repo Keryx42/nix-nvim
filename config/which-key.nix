@@ -45,6 +45,8 @@
       { "<leader>mp", desc = "Props to Refs" },
       { "<leader>ma", desc = "Destruct" },
       { "<leader>c", group = "LSP" },
+      { "<leader>q", group = "Quit" },
+      { "<leader>qq", desc = "Quit All" },
       { "<leader>ca", desc = "Code Action" },
       { "<leader>cA", desc = "Apply fixAll (eslint if available)" },
       { "<leader>cf", desc = "Format buffer" },

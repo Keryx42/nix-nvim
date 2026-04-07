@@ -41,7 +41,7 @@
 
         center = [
           {
-            icon = "  ";
+            icon = " ";
             icon_hl = "DashboardIcon";
             desc = "Find File";
             desc_hl = "DashboardDesc";
@@ -51,7 +51,7 @@
             action.__raw = "function() require('fzf-lua').files() end";
           }
           {
-            icon = "  ";
+            icon = " ";
             icon_hl = "DashboardIcon";
             desc = "Recent Files";
             desc_hl = "DashboardDesc";
@@ -61,7 +61,7 @@
             action.__raw = "function() require('fzf-lua').oldfiles() end";
           }
           {
-            icon = "  ";
+            icon = "  ";
             icon_hl = "DashboardIcon";
             desc = "Live Grep";
             desc_hl = "DashboardDesc";
@@ -71,7 +71,7 @@
             action.__raw = "function() require('fzf-lua').live_grep() end";
           }
           {
-            icon = "  ";
+            icon = " ";
             icon_hl = "DashboardIcon";
             desc = "New File";
             desc_hl = "DashboardDesc";
@@ -81,17 +81,15 @@
             action = "enew";
           }
           {
-            icon = "  ";
-            icon_hl = "DashboardIcon";
+            icon = " ";
             desc = "Git Status";
-            desc_hl = "DashboardDesc";
-            key = "s";
+            key = "n";
             key_hl = "DashboardKey";
             key_format = "  [%s]";
             action = "Neogit";
           }
           {
-            icon = "  ";
+            icon = " ";
             icon_hl = "DashboardIcon";
             desc = "Config";
             desc_hl = "DashboardDesc";
@@ -101,7 +99,7 @@
             action.__raw = "function() require('fzf-lua').files({ cwd = vim.fn.stdpath('config') }) end";
           }
           {
-            icon = "  ";
+            icon = " ";
             icon_hl = "DashboardIcon";
             desc = "Quit";
             desc_hl = "DashboardDesc";
