@@ -20,7 +20,9 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── auto-save.nix               # Auto-save (extraPlugin — not in nixvim)
     ├── tiny-inline-diagnostic.nix  # Inline diagnostics (modern preset)
     ├── telescope.nix               # Telescope fuzzy finder + code action picker
-    ├── treesitter.nix              # Treesitter grammars & settings
+    ├── treesitter.nix              # Treesitter grammars, highlighting, indentation, folding
+    ├── treesitter-textobjects.nix  # Treesitter textobject navigation (functions, classes, params)
+    ├── ts-autotag.nix              # Auto-close HTML and JSX tags
     ├── lsp.nix                     # Language servers
     ├── formatters.nix              # Formatters via none-ls
     ├── which-key.nix               # Keybinding hints
@@ -123,6 +125,19 @@ Which-key registers leader-key groups to surface the existing keybindings for di
 | `gd` | Go to definition (single result edits; multiple → fzf/quickfix) |
 | `gD` | Go to declaration (same behaviour as `gd`) |
 | `<leader>qq` | Quit all (`qa`) |
+
+### Treesitter textobjects (treesitter-textobjects.nix)
+
+| Key | Action |
+|---|---|
+| `]f` / `[f` | Next/Prev function start |
+| `]F` / `[F` | Next/Prev function end |
+| `]c` / `[c` | Next/Prev class start |
+| `]C` / `[C` | Next/Prev class end |
+| `]a` / `[a` | Next/Prev parameter start |
+| `]A` / `[A` | Next/Prev parameter end |
+
+Works in normal, visual, and operator-pending modes.
 
 ### Session management (persistence.nvim)
 
@@ -241,4 +256,16 @@ the update-docs command is under .opencode/commands/update-docs.md
 
 ### treesitter (`config/treesitter.nix`)
 
-Treesitter configuration for syntax highlighting and indentation. The file enables `nvim-treesitter` and includes grammars for `vue`, `typescript`, `javascript`, `tsx`, `css`, `html`, `json`, `jsdoc`, `lua`, `bash`, and `nix`.
+Treesitter configuration for syntax highlighting, indentation, and code folding. Enables `nvim-treesitter` with 33 language grammars:
+- **Web & Scripting:** bash, c, css, html, javascript, jsdoc, json, lua, nix, tsx, typescript, vim
+- **Markup & Data:** diff, markdown, markdown_inline, printf, query, regex, toml, xml, yaml
+- **Documentation:** luadoc, luap, vimdoc
+- **Framework-specific:** vue
+
+### treesitter-textobjects (`config/treesitter-textobjects.nix`)
+
+[nvim-treesitter/nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) provides code navigation using treesitter text objects. Eight keybindings navigate functions, classes, and parameters with both start and end positions. Works in normal, visual, and operator-pending modes. Includes LazyVim-style auto-generated description hints.
+
+### ts-autotag (`config/ts-autotag.nix`)
+
+[windwp/nvim-ts-autotag](https://github.com/windwp/nvim-ts-autotag) automatically closes HTML and JSX tags based on treesitter parsing. When you open a tag like `<div>`, pressing `>` automatically inserts the closing `</div>` tag.

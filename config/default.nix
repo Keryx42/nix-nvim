@@ -12,6 +12,8 @@
     ./tiny-inline-diagnostic.nix
     ./telescope.nix
     ./treesitter.nix
+    ./treesitter-textobjects.nix
+    ./ts-autotag.nix
     ./lsp.nix
     ./formatters.nix
     ./which-key.nix
