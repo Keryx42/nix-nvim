@@ -9,55 +9,17 @@
       options = { desc = "Code Action"; silent = true; };
     }
 
-    # Source actions — fixAll, organizeImports, etc. via fzf-lua picker
+    # Source actions — fixAll, organizeImports, etc. via fzf-lua picker with filtering
     {
       mode = ["n" "x"];
       key = "<leader>cA";
       action.__raw = ''function()
-  local fzf = require('fzf-lua')
-  local bufnr = vim.api.nvim_get_current_buf()
-  local params = vim.lsp.util.make_range_params()
-  params.context = { diagnostics = vim.diagnostic.get(bufnr) }
-  
-  vim.lsp.buf_request_all(bufnr, 'textDocument/codeAction', params, function(results_per_client)
-    local actions = {}
-    
-    for _, result in pairs(results_per_client) do
-      if result.result and not vim.tbl_isempty(result.result) then
-        for _, action in ipairs(result.result) do
-          local kind = action.kind or ""
-          if kind:match("^source") then
-            table.insert(actions, action)
-          end
-        end
-      end
-    end
-    
-    if vim.tbl_isempty(actions) then
-      vim.notify('No source actions available', vim.log.levels.INFO)
-      return
-    end
-    
-    fzf.fzf_exec(actions, {
-      prompt = 'Source Actions> ',
-      actions = {
-        default = function(selected)
-          if selected and selected[1] then
-            local action = actions[tonumber(selected[1])] or selected[1]
-            if type(action) == "table" then
-              if action.edit then
-                vim.lsp.util.apply_workspace_edit(action.edit, 'utf-8')
-              end
-              if action.command then
-                vim.lsp.buf.execute_command(action.command)
-              end
-            end
-          end
-        end,
-      },
-      winopts = { preview = { hidden = 'hidden' } },
-    })
-  end)
+  require('fzf-lua').lsp_code_actions({
+    filter = function(action)
+      local kind = action.kind or ""
+      return kind:match("^source") ~= nil
+    end,
+  })
 end'';
       options = { desc = "Source Action"; silent = true; };
     }
