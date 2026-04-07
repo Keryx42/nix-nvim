@@ -19,6 +19,7 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── gitsigns.nix                # Git hunks & keymaps (gitsigns.nvim)
     ├── auto-save.nix               # Auto-save (extraPlugin — not in nixvim)
     ├── tiny-inline-diagnostic.nix  # Inline diagnostics (modern preset)
+    ├── telescope.nix               # Telescope fuzzy finder + code action picker
     ├── treesitter.nix              # Treesitter grammars & settings
     ├── lsp.nix                     # Language servers
     ├── formatters.nix              # Formatters via none-ls
@@ -109,8 +110,8 @@ Which-key registers leader-key groups to surface the existing keybindings for di
 
 | Key | Action |
 |---|---|
-| `<leader>ca` | Code Action |
-| `<leader>cA` | Apply `source.fixAll` (eslint if available) |
+| `<leader>ca` | Code Action (built-in) |
+| `<leader>cF` | Apply fixAll (auto) |
 | `<leader>cf` | Format buffer (prefers `null-ls`) |
 | `<leader>cr` | Rename symbol |
 | `<leader>cd` | Line diagnostics (float) |
@@ -195,13 +196,17 @@ Global `plugins.lsp.onAttach` includes a workaround that disables semantic token
 
 [rachartier/tiny-inline-diagnostic.nvim](https://github.com/rachartier/tiny-inline-diagnostic.nvim) provides styled inline error and warning messages. Configured with the `modern` preset (LazyVim-style) and displays source information. Disables Neovim's default virtual text to avoid conflicts.
 
+### telescope (`config/telescope.nix`)
+
+Fuzzy finder and Telescope plugin configuration. Configured with horizontal layout and fzf-native extension for faster sorting. Used by fzf-lua and other plugins for interactive picking.
+
 ### yanky (`config/yanky.nix`)
 
 Enable `yanky.nvim` for an improved yank history and put behavior; provides a mapping `<leader>p` to open the yank ring in normal and visual modes. The config also sets `vim.opt.clipboard = "unnamedplus"` to sync yanks to the system clipboard.
 
 ### lsp-keymaps (`config/lsp-keymaps.nix`)
 
-Common LSP-focused keybindings: code action, apply `source.fixAll` (eslint), format buffer (prefers `null-ls`), rename, line diagnostics float, diagnostics → loclist, and next/prev diagnostics. Additionally, `gd` / `gD` implement LSP definition/declaration lookups that open a single result inline or fall back to `fzf-lua` / quickfix for multiple results.
+LSP-focused keybindings using Neovim's built-in code action UI: `<leader>ca` opens the code action picker (handles all LSP servers gracefully including Vue). `<leader>cF` auto-applies fixAll without prompting. Also includes format buffer (prefers `null-ls`), rename, line diagnostics float, diagnostics → loclist, next/prev diagnostics, and LSP definition/declaration lookups that open a single result inline or fall back to `fzf-lua` / quickfix for multiple results.
 
 ### vue-macros (`config/vue-macros.nix`)
 

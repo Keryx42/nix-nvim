@@ -1,43 +1,39 @@
 { pkgs, ... }:
 {
   keymaps = [
-    # Code action (open code action menu)
+    # Code action (uses Neovim built-in which handles vue_ls gracefully)
     {
-      mode = "n";
+      mode = ["n" "x"];
       key = "<leader>ca";
       action.__raw = ''function() vim.lsp.buf.code_action() end'';
       options = { desc = "Code Action"; silent = true; };
     }
 
-    # Try to apply source.fixAll (ESLint / fix-all actions) automatically if available
+    # Auto-apply fixAll without prompting
     {
       mode = "n";
-      key = "<leader>cA";
-      action.__raw = ''
-function()
+      key = "<leader>cF";
+      action.__raw = ''function()
+  local bufnr = vim.api.nvim_get_current_buf()
   local params = vim.lsp.util.make_range_params()
   params.context = { only = { "source.fixAll", "source.fixAll.eslint" } }
-
-  vim.lsp.buf_request(0, "textDocument/codeAction", params, function(err, actions)
+  
+  vim.lsp.buf_request(bufnr, "textDocument/codeAction", params, function(err, actions)
     if err or not actions or vim.tbl_isempty(actions) then
-      -- Fallback: open code action menu
-      vim.lsp.buf.code_action()
+      vim.notify('No fixAll actions available', vim.log.levels.INFO)
       return
     end
-
-    -- Try to apply the first action that has an edit/command
+    
     local act = actions[1]
     if act.edit then
-      vim.lsp.util.apply_workspace_edit(act.edit)
+      vim.lsp.util.apply_workspace_edit(act.edit, 'utf-8')
     end
     if act.command then
-      -- Some actions include a command to execute
       vim.lsp.buf.execute_command(act.command)
     end
   end)
-end
-'';
-      options = { desc = "Apply fixAll (eslint if available)"; silent = true; };
+end'';
+      options = { desc = "Apply fixAll (auto)"; silent = true; };
     }
 
     # Format buffer

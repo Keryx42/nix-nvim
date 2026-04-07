@@ -10,6 +10,7 @@
     ./gitsigns.nix
     ./auto-save.nix
     ./tiny-inline-diagnostic.nix
+    ./telescope.nix
     ./treesitter.nix
     ./lsp.nix
     ./formatters.nix
