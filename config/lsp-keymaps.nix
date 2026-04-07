@@ -1,19 +1,20 @@
 { pkgs, ... }:
 {
   keymaps = [
-    # Code action (uses Neovim built-in which handles vue_ls gracefully)
+    # Code action — all actions via fzf-lua picker
     {
       mode = ["n" "x"];
       key = "<leader>ca";
-      action.__raw = ''function() vim.lsp.buf.code_action() end'';
+      action.__raw = ''function() require('fzf-lua').lsp_code_actions() end'';
       options = { desc = "Code Action"; silent = true; };
     }
 
-    # Source actions (fixAll, organizeImports, etc.) — shows picker
+    # Source actions — fixAll, organizeImports, etc. via fzf-lua picker
     {
       mode = ["n" "x"];
       key = "<leader>cA";
       action.__raw = ''function()
+  local fzf = require('fzf-lua')
   local bufnr = vim.api.nvim_get_current_buf()
   local params = vim.lsp.util.make_range_params()
   params.context = { diagnostics = vim.diagnostic.get(bufnr) }
@@ -37,21 +38,25 @@
       return
     end
     
-    vim.ui.select(actions, {
-      prompt = 'Source Actions:',
-      format_item = function(action)
-        return action.title or 'Unknown'
-      end,
-    }, function(action)
-      if action then
-        if action.edit then
-          vim.lsp.util.apply_workspace_edit(action.edit, 'utf-8')
-        end
-        if action.command then
-          vim.lsp.buf.execute_command(action.command)
-        end
-      end
-    end)
+    fzf.fzf_exec(actions, {
+      prompt = 'Source Actions> ',
+      actions = {
+        default = function(selected)
+          if selected and selected[1] then
+            local action = actions[tonumber(selected[1])] or selected[1]
+            if type(action) == "table" then
+              if action.edit then
+                vim.lsp.util.apply_workspace_edit(action.edit, 'utf-8')
+              end
+              if action.command then
+                vim.lsp.buf.execute_command(action.command)
+              end
+            end
+          end
+        end,
+      },
+      winopts = { preview = { hidden = 'hidden' } },
+    })
   end)
 end'';
       options = { desc = "Source Action"; silent = true; };
