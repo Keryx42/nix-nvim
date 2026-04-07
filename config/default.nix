@@ -18,6 +18,7 @@
     ./vue-macros.nix
     ./lsp-keymaps.nix
     ./yanky.nix
+    ./persistence.nix
   ];
 
   globals.mapleader = " ";

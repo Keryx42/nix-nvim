@@ -26,7 +26,8 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── which-key.nix               # Keybinding hints
     ├── vue-macros.nix              # Editor macros for Vue/TypeScript workflows
     ├── lsp-keymaps.nix             # LSP keybindings (code action, format, rename, diagnostics)
-    └── yanky.nix                   # yanky.nvim (yank history) + mapping
+    ├── yanky.nix                   # yanky.nvim (yank history) + mapping
+    └── persistence.nix             # Session save/restore with git branch tracking
 ```
 
 Each plugin lives in its own file and is imported in `config/default.nix`.
@@ -123,6 +124,16 @@ Which-key registers leader-key groups to surface the existing keybindings for di
 | `gD` | Go to declaration (same behaviour as `gd`) |
 | `<leader>qq` | Quit all (`qa`) |
 
+### Session management (persistence.nvim)
+
+| Key | Action |
+|---|---|
+| `<leader>qs` | Restore current session |
+| `<leader>qS` | Select session to load |
+| `<leader>ql` | Restore last session |
+| `<leader>qd` | Don't save current session |
+| `s` (dashboard) | Restore last session (from dashboard) |
+
 ### Vue macros (vue-macros.nix)
 
 | Key | Action |
@@ -212,6 +223,10 @@ LSP-focused keybindings using fzf-lua picker: `<leader>ca` opens fzf-lua's LSP c
 ### vue-macros (`config/vue-macros.nix`)
 
 Editor macros tailored for Vue/TypeScript patterns (storeToRefs wrapper, composable scaffolding, props → refs, destruct helpers, go-to-definition alias) exposed under `<leader>m*` mappings.
+
+### persistence.nvim (`config/persistence.nix`)
+
+[folke/persistence.nvim](https://github.com/folke/persistence.nvim) provides automatic session save/restore functionality. Sessions are stored in `~/.local/state/nvim/sessions/` with optional git branch tracking. Configured to save only when more than 1 file is open. Provides four keybindings for session management: restore current, select, restore last, and don't save. Dashboard integration via `s` key to restore the last session.
 
 ## Agent instructions
 
