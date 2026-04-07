@@ -111,6 +111,7 @@ Which-key registers leader-key groups to surface the existing keybindings for di
 | Key | Action |
 |---|---|
 | `<leader>ca` | Code Action (built-in) |
+| `<leader>cA` | Source Action (fixAll, organizeImports) |
 | `<leader>cF` | Apply fixAll (auto) |
 | `<leader>cf` | Format buffer (prefers `null-ls`) |
 | `<leader>cr` | Rename symbol |
@@ -206,7 +207,7 @@ Enable `yanky.nvim` for an improved yank history and put behavior; provides a ma
 
 ### lsp-keymaps (`config/lsp-keymaps.nix`)
 
-LSP-focused keybindings using Neovim's built-in code action UI: `<leader>ca` opens the code action picker (handles all LSP servers gracefully including Vue). `<leader>cF` auto-applies fixAll without prompting. Also includes format buffer (prefers `null-ls`), rename, line diagnostics float, diagnostics → loclist, next/prev diagnostics, and LSP definition/declaration lookups that open a single result inline or fall back to `fzf-lua` / quickfix for multiple results.
+LSP-focused keybindings using Neovim's built-in code action UI: `<leader>ca` opens the code action picker (handles all LSP servers gracefully including Vue). `<leader>cA` shows only source actions (fixAll, organizeImports, etc.) via vim.ui.select. `<leader>cF` auto-applies fixAll without prompting. Also includes format buffer (prefers `null-ls`), rename, line diagnostics float, diagnostics → loclist, next/prev diagnostics, and LSP definition/declaration lookups that open a single result inline or fall back to `fzf-lua` / quickfix for multiple results.
 
 ### vue-macros (`config/vue-macros.nix`)
 
