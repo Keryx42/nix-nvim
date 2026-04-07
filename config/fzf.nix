@@ -40,6 +40,11 @@
     };
   };
 
+  # Register fzf-lua as the global vim.ui.select backend
+  extraConfigLua = ''
+    require('fzf-lua').register_ui_select()
+  '';
+
   keymaps = [
     {
       mode = "n";
