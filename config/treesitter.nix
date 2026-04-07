@@ -38,4 +38,10 @@
       vue
     ];
   };
+
+  # Set default foldlevel to expand all folds by default
+  # foldlevel=99 means all folds are open (folds are only closed if you explicitly `:set foldlevel=N`)
+  extraConfigLua = ''
+    vim.opt.foldlevel = 99
+  '';
 }
