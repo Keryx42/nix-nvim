@@ -9,22 +9,23 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
 ├── flake.nix           # Flake inputs (nixpkgs-unstable, nixvim, flake-parts)
 ├── flake.lock
 └── config/
-    ├── default.nix     # Entry point — imports all modules, sets globals.mapleader = " "
-    ├── catppuccin.nix  # Colorscheme
-    ├── dashboard.nix   # Startup dashboard (doom theme + quick actions)
-    ├── lualine.nix     # Status line
-    ├── neo-tree.nix    # File explorer
-    ├── fzf.nix         # Fuzzy finder (fzf-lua) + keymaps
-    ├── neogit.nix      # Git UI
-    ├── gitsigns.nix    # Git hunks & keymaps (gitsigns.nvim)
-    ├── auto-save.nix   # Auto-save (extraPlugin — not in nixvim)
-    ├── treesitter.nix  # Treesitter grammars & settings
-    ├── lsp.nix         # Language servers
-    ├── formatters.nix  # Formatters via none-ls
-    ├── which-key.nix   # Keybinding hints
-    ├── vue-macros.nix  # Editor macros for Vue/TypeScript workflows
-    ├── lsp-keymaps.nix # LSP keybindings (code action, format, rename, diagnostics)
-    └── yanky.nix       # yanky.nvim (yank history) + mapping
+    ├── default.nix                 # Entry point — imports all modules, sets globals.mapleader = " "
+    ├── catppuccin.nix              # Colorscheme
+    ├── dashboard.nix               # Startup dashboard (doom theme + quick actions)
+    ├── lualine.nix                 # Status line
+    ├── neo-tree.nix                # File explorer
+    ├── fzf.nix                     # Fuzzy finder (fzf-lua) + keymaps
+    ├── neogit.nix                  # Git UI
+    ├── gitsigns.nix                # Git hunks & keymaps (gitsigns.nvim)
+    ├── auto-save.nix               # Auto-save (extraPlugin — not in nixvim)
+    ├── tiny-inline-diagnostic.nix  # Inline diagnostics (modern preset)
+    ├── treesitter.nix              # Treesitter grammars & settings
+    ├── lsp.nix                     # Language servers
+    ├── formatters.nix              # Formatters via none-ls
+    ├── which-key.nix               # Keybinding hints
+    ├── vue-macros.nix              # Editor macros for Vue/TypeScript workflows
+    ├── lsp-keymaps.nix             # LSP keybindings (code action, format, rename, diagnostics)
+    └── yanky.nix                   # yanky.nvim (yank history) + mapping
 ```
 
 Each plugin lives in its own file and is imported in `config/default.nix`.
@@ -189,6 +190,10 @@ Global `plugins.lsp.onAttach` includes a workaround that disables semantic token
 ### auto-save (`config/auto-save.nix`)
 
 [okuuva/auto-save.nvim](https://github.com/okuuva/auto-save.nvim) v1.1.0. Not in nixvim's plugin set, so installed via `extraPlugins` + `buildVimPlugin`. Saves on `BufLeave` and `FocusLost`. `noautocmd = false` to preserve undo/redo history.
+
+### tiny-inline-diagnostic (`config/tiny-inline-diagnostic.nix`)
+
+[rachartier/tiny-inline-diagnostic.nvim](https://github.com/rachartier/tiny-inline-diagnostic.nvim) provides styled inline error and warning messages. Configured with the `modern` preset (LazyVim-style) and displays source information. Disables Neovim's default virtual text to avoid conflicts.
 
 ### yanky (`config/yanky.nix`)
 

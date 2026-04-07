@@ -9,6 +9,7 @@
     ./neogit.nix
     ./gitsigns.nix
     ./auto-save.nix
+    ./tiny-inline-diagnostic.nix
     ./treesitter.nix
     ./lsp.nix
     ./formatters.nix
