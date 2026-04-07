@@ -53,17 +53,7 @@
             action.__raw = "function() require('fzf-lua').files() end";
           }
           {
-            icon = " ";
-            icon_hl = "DashboardIcon";
-            desc = "Recent Files";
-            desc_hl = "DashboardDesc";
-            key = "r";
-            key_hl = "DashboardKey";
-            key_format = "  [%s]";
-            action.__raw = "function() require('fzf-lua').oldfiles() end";
-          }
-          {
-            icon = " ";
+            icon = " ";
             icon_hl = "DashboardIcon";
             desc = "Restore Session";
             desc_hl = "DashboardDesc";
@@ -71,16 +61,6 @@
             key_hl = "DashboardKey";
             key_format = "  [%s]";
             action.__raw = "function() require('persistence').load() end";
-          }
-          {
-            icon = "  ";
-            icon_hl = "DashboardIcon";
-            desc = "Live Grep";
-            desc_hl = "DashboardDesc";
-            key = "g";
-            key_hl = "DashboardKey";
-            key_format = "  [%s]";
-            action.__raw = "function() require('fzf-lua').live_grep() end";
           }
           {
             icon = "  ";
@@ -104,8 +84,8 @@
           }
           {
             icon = " ";
-            desc = "Git Status";
-            key = "n";
+            desc = "Git Ui";
+            key = "u";
             key_hl = "DashboardKey";
             key_format = "  [%s]";
             action = "Neogit";
