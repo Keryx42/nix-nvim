@@ -154,6 +154,28 @@ end
       options = { desc = "Quit All"; silent = true; };
     }
 
+    # Save, format, and lint — works in normal and insert mode
+    {
+      mode = ["n" "i"];
+      key = "<C-s>";
+      action.__raw = ''function()
+  -- Save the buffer
+  vim.cmd.write()
+  
+  -- Format with none-ls (Prettier) asynchronously
+  vim.lsp.buf.format({
+    async = true,
+    filter = function(client)
+      return client and client.name == 'null-ls'
+    end,
+  })
+  
+  -- Show notification
+  vim.notify('File saved and formatted', vim.log.levels.INFO)
+end'';
+      options = { desc = "Save, format, and lint"; silent = true; };
+    }
+
     # Go to declaration with LSP; same behavior as gd
     {
       mode = "n";
