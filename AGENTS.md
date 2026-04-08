@@ -207,15 +207,15 @@ Global `plugins.lsp.onAttach` includes a workaround that disables semantic token
 
 ### blink-cmp (`config/blink-cmp.nix`)
 
-Modern autocompletion engine powered by Rust with LSP-based completions. When accepting a completion that requires imports (e.g., `useRouter` from `vue-router`), the LSP server automatically includes the import statement via `additionalTextEdits`. This happens transparently—no extra steps needed.
+Modern autocompletion engine powered by Rust with LSP-based completions and automatic import organization. When accepting a completion that requires imports (e.g., `useRouter` from `vue-router`), the LSP server automatically includes the import statement via `additionalTextEdits`. After accepting, `organizeImports` is triggered to sort and deduplicate imports—no extra steps needed.
 
-**Keybindings (super-tab preset):**
+**Keybindings (enter preset):**
 
 | Key | Action |
 |---|---|
-| `<Tab>` | Next completion item / fallback insert |
+| `<Return>` | Accept selected completion (with auto-imports + auto-sort) |
+| `<Tab>` | Next completion item |
 | `<S-Tab>` | Previous completion item |
-| `<Return>` | Accept selected completion (with auto-imports) |
 | `<C-e>` | Cancel completion menu |
 | `<C-Space>` | Manually trigger completion |
 
@@ -223,7 +223,15 @@ Modern autocompletion engine powered by Rust with LSP-based completions. When ac
 - Auto-brackets for functions: `func()` style insertion
 - Documentation auto-show with 200ms delay
 - LSP capabilities auto-configured
+- Auto-import sorting on completion acceptance (via `source.organizeImports`)
 - Sources: LSP (primary) → Buffer (fallback) → Path
+
+**Auto-import workflow:**
+1. Type `use` in TypeScript/Vue file
+2. Select `useRouter` from completion menu
+3. Press `<Return>` to accept
+4. Import added: `import { useRouter } from 'vue-router'`
+5. Imports auto-organized (sorted, deduplicated, grouped by convention)
 
 ### formatters (`config/formatters.nix`)
 

@@ -121,5 +121,55 @@
       # };
     };
   };
+
+  # Custom Lua: Auto-organize imports after accepting a completion
+  extraConfigLua = ''
+    -- Function to organize imports via LSP source action
+    local function organize_imports()
+      vim.schedule(function()
+        local params = vim.lsp.util.make_range_params()
+        params.context = { only = { "source.organizeImports" } }
+        
+        local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+        for _, client in ipairs(clients) do
+          if client.supports_method("codeAction") then
+            client.request("codeAction", params, function(err, actions)
+              if err or not actions or #actions == 0 then
+                return
+              end
+              
+              -- Find and execute organizeImports source action
+              for _, action in ipairs(actions) do
+                if action.kind == "source.organizeImports" then
+                  if action.edit then
+                    vim.lsp.util.apply_workspace_edit(action.edit, client.offset_encoding)
+                  elseif action.command then
+                    vim.lsp.buf.execute_command(action.command)
+                  end
+                  return
+                end
+              end
+            end)
+            break
+          end
+        end
+      end)
+    end
+    
+    -- Hook: When blink menu closes (completion accepted), trigger import sorting
+    local cmp = require('blink.cmp')
+    
+    -- Intercept Return key to accept AND organize imports
+    vim.keymap.set('i', '<CR>', function()
+      -- Check if blink menu is visible
+      if cmp.visible() then
+        cmp.accept()
+        organize_imports()
+        return ""
+      else
+        return vim.api.nvim_replace_termcodes('<CR>', true, true, true)
+      end
+    end, { noremap = true, silent = true, expr = true })
+  '';
 }
 
