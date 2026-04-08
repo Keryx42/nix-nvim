@@ -13,7 +13,9 @@
     ./lualine.nix
     ./neo-tree.nix
     ./neogit.nix
+    ./noice.nix
     ./persistence.nix
+    ./tailwindcss.nix
     ./telescope.nix
     ./tiny-inline-diagnostic.nix
     ./treesitter.nix

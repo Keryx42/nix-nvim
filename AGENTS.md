@@ -10,27 +10,29 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
 ├── flake.lock
 └── config/
     ├── default.nix                 # Entry point — imports all modules, sets globals.mapleader = " "
-    ├── auto-save.nix               # Auto-save (extraPlugin — not in nixvim)
+    ├── auto-save.nix               # Auto-save plugin (extraPlugin — not in nixvim)
     ├── blink-cmp.nix               # Autocompletion engine with LSP + auto-imports
     ├── catppuccin.nix              # Colorscheme
     ├── dashboard.nix               # Startup dashboard (doom theme + quick actions)
     ├── formatters.nix              # Formatters via none-ls
     ├── fzf.nix                     # Fuzzy finder (fzf-lua) + keymaps
-    ├── gitsigns.nix                # Git hunks & keymaps (gitsigns.nvim)
-    ├── lsp.nix                     # Language servers
+    ├── gitsigns.nix                # Git hunks visualization & keymaps
+    ├── lsp.nix                     # Language servers (vue_ls, vtsls, eslint, nixd, tailwindcss)
     ├── lsp-keymaps.nix             # LSP keybindings (code action, format, rename, diagnostics)
-    ├── lualine.nix                 # Status line
-    ├── neo-tree.nix                # File explorer
-    ├── neogit.nix                  # Git UI
+    ├── lualine.nix                 # Status line with catppuccin theme
+    ├── neo-tree.nix                # File explorer with follow-current-file
+    ├── neogit.nix                  # Git UI (Neogit)
+    ├── noice.nix                   # UI overhaul (centered floating cmdline, messages, popupmenu)
     ├── persistence.nix             # Session save/restore with git branch tracking
-    ├── telescope.nix               # Telescope fuzzy finder + code action picker
-    ├── tiny-inline-diagnostic.nix  # Inline diagnostics (modern preset)
+    ├── tailwindcss.nix             # Tailwind CSS LSP server configuration
+    ├── telescope.nix               # Telescope fuzzy finder & fzf-native extension
+    ├── tiny-inline-diagnostic.nix  # Inline diagnostics display (modern preset)
     ├── treesitter.nix              # Treesitter grammars, highlighting, indentation, folding
     ├── treesitter-textobjects.nix  # Treesitter textobject navigation (functions, classes, params)
     ├── ts-autotag.nix              # Auto-close HTML and JSX tags
     ├── vue-macros.nix              # Editor macros for Vue/TypeScript workflows
-    ├── which-key.nix               # Keybinding hints
-    └── yanky.nix                   # yanky.nvim (yank history) + mapping
+    ├── which-key.nix               # Keybinding hints and group labels
+    └── yanky.nix                   # Yank history with system clipboard sync
 ```
 
 Each plugin lives in its own file and is imported in `config/default.nix`.
@@ -59,8 +61,8 @@ Leader key: `<Space>`
 |---|---|
 | `<leader>e` | Toggle Neo-tree (root dir) |
 | `<leader>E` | Toggle Neo-tree (cwd) |
-| `<leader>fe` | Focus/reveal Neo-tree (root dir) |
-| `<leader>fE` | Focus/reveal Neo-tree (cwd) |
+| `<leader>fe` | Focus Neo-tree (root dir) |
+| `<leader>fE` | Focus Neo-tree (cwd) |
 
 ### Fuzzy finder (fzf-lua)
 
@@ -86,8 +88,8 @@ Leader key: `<Space>`
 |---|---|
 | `<leader>]h` | Next git hunk |
 | `<leader>[h` | Prev git hunk |
-| `<leader>ghs` | Stage current hunk |
-| `<leader>ghr` | Reset current hunk |
+| `<leader>ghs` | Stage hunk |
+| `<leader>ghr` | Reset hunk |
 | `<leader>ghS` | Stage buffer |
 | `<leader>ghR` | Reset buffer |
 | `<leader>ghp` | Preview hunk |
@@ -101,7 +103,7 @@ Leader key: `<Space>`
 
 ### Which Key Hints (which-key)
 
-Which-key registers leader-key groups to surface the existing keybindings for discoverability (no new keybinds introduced). Notable hints:
+Which-key registers leader-key groups to surface existing keybindings for discoverability (no new keybinds introduced). Notable hints:
 - `<leader>e` / `<leader>E` / `<leader>fe` / `<leader>fE` — Neo-tree toggles and focus
 - `<leader><space>` / `<leader>ff` / `<leader>fF` / `<leader>fg` / `<leader>fG` — fzf file/find/grep actions
 - `<leader>gu` — Neogit
@@ -114,6 +116,7 @@ Which-key registers leader-key groups to surface the existing keybindings for di
 
 | Key | Action |
 |---|---|
+| `<C-s>` | Save, format, and lint (normal & insert mode) |
 | `<leader>ca` | Code Action (fzf-lua picker) |
 | `<leader>cA` | Source Action (fzf-lua, fixAll/organizeImports) |
 | `<leader>cF` | Apply fixAll (auto) |
@@ -164,7 +167,7 @@ Works in normal, visual, and operator-pending modes.
 
 ### catppuccin (`config/catppuccin.nix`)
 
-Colorscheme. Enabled via `colorschemes.catppuccin.enable = true`.
+Colorscheme with dark/light variant support. Enabled via `colorschemes.catppuccin.enable = true`.
 
 ### lualine (`config/lualine.nix`)
 
@@ -178,91 +181,111 @@ Status line with catppuccin theme. Sections:
 
 ### dashboard (`config/dashboard.nix`)
 
-Startup dashboard using the `doom` theme: large ASCII header, center actions for Find/Recent/Grep/New/Neogit/Config/Quit, and a footer that reports loaded plugin stats. Center actions call `fzf-lua` or builtins (e.g. `Neogit`, `enew`).
+Startup dashboard using the `doom` theme with large ASCII art header. Center actions for Find/Restore Session/Live Grep/New File/Git UI/Config/Quit. Footer shows loaded plugin stats. Actions call `fzf-lua` or builtins (e.g. `Neogit`, `enew`).
+
+### noice (`config/noice.nix`)
+
+UI overhaul that replaces the default Neovim UI with floating windows. Features:
+- **Centered cmdline popup**: Floating command mode centered on screen with 60-char width
+- **Message handling**: Notifications via `nvim-notify` with history tracking
+- **Popupmenu**: NUI-powered completion popup
+- **LSP integration**: Enhanced hover docs and signature help with proper rendering
+- **Command palette**: Enabled via `command_palette` preset for better UX
+- Commands: `:Noice` (history), `:Noice last` (last message), `:Noice dismiss` (clear messages)
 
 ### neo-tree (`config/neo-tree.nix`)
 
-File explorer. `followCurrentFile` is enabled so the tree tracks the active buffer; provides mappings to toggle/focus the tree for project root and current buffer (`<leader>e`, `<leader>E`, `<leader>fe`, `<leader>fE`).
+File explorer with automatic tracking of the current buffer. Provides keymaps to toggle/focus the tree for project root and current working directory (`<leader>e`, `<leader>E`, `<leader>fe`, `<leader>fE`).
 
 ### fzf-lua (`config/fzf.nix`)
 
-Fuzzy finder for files and live grep. Provides root-dir mappings via `plugins.fzf-lua.keymaps` and cwd-aware variants implemented as `keymaps` with `action.__raw` (e.g. `<leader>fF`, `<leader>fG`).
+Fast fuzzy finder for files and live grep with root-dir and cwd-aware variants. Keymaps: `<leader><space>`, `<leader>ff`, `<leader>fF` (files); `<leader>fg`, `<leader>fG` (grep); `<leader>/` (buffer grep).
 
 ### neogit (`config/neogit.nix`)
 
-Git UI opened with `<leader>gu`.
+Git UI for interactive staging, commits, branching, and rebasing. Opened with `<leader>gu`.
 
 ### LSP (`config/lsp.nix`)
 
-Four servers configured for Vue/TypeScript and Nix projects:
+Five language servers configured:
 
 | Server | Purpose |
 |---|---|
 | `vue_ls` | HTML/CSS sections of `.vue` files (hybrid mode) |
-| `vtsls` | TypeScript/JavaScript + Vue via `@vue/typescript-plugin` (handles <script> / TS features) |
-| `eslint` | Linting for JS/TS/Vue/JSON via `vscode-langservers-extracted` |
-| `nixd` | Semantic completions/diagnostics for `.nix` + flake files |
+| `vtsls` | TypeScript/JavaScript + Vue via `@vue/typescript-plugin` |
+| `eslint` | Linting for JS/TS/Vue/JSON |
+| `nixd` | Semantic completions/diagnostics for `.nix` and flake files |
+| `tailwindcss` | Tailwind CSS class completions and diagnostics |
 
-Global `plugins.lsp.onAttach` includes a workaround that disables semantic tokens for `vue_ls`/volar to avoid known crashes. `vtsls` is configured with `@vue/typescript-plugin` wired to the nix store path of `pkgs.vue-language-server` and a set of TypeScript/JavaScript inlay/diagnostic preferences.
+Global `plugins.lsp.onAttach` disables semantic tokens for `vue_ls` to avoid volar crashes. `vtsls` is configured with `@vue/typescript-plugin`, TypeScript inlay hints, and auto-imports.
 
 ### blink-cmp (`config/blink-cmp.nix`)
 
-Modern autocompletion engine powered by Rust with LSP-based completions. When accepting a completion that requires imports (e.g., `useRouter` from `vue-router`), the LSP server automatically includes the import statement via `additionalTextEdits`. This happens transparently—no extra steps needed.
-
-**Keybindings (super-tab preset):**
-
-| Key | Action |
-|---|---|
-| `<Tab>` | Next completion item / fallback insert |
-| `<S-Tab>` | Previous completion item |
-| `<Return>` | Accept selected completion (with auto-imports) |
-| `<C-e>` | Cancel completion menu |
-| `<C-Space>` | Manually trigger completion |
-
-**Configuration highlights:**
-- Auto-brackets for functions: `func()` style insertion
-- Documentation auto-show with 200ms delay
-- LSP capabilities auto-configured
-- Sources: LSP (primary) → Buffer (fallback) → Path
+Modern Rust-based autocompletion engine with LSP-powered completions. Auto-imports from LSP servers (transparent to user). Features auto-brackets for function calls, documentation preview (200ms delay), and smart source prioritization (LSP → Buffer → Path). Keymap: `enter` accepts with auto-imports; `tab`/`shift-tab` navigate.
 
 ### formatters (`config/formatters.nix`)
 
-`none-ls` is used to run formatter/diagnostic sources. Currently configured:
+`none-ls` (formerly null-ls) runs formatter and diagnostic sources:
 
 | Source | Type |
 |---|---|
-| `prettier` | formatter (`pkgs.nodePackages.prettier`) |
-| `nixfmt` | formatter for `.nix` files |
-| `statix` | diagnostics for Nix projects |
-| `deadnix` | diagnostics for dead code in Nix flake graphs |
+| `prettier` | Format JS/TS/JSON/CSS/HTML |
+| `nixfmt` | Format Nix files |
+| `statix` | Lint Nix code |
+| `deadnix` | Detect dead code in Nix flakes |
 
 ### auto-save (`config/auto-save.nix`)
 
-[okuuva/auto-save.nvim](https://github.com/okuuva/auto-save.nvim) v1.1.0. Not in nixvim's plugin set, so installed via `extraPlugins` + `buildVimPlugin`. Saves on `BufLeave` and `FocusLost`. `noautocmd = false` to preserve undo/redo history.
+[okuuva/auto-save.nvim](https://github.com/okuuva/auto-save.nvim) v1.1.0. Installed via `extraPlugins`. Automatically saves on `BufLeave` and `FocusLost` events while preserving undo/redo history.
 
 ### tiny-inline-diagnostic (`config/tiny-inline-diagnostic.nix`)
 
-[rachartier/tiny-inline-diagnostic.nvim](https://github.com/rachartier/tiny-inline-diagnostic.nvim) provides styled inline error and warning messages. Configured with the `modern` preset (LazyVim-style) and displays source information. Disables Neovim's default virtual text to avoid conflicts.
+[rachartier/tiny-inline-diagnostic.nvim](https://github.com/rachartier/tiny-inline-diagnostic.nvim) displays inline error and warning messages with modern LazyVim-style preset. Shows source information and disables Neovim's default virtual text.
 
 ### telescope (`config/telescope.nix`)
 
-Fuzzy finder and Telescope plugin configuration. Configured with horizontal layout and fzf-native extension for faster sorting. Used by fzf-lua and other plugins for interactive picking.
+Telescope fuzzy finder with fzf-native extension for fast sorting. Configured with horizontal layout, previews at 60% width. Integrates with fzf-lua for interactive picking.
 
 ### yanky (`config/yanky.nix`)
 
-Enable `yanky.nvim` for an improved yank history and put behavior; provides a mapping `<leader>p` to open the yank ring in normal and visual modes. The config also sets `vim.opt.clipboard = "unnamedplus"` to sync yanks to the system clipboard.
+[yanky.nvim](https://github.com/gbprod/yanky.nvim) provides yank history with system clipboard sync. Mapping: `<leader>p` to open yank ring in normal and visual modes. `vim.opt.clipboard = "unnamedplus"` syncs yanks to system clipboard.
 
 ### lsp-keymaps (`config/lsp-keymaps.nix`)
 
-LSP-focused keybindings using fzf-lua picker: `<leader>ca` opens fzf-lua's LSP code action picker showing all available code actions from all LSP servers. `<leader>cA` shows only source actions (fixAll, organizeImports, etc.) filtered and displayed in fzf-lua picker. `<leader>cF` auto-applies fixAll without prompting. Also includes format buffer (prefers `null-ls`), rename, line diagnostics float, diagnostics → loclist, next/prev diagnostics, and LSP definition/declaration lookups that open a single result inline or fall back to `fzf-lua` / quickfix for multiple results.
+LSP-focused keybindings: `<leader>ca` opens fzf-lua code action picker. `<leader>cA` filters source actions (fixAll, organizeImports). `<leader>cF` auto-applies fixAll. `<leader>cf` formats via `null-ls`. `<leader>cr` renames. `<C-s>` (normal+insert) saves, formats, and shows notification. Definition/declaration lookups use fzf-lua for multiple results, inline edit for single result.
 
 ### vue-macros (`config/vue-macros.nix`)
 
-Editor macros tailored for Vue/TypeScript patterns (storeToRefs wrapper, composable scaffolding, props → refs, destruct helpers, go-to-definition alias) exposed under `<leader>m*` mappings.
+Editor macros for Vue 3/TypeScript: storeToRefs wrapper, composable scaffolding, props-to-refs converter, destructuring helper, and go-to-definition alias. Exposed under `<leader>m*` keybindings.
 
 ### persistence.nvim (`config/persistence.nix`)
 
-[folke/persistence.nvim](https://github.com/folke/persistence.nvim) provides automatic session save/restore functionality. Sessions are stored in `~/.local/state/nvim/sessions/` with optional git branch tracking. Configured to save only when more than 1 file is open. Provides four keybindings for session management: restore current, select, restore last, and don't save. Dashboard integration via `s` key to restore the last session.
+[folke/persistence.nvim](https://github.com/folke/persistence.nvim) provides automatic session save/restore. Sessions stored in `~/.local/state/nvim/sessions/` with optional git branch tracking. Saves only when more than 1 file is open. Four keybindings: restore current/select/restore last/don't save. Dashboard integration via `s` key.
+
+### treesitter (`config/treesitter.nix`)
+
+Treesitter configuration with 33 language grammars for syntax highlighting, indentation, and code folding. Languages: bash, c, css, html, javascript, jsdoc, json, lua, nix, tsx, typescript, vim, diff, markdown, printf, query, regex, toml, xml, yaml, luadoc, luap, vimdoc, vue. Foldlevel set to 99 (all folds open by default).
+
+### treesitter-textobjects (`config/treesitter-textobjects.nix`)
+
+[nvim-treesitter/nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) provides code navigation via treesitter text objects. Eight keybindings jump to functions, classes, and parameters (start/end). Works in normal, visual, and operator-pending modes with auto-generated LazyVim-style descriptions.
+
+### ts-autotag (`config/ts-autotag.nix`)
+
+[windwp/nvim-ts-autotag](https://github.com/windwp/nvim-ts-autotag) automatically closes HTML and JSX tags. Typing `<div>` followed by `>` auto-inserts the closing `</div>` tag based on treesitter parsing.
+
+### Tailwind CSS (`config/tailwindcss.nix`)
+
+LSP server for Tailwind CSS providing IntelliSense, class completions, color previews, and code actions. Configured for filetypes: `html`, `vue`, `jsx`, `tsx`, `css`. Features:
+- **IntelliSense:** Autocomplete with descriptions
+- **Color preview:** Inline color swatches
+- **Code actions:** Quick fixes and suggestions
+- **Diagnostics:** cssConflict, invalidApply, invalidScreen, etc.
+- **Class sorting:** Delegated to prettier
+
+### which-key (`config/which-key.nix`)
+
+Keybinding hints showing leader-key groups and available actions for discoverability. Registers groups: `<leader>f` (Find), `<leader>g` (Git), `<leader>m` (Macros), `<leader>c` (LSP), `<leader>q` (Quit).
 
 ## Agent instructions
 
@@ -274,19 +297,3 @@ the update-docs command is under .opencode/commands/update-docs.md
 - Changing a keybind
 - Modifying LSP, formatter, or colorscheme config
 - Any change to `config/default.nix`
-
-### treesitter (`config/treesitter.nix`)
-
-Treesitter configuration for syntax highlighting, indentation, and code folding. Enables `nvim-treesitter` with 33 language grammars:
-- **Web & Scripting:** bash, c, css, html, javascript, jsdoc, json, lua, nix, tsx, typescript, vim
-- **Markup & Data:** diff, markdown, markdown_inline, printf, query, regex, toml, xml, yaml
-- **Documentation:** luadoc, luap, vimdoc
-- **Framework-specific:** vue
-
-### treesitter-textobjects (`config/treesitter-textobjects.nix`)
-
-[nvim-treesitter/nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) provides code navigation using treesitter text objects. Eight keybindings navigate functions, classes, and parameters with both start and end positions. Works in normal, visual, and operator-pending modes. Includes LazyVim-style auto-generated description hints.
-
-### ts-autotag (`config/ts-autotag.nix`)
-
-[windwp/nvim-ts-autotag](https://github.com/windwp/nvim-ts-autotag) automatically closes HTML and JSX tags based on treesitter parsing. When you open a tag like `<div>`, pressing `>` automatically inserts the closing `</div>` tag.
