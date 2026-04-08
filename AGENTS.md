@@ -10,26 +10,27 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
 ├── flake.lock
 └── config/
     ├── default.nix                 # Entry point — imports all modules, sets globals.mapleader = " "
+    ├── auto-save.nix               # Auto-save (extraPlugin — not in nixvim)
+    ├── blink-cmp.nix               # Autocompletion engine with LSP + auto-imports
     ├── catppuccin.nix              # Colorscheme
     ├── dashboard.nix               # Startup dashboard (doom theme + quick actions)
+    ├── formatters.nix              # Formatters via none-ls
+    ├── fzf.nix                     # Fuzzy finder (fzf-lua) + keymaps
+    ├── gitsigns.nix                # Git hunks & keymaps (gitsigns.nvim)
+    ├── lsp.nix                     # Language servers
+    ├── lsp-keymaps.nix             # LSP keybindings (code action, format, rename, diagnostics)
     ├── lualine.nix                 # Status line
     ├── neo-tree.nix                # File explorer
-    ├── fzf.nix                     # Fuzzy finder (fzf-lua) + keymaps
     ├── neogit.nix                  # Git UI
-    ├── gitsigns.nix                # Git hunks & keymaps (gitsigns.nvim)
-    ├── auto-save.nix               # Auto-save (extraPlugin — not in nixvim)
-    ├── tiny-inline-diagnostic.nix  # Inline diagnostics (modern preset)
+    ├── persistence.nix             # Session save/restore with git branch tracking
     ├── telescope.nix               # Telescope fuzzy finder + code action picker
+    ├── tiny-inline-diagnostic.nix  # Inline diagnostics (modern preset)
     ├── treesitter.nix              # Treesitter grammars, highlighting, indentation, folding
     ├── treesitter-textobjects.nix  # Treesitter textobject navigation (functions, classes, params)
     ├── ts-autotag.nix              # Auto-close HTML and JSX tags
-    ├── lsp.nix                     # Language servers
-    ├── formatters.nix              # Formatters via none-ls
-    ├── which-key.nix               # Keybinding hints
     ├── vue-macros.nix              # Editor macros for Vue/TypeScript workflows
-    ├── lsp-keymaps.nix             # LSP keybindings (code action, format, rename, diagnostics)
-    ├── yanky.nix                   # yanky.nvim (yank history) + mapping
-    └── persistence.nix             # Session save/restore with git branch tracking
+    ├── which-key.nix               # Keybinding hints
+    └── yanky.nix                   # yanky.nvim (yank history) + mapping
 ```
 
 Each plugin lives in its own file and is imported in `config/default.nix`.
@@ -203,6 +204,26 @@ Four servers configured for Vue/TypeScript and Nix projects:
 | `nixd` | Semantic completions/diagnostics for `.nix` + flake files |
 
 Global `plugins.lsp.onAttach` includes a workaround that disables semantic tokens for `vue_ls`/volar to avoid known crashes. `vtsls` is configured with `@vue/typescript-plugin` wired to the nix store path of `pkgs.vue-language-server` and a set of TypeScript/JavaScript inlay/diagnostic preferences.
+
+### blink-cmp (`config/blink-cmp.nix`)
+
+Modern autocompletion engine powered by Rust with LSP-based completions. When accepting a completion that requires imports (e.g., `useRouter` from `vue-router`), the LSP server automatically includes the import statement via `additionalTextEdits`. This happens transparently—no extra steps needed.
+
+**Keybindings (super-tab preset):**
+
+| Key | Action |
+|---|---|
+| `<Tab>` | Next completion item / fallback insert |
+| `<S-Tab>` | Previous completion item |
+| `<CR>` | Accept selected completion (with auto-imports) |
+| `<C-e>` | Cancel completion menu |
+| `<C-Space>` | Manually trigger completion |
+
+**Configuration highlights:**
+- Auto-brackets for functions: `func()` style insertion
+- Documentation auto-show with 200ms delay
+- LSP capabilities auto-configured
+- Sources: LSP (primary) → Buffer (fallback) → Path
 
 ### formatters (`config/formatters.nix`)
 

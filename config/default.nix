@@ -1,26 +1,27 @@
 {
   # Import all your configuration modules here
   imports = [
+    ./auto-save.nix
+    ./blink-cmp.nix
     ./catppuccin.nix
     ./dashboard.nix
+    ./formatters.nix
+    ./fzf.nix
+    ./gitsigns.nix
+    ./lsp.nix
+    ./lsp-keymaps.nix
     ./lualine.nix
     ./neo-tree.nix
-    ./fzf.nix
     ./neogit.nix
-    ./gitsigns.nix
-    ./auto-save.nix
-    ./tiny-inline-diagnostic.nix
+    ./persistence.nix
     ./telescope.nix
+    ./tiny-inline-diagnostic.nix
     ./treesitter.nix
     ./treesitter-textobjects.nix
     ./ts-autotag.nix
-    ./lsp.nix
-    ./formatters.nix
-    ./which-key.nix
     ./vue-macros.nix
-    ./lsp-keymaps.nix
+    ./which-key.nix
     ./yanky.nix
-    ./persistence.nix
   ];
 
   globals.mapleader = " ";
