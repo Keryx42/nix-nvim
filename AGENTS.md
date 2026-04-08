@@ -215,7 +215,7 @@ Modern autocompletion engine powered by Rust with LSP-based completions. When ac
 |---|---|
 | `<Tab>` | Next completion item / fallback insert |
 | `<S-Tab>` | Previous completion item |
-| `<CR>` | Accept selected completion (with auto-imports) |
+| `<Return>` | Accept selected completion (with auto-imports) |
 | `<C-e>` | Cancel completion menu |
 | `<C-Space>` | Manually trigger completion |
 

@@ -18,12 +18,13 @@
     setupLspCapabilities = true;
 
     settings = {
-      # Keymap preset: "super-tab" provides clean Tab/Shift-Tab navigation
-      # - <Tab>: Next item (or insert space in insert mode if not in menu)
-      # - <S-Tab>: Previous item
-      # - <CR>: Accept selected completion
-      # - <C-e>: Cancel menu
+      # Keymap configuration with <CR> as primary acceptance key
       keymap.preset = "super-tab";
+
+      # Command-line mode keymap (ensure <CR> accepts completion)
+      cmdline.keymap = {
+        preset = "super-tab";
+      };
 
       # Completion behavior
       completion = {
