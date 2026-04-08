@@ -121,53 +121,5 @@
       # };
     };
   };
-
-  # Custom Lua: Auto-organize imports after accepting a completion
-  extraConfigLua = ''
-    -- Function to organize imports via LSP
-    local function organize_imports()
-      -- Use defer_fn to give time for the text to be inserted and LSP to process it
-      vim.defer_fn(function()
-        -- Call the built-in LSP code action with organizeImports filter
-        local params = vim.lsp.util.make_range_params()
-        params.context = { only = { "source.organizeImports" } }
-        
-        vim.lsp.buf_request(0, "codeAction", params, function(err, result, ctx)
-          if err then
-            return
-          end
-          
-          if not result or vim.tbl_isempty(result) then
-            return
-          end
-          
-          -- Execute the first organizeImports action
-          for _, action in ipairs(result) do
-            if action.kind == "source.organizeImports" then
-              if action.edit then
-                vim.lsp.util.apply_workspace_edit(action.edit, "utf-8")
-              end
-              return
-            end
-          end
-        end)
-      end, 150)
-    end
-    
-    -- Hook into blink.cmp's accept function
-    local blink_cmp = require('blink.cmp')
-    
-    -- Store the original accept for later use
-    if blink_cmp.accept then
-      local original_accept = blink_cmp.accept
-      
-      function blink_cmp.accept(...)
-        local result = original_accept(...)
-        -- Schedule import organization after accepting
-        organize_imports()
-        return result
-      end
-    end
-  '';
 }
 
