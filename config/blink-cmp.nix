@@ -124,65 +124,48 @@
 
   # Custom Lua: Auto-organize imports after accepting a completion
   extraConfigLua = ''
-    local organize_imports_scheduled = false
-    
-    -- Function to organize imports via LSP source action
+    -- Function to organize imports via LSP
     local function organize_imports()
-      local bufnr = vim.api.nvim_get_current_buf()
-      local params = vim.lsp.util.make_range_params()
-      params.context = { only = { "source.organizeImports" } }
-      
-      local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
-      for _, client in ipairs(clients) do
-        -- Check if client supports codeAction
-        if client.supports_method("codeAction") then
-          -- Request code actions with organizeImports filter
-          client.request("codeAction", params, function(err, result)
-            if err or not result then
+      -- Use defer_fn to give time for the text to be inserted and LSP to process it
+      vim.defer_fn(function()
+        -- Call the built-in LSP code action with organizeImports filter
+        local params = vim.lsp.util.make_range_params()
+        params.context = { only = { "source.organizeImports" } }
+        
+        vim.lsp.buf_request(0, "codeAction", params, function(err, result, ctx)
+          if err then
+            return
+          end
+          
+          if not result or vim.tbl_isempty(result) then
+            return
+          end
+          
+          -- Execute the first organizeImports action
+          for _, action in ipairs(result) do
+            if action.kind == "source.organizeImports" then
+              if action.edit then
+                vim.lsp.util.apply_workspace_edit(action.edit, "utf-8")
+              end
               return
             end
-            
-            -- Look for organizeImports action
-            for _, action in ipairs(result) do
-              if action.kind == "source.organizeImports" then
-                if action.edit then
-                  -- Apply the workspace edit
-                  vim.lsp.util.apply_workspace_edit(action.edit, client.offset_encoding)
-                elseif action.command then
-                  -- Execute the command if needed
-                  vim.lsp.buf.execute_command(action.command)
-                end
-                return
-              end
-            end
-          end, bufnr)
-          break
-        end
-      end
+          end
+        end)
+      end, 150)
     end
     
-    -- Set up autocmd to organize imports after completion
-    vim.api.nvim_create_autocmd('TextChangedI', {
-      pattern = '*.ts,*.tsx,*.js,*.jsx,*.vue',
-      callback = function()
-        local cmp = require('blink.cmp')
-        -- Check if completion menu just closed (no longer visible)
-        if not cmp.visible() and organize_imports_scheduled then
-          organize_imports_scheduled = false
-          organize_imports()
-        end
-      end,
-    })
+    -- Hook into blink.cmp's accept function
+    local blink_cmp = require('blink.cmp')
     
-    -- Hook into blink to know when a completion is accepted
-    local cmp = require('blink.cmp')
-    
-    -- Override keymap to set flag when completion is accepted
-    local original_accept = cmp.accept
-    if original_accept then
-      cmp.accept = function()
-        organize_imports_scheduled = true
-        return original_accept()
+    -- Store the original accept for later use
+    if blink_cmp.accept then
+      local original_accept = blink_cmp.accept
+      
+      function blink_cmp.accept(...)
+        local result = original_accept(...)
+        -- Schedule import organization after accepting
+        organize_imports()
+        return result
       end
     end
   '';
