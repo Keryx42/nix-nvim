@@ -18,12 +18,9 @@
     setupLspCapabilities = true;
 
     settings = {
-      # Keymap configuration with <CR> as primary acceptance key
-      keymap.preset = "super-tab";
-
-      # Command-line mode keymap (ensure <CR> accepts completion)
-      cmdline.keymap = {
-        preset = "super-tab";
+      # Keymap: Use enter to accept, tab to navigate
+      keymap = {
+        preset = "enter";
       };
 
       # Completion behavior
@@ -125,3 +122,4 @@
     };
   };
 }
+
