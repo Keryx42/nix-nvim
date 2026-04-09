@@ -17,7 +17,8 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── formatters.nix              # Formatters via none-ls
     ├── fzf.nix                     # Fuzzy finder (fzf-lua) + keymaps
     ├── gitsigns.nix                # Git hunks visualization & keymaps
-    ├── lsp.nix                     # Language servers (vue_ls, vtsls, eslint, nixd, tailwindcss)
+    ├── json-lsp.nix                # JSON language server with schema validation and sorting
+    ├── lsp.nix                     # Language servers (vue_ls, vtsls, eslint, nixd)
     ├── lsp-keymaps.nix             # LSP keybindings (code action, format, rename, diagnostics)
     ├── lualine.nix                 # Status line with catppuccin theme
     ├── neo-tree.nix                # File explorer with follow-current-file
@@ -218,6 +219,14 @@ Five language servers configured:
 | `tailwindcss` | Tailwind CSS class completions and diagnostics |
 
 Global `plugins.lsp.onAttach` disables semantic tokens for `vue_ls` to avoid volar crashes. `vtsls` is configured with `@vue/typescript-plugin`, TypeScript inlay hints, and auto-imports.
+
+### json-lsp (`config/json-lsp.nix`)
+
+JSON Language Server (jsonls) providing IntelliSense, schema validation, and comprehensive JSON support. Features:
+- **Schema validation:** Auto-detects schemas for package.json, tsconfig.json, tailwind.config.json, etc.
+- **IntelliSense:** Property autocomplete and descriptions
+- **Validation:** Real-time error checking with schema-aware diagnostics
+- **Sorting:** Integrates with LSP code actions for organizing/sorting JSON keys
 
 ### blink-cmp (`config/blink-cmp.nix`)
 

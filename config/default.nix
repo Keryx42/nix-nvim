@@ -8,6 +8,7 @@
     ./formatters.nix
     ./fzf.nix
     ./gitsigns.nix
+    ./json-lsp.nix
     ./lsp.nix
     ./lsp-keymaps.nix
     ./lualine.nix
