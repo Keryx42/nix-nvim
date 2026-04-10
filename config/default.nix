@@ -4,11 +4,12 @@
     ./auto-save.nix
     ./blink-cmp.nix
     ./catppuccin.nix
+    ./conform.nix
     ./dashboard.nix
-    ./formatters.nix
     ./fzf.nix
     ./gitsigns.nix
     ./json-lsp.nix
+    ./lint.nix
     ./lsp.nix
     ./lsp-keymaps.nix
     ./lualine.nix

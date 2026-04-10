@@ -56,12 +56,10 @@ end'';
       mode = "n";
       key = "<leader>cf";
       action.__raw = ''function()
-  -- Prefer null-ls (none-ls) as the formatter to ensure consistent formatting
-  vim.lsp.buf.format({
+  -- Format with Conform (prettier, nixfmt, etc.)
+  require('conform').format({
     async = true,
-    filter = function(client)
-      return client and client.name == 'null-ls'
-    end,
+    bufnr = 0,
   })
 end'';
       options = { desc = "Format buffer"; silent = true; };
@@ -162,12 +160,10 @@ end
   -- Save the buffer
   vim.cmd.write()
   
-  -- Format with none-ls (Prettier) asynchronously
-  vim.lsp.buf.format({
+  -- Format with Conform (prettier, nixfmt, etc.) asynchronously
+  require('conform').format({
     async = true,
-    filter = function(client)
-      return client and client.name == 'null-ls'
-    end,
+    bufnr = 0,
   })
   
   -- Show notification
