@@ -13,11 +13,12 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── auto-save.nix               # Auto-save plugin (extraPlugin — not in nixvim)
     ├── blink-cmp.nix               # Autocompletion engine with LSP + auto-imports
     ├── catppuccin.nix              # Colorscheme
+    ├── conform.nix                 # Code formatting (prettier, nixfmt)
     ├── dashboard.nix               # Startup dashboard (doom theme + quick actions)
-    ├── formatters.nix              # Formatters via none-ls
     ├── fzf.nix                     # Fuzzy finder (fzf-lua) + keymaps
     ├── gitsigns.nix                # Git hunks visualization & keymaps
     ├── json-lsp.nix                # JSON language server with schema validation and sorting
+    ├── lint.nix                    # Code linting (statix, deadnix)
     ├── lsp.nix                     # Language servers (vue_ls, vtsls, eslint, nixd)
     ├── lsp-keymaps.nix             # LSP keybindings (code action, format, rename, diagnostics)
     ├── lualine.nix                 # Status line with catppuccin theme
@@ -121,7 +122,7 @@ Which-key registers leader-key groups to surface existing keybindings for discov
 | `<leader>ca` | Code Action (fzf-lua picker) |
 | `<leader>cA` | Source Action (fzf-lua, fixAll/organizeImports) |
 | `<leader>cF` | Apply fixAll (auto) |
-| `<leader>cf` | Format buffer (prefers `null-ls`) |
+| `<leader>cf` | Format buffer (Conform) |
 | `<leader>cr` | Rename symbol |
 | `<leader>cd` | Line diagnostics (float) |
 | `<leader>xl` | Diagnostics → loclist |
@@ -232,16 +233,18 @@ JSON Language Server (jsonls) providing IntelliSense, schema validation, and com
 
 Modern Rust-based autocompletion engine with LSP-powered completions. Auto-imports from LSP servers (transparent to user). Features auto-brackets for function calls, documentation preview (200ms delay), and smart source prioritization (LSP → Buffer → Path). Keymap: `enter` accepts with auto-imports; `tab`/`shift-tab` navigate.
 
-### formatters (`config/formatters.nix`)
+### conform (`config/conform.nix`)
 
-`none-ls` (formerly null-ls) runs formatter and diagnostic sources:
+Code formatter using Conform.nvim with format-on-save (500ms timeout). Supports:
+- `prettier`: JS/TS/JSON/CSS/HTML
+- `nixfmt`: Nix files
+Falls back to LSP `textDocument/formatting` for unsupported filetypes.
 
-| Source | Type |
-|---|---|
-| `prettier` | Format JS/TS/JSON/CSS/HTML |
-| `nixfmt` | Format Nix files |
-| `statix` | Lint Nix code |
-| `deadnix` | Detect dead code in Nix flakes |
+### lint (`config/lint.nix`)
+
+Code linter using Nvim-lint with automatic triggers (BufWritePost, BufReadPost, InsertLeave). Configured for Nix files:
+- `statix`: Nix code linter
+- `deadnix`: Detects dead code in Nix flakes
 
 ### auto-save (`config/auto-save.nix`)
 
@@ -261,7 +264,7 @@ Telescope fuzzy finder with fzf-native extension for fast sorting. Configured wi
 
 ### lsp-keymaps (`config/lsp-keymaps.nix`)
 
-LSP-focused keybindings: `<leader>ca` opens fzf-lua code action picker. `<leader>cA` filters source actions (fixAll, organizeImports). `<leader>cF` auto-applies fixAll. `<leader>cf` formats via `null-ls`. `<leader>cr` renames. `<C-s>` (normal+insert) saves, formats, and shows notification. Definition/declaration lookups use fzf-lua for multiple results, inline edit for single result.
+LSP-focused keybindings: `<leader>ca` opens fzf-lua code action picker. `<leader>cA` filters source actions (fixAll, organizeImports). `<leader>cF` auto-applies fixAll. `<leader>cf` formats via `Conform`. `<leader>cr` renames. `<C-s>` (normal+insert) saves, formats, and shows notification. Definition/declaration lookups use fzf-lua for multiple results, inline edit for single result.
 
 ### vue-macros (`config/vue-macros.nix`)
 
