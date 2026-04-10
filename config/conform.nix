@@ -12,10 +12,13 @@
       # Map filetypes to formatters
       formatters_by_ft = {
         javascript = [ "prettier" ];
+        javascriptreact = [ "prettier" ];
         typescript = [ "prettier" ];
+        typescriptreact = [ "prettier" ];
         json = [ "prettier" ];
         css = [ "prettier" ];
         html = [ "prettier" ];
+        vue = [ "prettier" ];
         nix = [ "nixfmt" ];
       };
 
