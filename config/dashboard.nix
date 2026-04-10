@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   plugins.dashboard = {
     enable = true;
@@ -112,19 +112,6 @@
             action = "qa";
           }
         ];
-
-        footer.__raw = ''
-          (function()
-            local stats = {}
-            local ok, lazy = pcall(require, "lazy")
-            if ok then
-              table.insert(stats, "⚡ Loaded " .. lazy.stats().loaded .. " plugins")
-            end
-            table.insert(stats, "")
-            table.insert(stats, "nixvim — neovim configured in nix")
-            return stats
-          end)()
-        '';
       };
     };
   };
