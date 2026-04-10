@@ -17,6 +17,7 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── dashboard.nix               # Startup dashboard (doom theme + quick actions)
     ├── fzf.nix                     # Fuzzy finder (fzf-lua) + keymaps
     ├── gitsigns.nix                # Git hunks visualization & keymaps
+    ├── harpoon.nix                 # File navigation marks with fzf-lua picker
     ├── json-lsp.nix                # JSON language server with schema validation and sorting
     ├── lint.nix                    # Code linting (statix, deadnix)
     ├── lsp.nix                     # Language servers (vue_ls, vtsls, eslint, nixd)
@@ -103,6 +104,23 @@ Leader key: `<Space>`
 |---|---|
 | `<leader>p` | Open Yank History (normal & visual) |
 
+### Harpoon (harpoon.nix)
+
+| Key | Action |
+|---|---|
+| `<leader>H` | Add current file to harpoon |
+| `<leader>h` | Toggle harpoon quick menu |
+| `<leader>1` | Jump to harpoon file 1 |
+| `<leader>2` | Jump to harpoon file 2 |
+| `<leader>3` | Jump to harpoon file 3 |
+| `<leader>4` | Jump to harpoon file 4 |
+| `<leader>5` | Jump to harpoon file 5 |
+| `<leader>6` | Jump to harpoon file 6 |
+| `<leader>7` | Jump to harpoon file 7 |
+| `<leader>8` | Jump to harpoon file 8 |
+| `<leader>9` | Jump to harpoon file 9 |
+| `<leader>M` | Harpoon files with fzf-lua picker |
+
 ### Which Key Hints (which-key)
 
 Which-key registers leader-key groups to surface existing keybindings for discoverability (no new keybinds introduced). Notable hints:
@@ -111,6 +129,7 @@ Which-key registers leader-key groups to surface existing keybindings for discov
 - `<leader>gu` — Neogit
 - `<leader>gh*` — gitsigns hunk actions (stage/reset/preview/blame)
 - `<leader>p` — Yank history (yanky.nvim)
+- `<leader>H` / `<leader>h` / `<leader>1-9` — Harpoon file navigation
 - `gd` — Go to definition (LSP)
 - `gD` — Go to declaration (LSP)
 
@@ -202,6 +221,10 @@ File explorer with automatic tracking of the current buffer. Provides keymaps to
 ### fzf-lua (`config/fzf.nix`)
 
 Fast fuzzy finder for files and live grep with root-dir and cwd-aware variants. Keymaps: `<leader><space>`, `<leader>ff`, `<leader>fF` (files); `<leader>fg`, `<leader>fG` (grep); `<leader>/` (buffer grep).
+
+### harpoon (`config/harpoon.nix`)
+
+File navigation marks allowing quick jumps to frequently-used files. Provides 9 quick-access slots (`<leader>1-9`) and toggleable quick menu (`<leader>h`). Features fzf-lua integration for picker support via `<leader>M`. Keymaps: `<leader>H` to add file, `<leader>h` to toggle menu, `<leader>1-9` to jump, `<leader>M` for fzf picker.
 
 ### neogit (`config/neogit.nix`)
 

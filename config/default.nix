@@ -8,6 +8,7 @@
     ./dashboard.nix
     ./fzf.nix
     ./gitsigns.nix
+    ./harpoon.nix
     ./json-lsp.nix
     ./lint.nix
     ./lsp.nix
