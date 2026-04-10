@@ -236,7 +236,7 @@ Modern Rust-based autocompletion engine with LSP-powered completions. Auto-impor
 ### conform (`config/conform.nix`)
 
 Code formatter using Conform.nvim with format-on-save (500ms timeout). Supports:
-- `prettier`: JS/TS/JSON/CSS/HTML
+- `prettier`: JavaScript, TypeScript, JSX, TSX, Vue, JSON, CSS, HTML
 - `nixfmt`: Nix files
 Falls back to LSP `textDocument/formatting` for unsupported filetypes.
 
