@@ -193,17 +193,45 @@ end
       mode = ["n" "i"];
       key = "<C-s>";
       action.__raw = ''function()
-  -- Save the buffer
+  local bufnr = 0
+  local filetype = vim.bo[bufnr].filetype
+  
+  -- Save the buffer first
   vim.cmd.write()
   
-  -- Format with Conform (prettier, nixfmt, etc.) asynchronously
-  require('conform').format({
-    async = true,
-    bufnr = 0,
-  })
-  
-  -- Show notification
-  vim.notify('File saved and formatted', vim.log.levels.INFO)
+  -- JSON files: sort → format → lint chain
+  if filetype == "json" or filetype == "jsonc" then
+    -- Step 1: Sort JSON keys alphabetically
+    vim.lsp.buf_request(bufnr, "json/sort", {
+      uri = vim.uri_from_bufnr(bufnr),
+      options = {}
+    }, function(err, result)
+      if result and #result > 0 then
+        vim.lsp.util.apply_text_edits(result, bufnr, "utf-8")
+      end
+      
+      -- Step 2: Format with Conform (prettier) after sort completes
+      vim.schedule(function()
+        require('conform').format({
+          async = false,
+          bufnr = bufnr,
+        })
+        
+        -- Step 3: Run linters after format completes
+        vim.schedule(function()
+          require('lint').try_lint()
+          vim.notify('File saved, sorted, formatted, and linted', vim.log.levels.INFO)
+        end)
+      end)
+    end)
+  else
+    -- Non-JSON files: just format and lint
+    require('conform').format({
+      async = true,
+      bufnr = 0,
+    })
+    vim.notify('File saved and formatted', vim.log.levels.INFO)
+  end
 end'';
       options = { desc = "Save, format, and lint"; silent = true; };
     }
