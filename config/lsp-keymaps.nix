@@ -207,14 +207,15 @@ end
       options = {}
     }, function(err, result)
       if result and #result > 0 then
-        vim.lsp.util.apply_text_edits(result, bufnr, "utf-8")
+        -- Use vim.fn.bufnr() to get current buffer in this async context
+        vim.lsp.util.apply_text_edits(result, vim.fn.bufnr(), "utf-8")
       end
       
       -- Step 2: Format with Conform (prettier) after sort completes
       vim.schedule(function()
         require('conform').format({
           async = false,
-          bufnr = bufnr,
+          bufnr = vim.fn.bufnr(),
         })
         
         -- Step 3: Run linters after format completes
