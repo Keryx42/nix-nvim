@@ -36,22 +36,19 @@
         
         -- Schedule sort after file write completes
         vim.schedule(function()
-          local params = {
-            command = "json.sort",
-            arguments = { vim.uri_from_bufnr(bufnr) }
-          }
-          
-          vim.lsp.buf_request_all(bufnr, "workspace/executeCommand", params, function(results)
-            -- Check if any client successfully executed the command
-            local success = false
-            for client_id, result in pairs(results or {}) do
-              if result and not result.err then
-                success = true
-                break
-              end
+          -- Use custom LSP request 'json/sort' (not workspace/executeCommand)
+          vim.lsp.buf_request(bufnr, "json/sort", {
+            uri = vim.uri_from_bufnr(bufnr),
+            options = {}
+          }, function(err, result)
+            if err then
+              vim.notify("JSON sort failed: " .. err.message, vim.log.levels.ERROR)
+              return
             end
             
-            if success then
+            -- result is TextEdit[] that must be applied to buffer
+            if result and #result > 0 then
+              vim.lsp.util.apply_text_edits(result, bufnr, "utf-8")
               vim.notify("JSON sorted alphabetically", vim.log.levels.INFO)
             end
           end)
