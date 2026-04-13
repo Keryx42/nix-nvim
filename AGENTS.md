@@ -121,6 +121,12 @@ Leader key: `<Space>`
 | `<leader>9` | Jump to harpoon file 9 |
 | `<leader>M` | Harpoon files with fzf-lua picker |
 
+### Noice (noice.nix)
+
+| Key | Action |
+|---|---|
+| `<leader>n` | Notification History (fzf-lua picker, copies to clipboard) |
+
 ### Which Key Hints (which-key)
 
 Which-key registers leader-key groups to surface existing keybindings for discoverability (no new keybinds introduced). Notable hints:
@@ -128,6 +134,7 @@ Which-key registers leader-key groups to surface existing keybindings for discov
 - `<leader><space>` / `<leader>ff` / `<leader>fF` / `<leader>fg` / `<leader>fG` — fzf file/find/grep actions
 - `<leader>gu` — Neogit
 - `<leader>gh*` — gitsigns hunk actions (stage/reset/preview/blame)
+- `<leader>n` — Notification history (Noice)
 - `<leader>p` — Yank history (yanky.nvim)
 - `<leader>H` / `<leader>h` / `<leader>1-9` — Harpoon file navigation
 - `gd` — Go to definition (LSP)
