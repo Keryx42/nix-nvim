@@ -179,8 +179,8 @@
       key = "<leader>n";
       action.__raw = ''
         function()
-          local noice = require("noice")
-          local history = require("noice.history").get()
+          local Manager = require("noice.message.manager")
+          local history = Manager.get(nil, { history = true, sort = true, reverse = true })
           
           -- Format messages for fzf picker
           local messages = {}
@@ -200,7 +200,7 @@
             end
             
             -- Get message text (handle multi-line by taking first line)
-            local message_text = msg.message or ""
+            local message_text = msg:content() or ""
             local first_line = message_text:match("([^\n]*)")
             
             -- Format: [LEVEL] Message text
