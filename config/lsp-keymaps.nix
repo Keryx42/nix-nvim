@@ -51,6 +51,44 @@ end'';
       options = { desc = "Apply fixAll (auto)"; silent = true; };
     }
 
+    # Sort JSON keys alphabetically (jsonls)
+    {
+      mode = "n";
+      key = "<leader>cJ";
+      action.__raw = ''function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local filetype = vim.bo[bufnr].filetype
+  
+  -- Only run on json/jsonc files
+  if filetype ~= "json" and filetype ~= "jsonc" then
+    vim.notify("Not a JSON file", vim.log.levels.WARN)
+    return
+  end
+  
+  local params = {
+    command = "json.sort",
+    arguments = { vim.uri_from_bufnr(bufnr) }
+  }
+  
+  vim.lsp.buf_request_all(bufnr, "workspace/executeCommand", params, function(results)
+    local success = false
+    for client_id, result in pairs(results or {}) do
+      if result and not result.err then
+        success = true
+        break
+      end
+    end
+    
+    if success then
+      vim.notify("JSON sorted alphabetically", vim.log.levels.INFO)
+    else
+      vim.notify("Failed to sort JSON", vim.log.levels.ERROR)
+    end
+  end)
+end'';
+      options = { desc = "Sort JSON keys"; silent = true; };
+    }
+
     # Format buffer
     {
       mode = "n";

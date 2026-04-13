@@ -10,6 +10,7 @@
     ./gitsigns.nix
     ./harpoon.nix
     ./json-lsp.nix
+    ./json-sort-auto.nix
     ./lint.nix
     ./lsp.nix
     ./lsp-keymaps.nix

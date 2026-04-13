@@ -19,6 +19,7 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── gitsigns.nix                # Git hunks visualization & keymaps
     ├── harpoon.nix                 # File navigation marks with fzf-lua picker
     ├── json-lsp.nix                # JSON language server with schema validation and sorting
+    ├── json-sort-auto.nix          # Auto-sort JSON keys alphabetically on save
     ├── lint.nix                    # Code linting (statix, deadnix)
     ├── lsp.nix                     # Language servers (vue_ls, vtsls, eslint, nixd)
     ├── lsp-keymaps.nix             # LSP keybindings (code action, format, rename, diagnostics)
@@ -148,6 +149,7 @@ Which-key registers leader-key groups to surface existing keybindings for discov
 | `<leader>ca` | Code Action (fzf-lua picker) |
 | `<leader>cA` | Source Action (fzf-lua, fixAll/organizeImports) |
 | `<leader>cF` | Apply fixAll (auto) |
+| `<leader>cJ` | Sort JSON keys alphabetically |
 | `<leader>cf` | Format buffer (Conform) |
 | `<leader>cr` | Rename symbol |
 | `<leader>cd` | Line diagnostics (float) |
