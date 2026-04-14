@@ -100,10 +100,6 @@
         nerd_font_variant = "normal";
         # Use highlights compatible with nvim-cmp for consistency
         use_nvim_cmp_as_default = true;
-        # Highlight groups for menu
-        highlights = {
-          default_menu_selected_bg = "BlinkCmpMenuSelection";
-        };
       };
 
       # Signature help (function parameter hints)
