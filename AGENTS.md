@@ -16,6 +16,7 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── conform.nix                 # Code formatting (prettier, nixfmt)
     ├── dashboard.nix               # Startup dashboard (doom theme + quick actions)
     ├── fzf.nix                     # Fuzzy finder (fzf-lua) + keymaps
+    ├── general-keymaps.nix         # General editor keybindings (clear search highlighting, etc.)
     ├── gitsigns.nix                # Git hunks visualization & keymaps
     ├── harpoon.nix                 # File navigation marks with fzf-lua picker
     ├── json-lsp.nix                # JSON language server with schema validation and sorting
@@ -58,6 +59,12 @@ nix flake check --extra-experimental-features "nix-command flakes" .
 ## Keybinds
 
 Leader key: `<Space>`
+
+### General Keybinds (general-keymaps.nix)
+
+| Key | Action |
+|---|---|
+| `<Esc>` | Clear search highlighting |
 
 ### File explorer (Neo-tree)
 
@@ -194,6 +201,11 @@ Works in normal, visual, and operator-pending modes.
 | `<leader>ma` | Destruct |
 
 ## Plugins
+
+### general-keymaps (`config/general-keymaps.nix`)
+
+General editor keybindings for common operations. Features:
+- **Clear search highlighting**: Press `<Esc>` to turn off search highlighting after searching with `/`
 
 ### catppuccin (`config/catppuccin.nix`)
 

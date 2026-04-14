@@ -7,6 +7,7 @@
     ./conform.nix
     ./dashboard.nix
     ./fzf.nix
+    ./general-keymaps.nix
     ./gitsigns.nix
     ./harpoon.nix
     ./json-lsp.nix
