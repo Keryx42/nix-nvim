@@ -1,6 +1,7 @@
 {
   # Import all your configuration modules here
   imports = [
+    # Core editor features
     ./auto-save.nix
     ./blink-cmp.nix
     ./catppuccin.nix
@@ -10,13 +11,7 @@
     ./general-keymaps.nix
     ./gitsigns.nix
     ./harpoon.nix
-    ./json-lsp.nix
-    ./json-sort-auto.nix
-    ./lint.nix
-    ./lsp.nix
-    ./lsp-keymaps.nix
     ./lualine.nix
-    ./markdown-lsp.nix
     ./neo-tree.nix
     ./neogit.nix
     ./noice.nix
@@ -31,6 +26,19 @@
     ./vue-macros.nix
     ./which-key.nix
     ./yanky.nix
+
+    # Language support (unified per-language files with LSP + formatters)
+    # Note: TreeSitter grammars are centralized in treesitter.nix
+    ./languages/_shared.nix
+    ./languages/web.nix
+    ./languages/nix.nix
+    ./languages/json.nix
+    ./languages/markdown.nix
+
+    # Cross-cutting tools
+    ./tools/linting.nix
+    ./tools/lsp-keymaps.nix
+    ./tools/json-sort-auto.nix
   ];
 
   globals.mapleader = " ";
