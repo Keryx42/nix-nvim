@@ -20,6 +20,7 @@
     ./neogit.nix
     ./noice.nix
     ./persistence.nix
+    ./spider.nix
     ./tailwindcss.nix
     ./telescope.nix
     ./tiny-inline-diagnostic.nix

@@ -29,6 +29,7 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── neogit.nix                  # Git UI (Neogit)
     ├── noice.nix                   # UI overhaul (centered floating cmdline, messages, popupmenu)
     ├── persistence.nix             # Session save/restore with git branch tracking
+    ├── spider.nix                  # Smart word motion respecting camelCase and snake_case
     ├── tailwindcss.nix             # Tailwind CSS LSP server configuration
     ├── telescope.nix               # Telescope fuzzy finder & fzf-native extension
     ├── tiny-inline-diagnostic.nix  # Inline diagnostics display (modern preset)
@@ -180,6 +181,16 @@ Which-key registers leader-key groups to surface existing keybindings for discov
 
 Works in normal, visual, and operator-pending modes.
 
+### Word Navigation (nvim-spider)
+
+| Key | Action |
+|---|---|
+| `e` | Spider: End of word |
+| `w` | Spider: Start of word |
+| `b` | Spider: Back word |
+
+Smart word motion respecting camelCase and snake_case boundaries. Works in normal, visual, and operator-pending modes.
+
 ### Session management (persistence.nvim)
 
 | Key | Action |
@@ -317,6 +328,10 @@ Editor macros for Vue 3/TypeScript: storeToRefs wrapper, composable scaffolding,
 ### persistence.nvim (`config/persistence.nix`)
 
 [folke/persistence.nvim](https://github.com/folke/persistence.nvim) provides automatic session save/restore. Sessions stored in `~/.local/state/nvim/sessions/` with optional git branch tracking. Saves only when more than 1 file is open. Four keybindings: restore current/select/restore last/don't save. Dashboard integration via `s` key.
+
+### spider (`config/spider.nix`)
+
+[chrisgrieser/nvim-spider](https://github.com/chrisgrieser/nvim-spider) provides smart word navigation that respects camelCase and snake_case boundaries. Replaces default `w`, `e`, `b` motions with context-aware variants in normal, visual, and operator-pending modes. Three keybindings: `w` (start of word), `e` (end of word), `b` (back word).
 
 ### treesitter (`config/treesitter.nix`)
 
