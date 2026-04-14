@@ -9,7 +9,7 @@
         owner = "chrisgrieser";
         repo = "nvim-spider";
         rev = "4fdd56a4f45bca13a607632e15a6f9f8d1b1f99e";
-        hash = "sha256-z3rwvTTBBgfVjS8c5s5ZuEwz5xQHPMgrfM5hXkW41Ow=";
+        hash = "sha256-2ZJV23CZ8B3x4DPHGuWnq84Jp3gLvyCARuyqtrZEOos=";
       };
     })
   ];
