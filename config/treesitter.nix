@@ -17,6 +17,7 @@
       json
       lua
       nix
+      python
       tsx
       typescript
       vim

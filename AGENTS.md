@@ -39,7 +39,8 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     │   ├── web.nix                 # Web languages (TS/JS/Vue) — vtsls, vue_ls, eslint, prettier
     │   ├── nix.nix                 # Nix language — nixd, nixfmt
     │   ├── json.nix                # JSON language — jsonls, prettier
-    │   └── markdown.nix            # Markdown language — marksman, prettier
+    │   ├── markdown.nix            # Markdown language — marksman, prettier
+    │   └── python.nix              # Python language — pyright, black, ruff
     └── tools/
         ├── linting.nix             # Code linting (statix, deadnix)
         ├── lsp-keymaps.nix         # LSP keybindings (code action, format, rename, diagnostics)
@@ -382,15 +383,23 @@ Markdown language support with:
 - **LSP server:** `marksman` for completions, diagnostics, and cross-file references
 - **Formatter:** Prettier
 
+### python (`config/languages/python.nix`)
+
+Python language support with:
+- **TreeSitter grammar:** Python syntax highlighting
+- **LSP server:** `pyright` with standard type checking mode for completions and diagnostics
+- **Formatter:** black for consistent code formatting
+- **Linting:** Integrated with `ruff` via `tools/linting.nix` for fast diagnostics
+
 ## Tools (`config/tools/`)
 
 Cross-cutting tools and shared functionality organized in `config/tools/`.
 
 ### linting (`config/tools/linting.nix`)
 
-Code linter using Nvim-lint with automatic triggers (BufWritePost, BufReadPost, InsertLeave). Configured for Nix files:
-- `statix`: Nix code linter
-- `deadnix`: Detects dead code in Nix flakes
+Code linter using Nvim-lint with automatic triggers (BufWritePost, BufReadPost, InsertLeave). Configured linters:
+- **Nix files:** `statix`, `deadnix`
+- **Python files:** `ruff` for fast comprehensive linting and style checking
 
 ### lsp-keymaps (`config/tools/lsp-keymaps.nix`)
 

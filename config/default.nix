@@ -34,6 +34,7 @@
     ./languages/nix.nix
     ./languages/json.nix
     ./languages/markdown.nix
+    ./languages/python.nix
 
     # Cross-cutting tools
     ./tools/linting.nix

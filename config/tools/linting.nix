@@ -4,6 +4,7 @@
     enable = true;
     lintersByFt = {
       nix = [ "statix" "deadnix" ];
+      python = [ "ruff" ];
     };
     # Linting is triggered on these events:
     # - BufWritePost: after file write
