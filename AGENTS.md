@@ -19,13 +19,7 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── general-keymaps.nix         # General editor keybindings (clear search highlighting, etc.)
     ├── gitsigns.nix                # Git hunks visualization & keymaps
     ├── harpoon.nix                 # File navigation marks with fzf-lua picker
-    ├── json-lsp.nix                # JSON language server with schema validation and sorting
-    ├── json-sort-auto.nix          # Auto-sort JSON keys alphabetically on save
-    ├── lint.nix                    # Code linting (statix, deadnix)
-    ├── lsp.nix                     # Language servers (vue_ls, vtsls, eslint, nixd)
-    ├── lsp-keymaps.nix             # LSP keybindings (code action, format, rename, diagnostics)
     ├── lualine.nix                 # Status line with catppuccin theme
-    ├── markdown-lsp.nix            # Markdown language server (marksman) with prettier formatting
     ├── neo-tree.nix                # File explorer with follow-current-file
     ├── neogit.nix                  # Git UI (Neogit)
     ├── noice.nix                   # UI overhaul (centered floating cmdline, messages, popupmenu)
@@ -39,17 +33,33 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── ts-autotag.nix              # Auto-close HTML and JSX tags
     ├── vue-macros.nix              # Editor macros for Vue/TypeScript workflows
     ├── which-key.nix               # Keybinding hints and group labels
-    └── yanky.nix                   # Yank history with system clipboard sync
+    ├── yanky.nix                   # Yank history with system clipboard sync
+    ├── languages/
+    │   ├── _shared.nix             # Shared LSP configuration and hooks
+    │   ├── web.nix                 # Web languages (TS/JS/Vue) — vtsls, vue_ls, eslint, prettier
+    │   ├── nix.nix                 # Nix language — nixd, nixfmt
+    │   ├── json.nix                # JSON language — jsonls, prettier
+    │   └── markdown.nix            # Markdown language — marksman, prettier
+    └── tools/
+        ├── linting.nix             # Code linting (statix, deadnix)
+        ├── lsp-keymaps.nix         # LSP keybindings (code action, format, rename, diagnostics)
+        └── json-sort-auto.nix      # Auto-sort JSON keys alphabetically on save
 ```
 
-Each plugin lives in its own file and is imported in `config/default.nix`.
+Core editor features and plugins are organized at the root level. **Language support is unified** in the `languages/` directory with each language having its own file containing TreeSitter grammars, LSP servers, and formatters. **Cross-cutting tools** live in `tools/` for shared functionality.
 
-## How to add a plugin
+## How to add a plugin or language
 
+**For a new editor plugin:**
 1. Create `config/<plugin>.nix`
 2. Add `./config/<plugin>.nix` to the `imports` list in `config/default.nix`
 3. Use `plugins.<name>.enable = true` for nixvim-managed plugins
 4. For plugins not in nixvim, use `extraPlugins` + `extraConfigLua` (see `auto-save.nix`)
+
+**For a new language:**
+1. Create `config/languages/<language>.nix` with LSP servers and formatter config
+2. Add `./languages/<language>.nix` to the `imports` list in `config/default.nix`
+3. Add TreeSitter grammar to `grammarPackages` in `config/treesitter.nix`
 
 ## Running / testing
 
@@ -263,35 +273,9 @@ File navigation marks allowing quick jumps to frequently-used files. Provides 9 
 
 Git UI for interactive staging, commits, branching, and rebasing. Opened with `<leader>gu`.
 
-### LSP (`config/lsp.nix`)
+### Languages and LSP
 
-Five language servers configured:
-
-| Server | Purpose |
-|---|---|
-| `vue_ls` | HTML/CSS sections of `.vue` files (hybrid mode) |
-| `vtsls` | TypeScript/JavaScript + Vue via `@vue/typescript-plugin` |
-| `eslint` | Linting for JS/TS/Vue/JSON |
-| `nixd` | Semantic completions/diagnostics for `.nix` and flake files |
-| `tailwindcss` | Tailwind CSS class completions and diagnostics |
-
-Global `plugins.lsp.onAttach` disables semantic tokens for `vue_ls` to avoid volar crashes. `vtsls` is configured with `@vue/typescript-plugin`, TypeScript inlay hints, and auto-imports.
-
-### json-lsp (`config/json-lsp.nix`)
-
-JSON Language Server (jsonls) providing IntelliSense, schema validation, and comprehensive JSON support. Features:
-- **Schema validation:** Auto-detects schemas for package.json, tsconfig.json, tailwind.config.json, etc.
-- **IntelliSense:** Property autocomplete and descriptions
-- **Validation:** Real-time error checking with schema-aware diagnostics
-- **Sorting:** Integrates with LSP code actions for organizing/sorting JSON keys
-
-### markdown-lsp (`config/markdown-lsp.nix`)
-
-Marksman language server providing markdown support with completions, diagnostics, and cross-file references. Features:
-- **Completions:** Context-aware markdown link and reference completions
-- **Cross-file references:** Support for wiki-links and markdown references across files
-- **Diagnostics:** Real-time error checking for markdown issues
-- **Formatting:** Integrated with Prettier via Conform for markdown format-on-save (`<C-s>`)
+Language support is organized in `config/languages/` with each language file containing TreeSitter grammar references, LSP server configurations, and formatter setup. TreeSitter grammars are centrally managed in `config/treesitter.nix`.
 
 ### blink-cmp (`config/blink-cmp.nix`)
 
@@ -303,12 +287,6 @@ Code formatter using Conform.nvim with format-on-save (500ms timeout). Supports:
 - `prettier`: JavaScript, TypeScript, JSX, TSX, Vue, JSON, CSS, HTML, Markdown
 - `nixfmt`: Nix files
 Falls back to LSP `textDocument/formatting` for unsupported filetypes.
-
-### lint (`config/lint.nix`)
-
-Code linter using Nvim-lint with automatic triggers (BufWritePost, BufReadPost, InsertLeave). Configured for Nix files:
-- `statix`: Nix code linter
-- `deadnix`: Detects dead code in Nix flakes
 
 ### auto-save (`config/auto-save.nix`)
 
@@ -325,10 +303,6 @@ Telescope fuzzy finder with fzf-native extension for fast sorting. Configured wi
 ### yanky (`config/yanky.nix`)
 
 [yanky.nvim](https://github.com/gbprod/yanky.nvim) provides yank history with system clipboard sync. Mapping: `<leader>p` to open yank ring in normal and visual modes. `vim.opt.clipboard = "unnamedplus"` syncs yanks to system clipboard.
-
-### lsp-keymaps (`config/lsp-keymaps.nix`)
-
-LSP-focused keybindings: `<leader>ca` opens fzf-lua code action picker. `<leader>cA` filters source actions (fixAll, organizeImports). `<leader>cF` auto-applies fixAll. `<leader>cf` formats via `Conform`. `<leader>cr` renames. `<C-s>` (normal+insert) saves, formats, and shows notification. Definition/declaration lookups use fzf-lua for multiple results, inline edit for single result.
 
 ### vue-macros (`config/vue-macros.nix`)
 
@@ -366,6 +340,65 @@ LSP server for Tailwind CSS providing IntelliSense, class completions, color pre
 ### which-key (`config/which-key.nix`)
 
 Keybinding hints showing leader-key groups and available actions for discoverability. Registers groups: `<leader>f` (Find), `<leader>g` (Git), `<leader>m` (Macros), `<leader>c` (LSP), `<leader>q` (Quit).
+
+## Language Support (`config/languages/`)
+
+Language support is organized into unified per-language files in `config/languages/`. Each file contains all necessary configuration: TreeSitter grammar references, LSP servers, and formatter setup. TreeSitter grammars are centrally managed in `config/treesitter.nix`.
+
+### _shared (`config/languages/_shared.nix`)
+
+Global LSP configuration shared across all language servers:
+- **onAttach hook:** Common setup applied when any LSP attaches (e.g., disabling semantic tokens for certain servers)
+- **LSP utilities:** Shared functions and configurations for LSP behavior
+
+### web (`config/languages/web.nix`)
+
+Web language support with:
+- **TreeSitter grammars:** JavaScript, TypeScript, JSX, TSX, Vue
+- **LSP servers:**
+  - `vtsls`: TypeScript/JavaScript with Vue support via `@vue/typescript-plugin`
+  - `vue_ls`: Vue template support (hybrid mode with vtsls)
+  - `eslint`: Linting for JS/TS/Vue/JSON
+- **Formatter:** Prettier
+
+### nix (`config/languages/nix.nix`)
+
+Nix language support with:
+- **TreeSitter grammar:** Nix syntax highlighting
+- **LSP server:** `nixd` for semantic completions and diagnostics
+- **Formatter:** nixfmt
+
+### json (`config/languages/json.nix`)
+
+JSON language support with:
+- **TreeSitter grammar:** JSON syntax highlighting
+- **LSP server:** `jsonls` with schema validation (package.json, tsconfig.json, tailwind.config.json, etc.)
+- **Formatter:** Prettier
+
+### markdown (`config/languages/markdown.nix`)
+
+Markdown language support with:
+- **TreeSitter grammars:** Markdown, markdown_inline
+- **LSP server:** `marksman` for completions, diagnostics, and cross-file references
+- **Formatter:** Prettier
+
+## Tools (`config/tools/`)
+
+Cross-cutting tools and shared functionality organized in `config/tools/`.
+
+### linting (`config/tools/linting.nix`)
+
+Code linter using Nvim-lint with automatic triggers (BufWritePost, BufReadPost, InsertLeave). Configured for Nix files:
+- `statix`: Nix code linter
+- `deadnix`: Detects dead code in Nix flakes
+
+### lsp-keymaps (`config/tools/lsp-keymaps.nix`)
+
+LSP-focused keybindings: `<leader>ca` opens fzf-lua code action picker. `<leader>cA` filters source actions (fixAll, organizeImports). `<leader>cF` auto-applies fixAll. `<leader>cf` formats via `Conform`. `<leader>cr` renames. `<C-s>` (normal+insert) saves, formats, and shows notification. Definition/declaration lookups use fzf-lua for multiple results, inline edit for single result.
+
+### json-sort-auto (`config/tools/json-sort-auto.nix`)
+
+Auto-sort JSON keys alphabetically on save via `:CdnSort` command and autocmds.
 
 ## Agent instructions
 
