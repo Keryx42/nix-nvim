@@ -16,6 +16,7 @@
     ./lsp.nix
     ./lsp-keymaps.nix
     ./lualine.nix
+    ./markdown-lsp.nix
     ./neo-tree.nix
     ./neogit.nix
     ./noice.nix

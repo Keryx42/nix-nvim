@@ -25,6 +25,7 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── lsp.nix                     # Language servers (vue_ls, vtsls, eslint, nixd)
     ├── lsp-keymaps.nix             # LSP keybindings (code action, format, rename, diagnostics)
     ├── lualine.nix                 # Status line with catppuccin theme
+    ├── markdown-lsp.nix            # Markdown language server (marksman) with prettier formatting
     ├── neo-tree.nix                # File explorer with follow-current-file
     ├── neogit.nix                  # Git UI (Neogit)
     ├── noice.nix                   # UI overhaul (centered floating cmdline, messages, popupmenu)
@@ -284,6 +285,14 @@ JSON Language Server (jsonls) providing IntelliSense, schema validation, and com
 - **Validation:** Real-time error checking with schema-aware diagnostics
 - **Sorting:** Integrates with LSP code actions for organizing/sorting JSON keys
 
+### markdown-lsp (`config/markdown-lsp.nix`)
+
+Marksman language server providing markdown support with completions, diagnostics, and cross-file references. Features:
+- **Completions:** Context-aware markdown link and reference completions
+- **Cross-file references:** Support for wiki-links and markdown references across files
+- **Diagnostics:** Real-time error checking for markdown issues
+- **Formatting:** Integrated with Prettier via Conform for markdown format-on-save (`<C-s>`)
+
 ### blink-cmp (`config/blink-cmp.nix`)
 
 Modern Rust-based autocompletion engine with LSP-powered completions. Auto-imports from LSP servers (transparent to user). Features auto-brackets for function calls, documentation preview (200ms delay), and smart source prioritization (LSP → Buffer → Path). Keymap: `enter` accepts with auto-imports; `tab`/`shift-tab` navigate.
@@ -291,7 +300,7 @@ Modern Rust-based autocompletion engine with LSP-powered completions. Auto-impor
 ### conform (`config/conform.nix`)
 
 Code formatter using Conform.nvim with format-on-save (500ms timeout). Supports:
-- `prettier`: JavaScript, TypeScript, JSX, TSX, Vue, JSON, CSS, HTML
+- `prettier`: JavaScript, TypeScript, JSX, TSX, Vue, JSON, CSS, HTML, Markdown
 - `nixfmt`: Nix files
 Falls back to LSP `textDocument/formatting` for unsupported filetypes.
 

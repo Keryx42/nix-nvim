@@ -19,6 +19,7 @@
         css = [ "prettier" ];
         html = [ "prettier" ];
         vue = [ "prettier" ];
+        markdown = [ "prettier" ];
         nix = [ "nixfmt" ];
       };
 
