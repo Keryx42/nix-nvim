@@ -48,7 +48,7 @@ outputs = { self, nixpkgs, nixvim-config, ... }@inputs:
     specialArgs = { inherit inputs; };
     modules = [ ./configuration.nix ];
   };
-  
+
   # For Darwin systems:
   darwinConfigurations.your-hostname = nix-darwin.lib.darwinSystem {
     specialArgs = { inherit inputs; };
@@ -66,7 +66,7 @@ To add Nixvim to your NixOS system, include it in your `configuration.nix`:
 
 {
   # ... your other config ...
-  
+
   environment.systemPackages = with pkgs; [
     # ... your other packages ...
     inputs.nixvim-config.packages.${pkgs.system}.default
@@ -91,7 +91,7 @@ To add Nixvim to your macOS system (with Nix or nix-darwin), update your `darwin
 
 {
   # ... your other config ...
-  
+
   environment.systemPackages = with pkgs; [
     # ... your other packages ...
     inputs.nixvim-config.packages.${pkgs.system}.default
@@ -142,11 +142,13 @@ To customize this Nixvim setup:
 ### Testing Changes
 
 **When running standalone:**
+
 ```bash
 nix run .
 ```
 
 **After system integration:**
+
 ```bash
 # Rebuild your system to apply changes
 sudo nixos-rebuild switch --flake /path/to/your/flake
@@ -173,12 +175,14 @@ See [AGENTS.md](./AGENTS.md) for the complete plugin list, all keybindings, and 
 ## Testing Your Configuration
 
 ### Standalone:
+
 ```bash
 nix flake check
 nix run .
 ```
 
 ### After System Integration:
+
 ```bash
 # Rebuild system with updated config
 sudo nixos-rebuild switch --flake /path/to/your/flake
