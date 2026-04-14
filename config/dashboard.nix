@@ -43,77 +43,65 @@
         ];
 
         center = [
-           {
-             icon = " ";
-             icon_hl = "DashboardIcon";
-             desc = "Find File";
-             desc_hl = "DashboardDesc";
-             key = "f";
-             key_hl = "DashboardKey";
-             key_format = "  [%s]";
-             action.__raw = "function() require('fzf-lua').files() end";
-           }
-           {
-             icon = " ";
-             icon_hl = "DashboardIcon";
-             desc = "Restore Session";
-             desc_hl = "DashboardDesc";
-             key = "s";
-             key_hl = "DashboardKey";
-             key_format = "  [%s]";
-             action.__raw = "function() require('persistence').load() end";
-           }
-           {
-             icon = "  ";
-             icon_hl = "DashboardIcon";
-             desc = "Live Grep";
-             desc_hl = "DashboardDesc";
-             key = "g";
-             key_hl = "DashboardKey";
-             key_format = "  [%s]";
-             action.__raw = "function() require('fzf-lua').live_grep() end";
-           }
-           {
-             icon = " ";
-             icon_hl = "DashboardIcon";
-             desc = "New File";
-             desc_hl = "DashboardDesc";
-             key = "n";
-             key_hl = "DashboardKey";
-             key_format = "  [%s]";
-             action = "enew";
-           }
-           {
-             icon = " ";
-             desc = "Git Ui";
-             key = "u";
-             key_hl = "DashboardKey";
-             key_format = "  [%s]";
-             action = "Neogit";
-           }
-           {
-             icon = " ";
-             icon_hl = "DashboardIcon";
-             desc = "Config";
-             desc_hl = "DashboardDesc";
-             key = "c";
-             key_hl = "DashboardKey";
-             key_format = "  [%s]";
-             action.__raw = "function() require('fzf-lua').files({ cwd = vim.fn.stdpath('config') }) end";
-           }
-           {
-             icon = " ";
-             icon_hl = "DashboardIcon";
-             desc = "Quit";
-             desc_hl = "DashboardDesc";
-             key = "q";
-             key_hl = "DashboardKey";
-             key_format = "  [%s]";
-             action = "qa";
-           }
-         ];
-
-        footer = [];
+          {
+            icon = " ";
+            icon_hl = "DashboardIcon";
+            desc = "Restore Session";
+            desc_hl = "DashboardDesc";
+            key = "s";
+            key_hl = "DashboardKey";
+            key_format = "  [%s]";
+            action.__raw = "function() require('persistence').load() end";
+          }
+          {
+            icon = "  ";
+            icon_hl = "DashboardIcon";
+            desc = "Live Grep";
+            desc_hl = "DashboardDesc";
+            key = "g";
+            key_hl = "DashboardKey";
+            key_format = "  [%s]";
+            action.__raw = "function() require('fzf-lua').live_grep() end";
+          }
+          {
+            icon = " ";
+            icon_hl = "DashboardIcon";
+            desc = "New File";
+            desc_hl = "DashboardDesc";
+            key = "n";
+            key_hl = "DashboardKey";
+            key_format = "  [%s]";
+            action = "enew";
+          }
+          {
+            icon = " ";
+            desc = "Git Ui";
+            key = "u";
+            key_hl = "DashboardKey";
+            key_format = "  [%s]";
+            action = "Neogit";
+          }
+          {
+            icon = " ";
+            icon_hl = "DashboardIcon";
+            desc = "Config";
+            desc_hl = "DashboardDesc";
+            key = "c";
+            key_hl = "DashboardKey";
+            key_format = "  [%s]";
+            action.__raw = "function() require('fzf-lua').files({ cwd = vim.fn.stdpath('config') }) end";
+          }
+          {
+            icon = " ";
+            icon_hl = "DashboardIcon";
+            desc = "Quit";
+            desc_hl = "DashboardDesc";
+            key = "q";
+            key_hl = "DashboardKey";
+            key_format = "  [%s]";
+            action = "qa";
+          }
+        ];
       };
     };
   };
