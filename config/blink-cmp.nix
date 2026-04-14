@@ -34,12 +34,14 @@
           auto_show_delay_ms = 200;
         };
 
-        # Menu appearance and selection behavior
-        menu = {
-          draw = {
-            # Use treesitter for syntax highlighting in completion menu
-            treesitter = [ "lsp" ];
-          };
+        # Menu appearance
+        draw = {
+          # Use treesitter for syntax highlighting in completion menu
+          treesitter = [ "lsp" ];
+        };
+
+        # Completion list behavior and selection
+        list = {
           # Auto-select first item but don't auto-insert
           selection = {
             preselect = true;
