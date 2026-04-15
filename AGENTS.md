@@ -20,7 +20,7 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── gitsigns.nix                # Git hunks visualization & keymaps
     ├── harpoon.nix                 # File navigation marks with fzf-lua picker
     ├── lualine.nix                 # Status line with catppuccin theme
-    ├── neo-tree.nix                # File explorer with follow-current-file
+    ├── neo-tree.nix                # File explorer with follow-current-file & LSP-aware rename
     ├── neogit.nix                  # Git UI (Neogit)
     ├── noice.nix                   # UI overhaul (centered floating cmdline, messages, popupmenu)
     ├── persistence.nix             # Session save/restore with git branch tracking
@@ -87,6 +87,7 @@ Leader key: `<Space>`
 | `<leader>E` | Toggle Neo-tree (cwd) |
 | `<leader>fe` | Focus Neo-tree (root dir) |
 | `<leader>fE` | Focus Neo-tree (cwd) |
+| `r` (in Neo-tree) | Rename file with LSP support (updates all references) |
 
 ### Fuzzy finder (fzf-lua)
 
@@ -260,7 +261,7 @@ UI overhaul that replaces the default Neovim UI with floating windows. Features:
 
 ### neo-tree (`config/neo-tree.nix`)
 
-File explorer with automatic tracking of the current buffer. Provides keymaps to toggle/focus the tree for project root and current working directory (`<leader>e`, `<leader>E`, `<leader>fe`, `<leader>fE`).
+File explorer with automatic tracking of the current buffer. Provides keymaps to toggle/focus the tree for project root and current working directory (`<leader>e`, `<leader>E`, `<leader>fe`, `<leader>fE`). Press `r` to rename files with LSP support—automatically updates all references across the codebase if LSP is available, falls back to filesystem rename otherwise. For unopened files, automatically opens them temporarily, performs LSP rename if possible, then closes the temporary buffer.
 
 ### fzf-lua (`config/fzf.nix`)
 
