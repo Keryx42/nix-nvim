@@ -24,10 +24,11 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     ├── neogit.nix                  # Git UI (Neogit)
     ├── noice.nix                   # UI overhaul (centered floating cmdline, messages, popupmenu)
     ├── persistence.nix             # Session save/restore with git branch tracking
-    ├── spider.nix                  # Smart word motion respecting camelCase and snake_case
-    ├── tailwindcss.nix             # Tailwind CSS LSP server configuration
-    ├── telescope.nix               # Telescope fuzzy finder & fzf-native extension
-    ├── tiny-inline-diagnostic.nix  # Inline diagnostics display (modern preset)
+     ├── spider.nix                  # Smart word motion respecting camelCase and snake_case
+     ├── tailwindcss.nix             # Tailwind CSS LSP server configuration
+     ├── telescope.nix               # Telescope fuzzy finder & fzf-native extension
+     ├── terminal-title.nix          # Terminal window title (folder name + Nixvim)
+     ├── tiny-inline-diagnostic.nix  # Inline diagnostics display (modern preset)
     ├── treesitter.nix              # Treesitter grammars, highlighting, indentation, folding
     ├── treesitter-textobjects.nix  # Treesitter textobject navigation (functions, classes, params)
     ├── ts-autotag.nix              # Auto-close HTML and JSX tags
@@ -303,6 +304,10 @@ Falls back to LSP `textDocument/formatting` for unsupported filetypes.
 ### telescope (`config/telescope.nix`)
 
 Telescope fuzzy finder with fzf-native extension for fast sorting. Configured with horizontal layout, previews at 60% width. Integrates with fzf-lua for interactive picking.
+
+### terminal-title (`config/terminal-title.nix`)
+
+Sets Ghostty terminal window title to current folder name with "Nixvim" suffix (e.g., `nixvim - Nixvim`). Uses Neovim's native `set title` mechanism with titlestring format. Title updates automatically when changing directories via `:cd`, `:lcd`, or Netrw.
 
 ### yanky (`config/yanky.nix`)
 

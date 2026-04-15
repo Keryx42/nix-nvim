@@ -19,6 +19,7 @@
     ./spider.nix
     ./tailwindcss.nix
     ./telescope.nix
+    ./terminal-title.nix
     ./tiny-inline-diagnostic.nix
     ./treesitter.nix
     ./treesitter-textobjects.nix
