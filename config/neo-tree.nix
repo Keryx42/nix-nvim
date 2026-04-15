@@ -4,8 +4,7 @@
     settings.filesystem.follow_current_file.enabled = true;
   };
 
-  # LSP-aware rename handler for Neo-tree
-  # Attempts LSP rename (with temp file opening if needed), falls back to filesystem rename
+  # LSP-aware rename handler for Neo-tree using three-phase LSP protocol
   extraConfigLua = ''
     local function lsp_aware_rename(state)
       local node = state.tree:get_node()
@@ -22,67 +21,18 @@
 
         local dir = vim.fn.fnamemodify(old_path, ':h')
         local new_path = dir .. "/" .. new_name
-        local new_name_symbol = vim.fn.fnamemodify(new_name, ':r') -- Remove extension
 
-        -- Check if file is already open
-        local bufnr = vim.fn.bufloaded(old_path) == 1 and vim.fn.bufnr(old_path) or -1
-        local was_open = bufnr ~= -1
-
-        -- If not open, open it temporarily
-        if not was_open then
-          vim.cmd("silent noautocmd edit " .. vim.fn.fnameescape(old_path))
-          bufnr = vim.api.nvim_get_current_buf()
-        end
-
-        -- Get active LSP clients for this buffer
-        local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
-
-        if #clients > 0 then
-          -- LSP rename available: prepare parameters
-          local params = vim.lsp.util.make_position_params(0, clients[1].offset_encoding)
-
-          -- Attempt LSP rename for all references
-          vim.lsp.buf_request(bufnr, "textDocument/rename", {
-            textDocument = { uri = vim.uri_from_bufnr(bufnr) },
-            position = params.position,
-            newName = new_name_symbol,
-          }, function(err, result)
-            if err then
-              -- LSP rename failed, fall back to filesystem rename
-              vim.notify("LSP rename failed, using filesystem rename", vim.log.levels.WARN)
-              vim.fn.rename(old_path, new_path)
-            elseif result then
-              -- LSP rename succeeded, apply workspace edit
-              vim.lsp.util.apply_workspace_edit(result, "utf-8")
-              vim.notify("Renamed with LSP (all references updated)", vim.log.levels.INFO)
-              
-              -- Also rename the file on disk
-              vim.fn.rename(old_path, new_path)
-            end
-
-            -- If we opened the file, close it after rename
-            if not was_open then
-              vim.cmd("silent bdelete! " .. bufnr)
-            end
-
-            -- Refresh Neo-tree to show the renamed file
-            vim.schedule(function()
-              require("neo-tree.command").execute({ action = "refresh" })
-            end)
-          end)
-        else
-          -- No LSP available, use filesystem rename
+        -- Use shared LSP rename function with proper three-phase protocol
+        _G.lsp_rename_file(old_path, new_path, function()
+          -- PHASE 2: Perform actual file operation
           vim.fn.rename(old_path, new_path)
-          vim.notify("Renamed (filesystem only, no LSP available)", vim.log.levels.INFO)
+        end)
 
-          -- Close temp buffer if we opened it
-          if not was_open then
-            vim.cmd("silent bdelete! " .. bufnr)
-          end
-
-          -- Refresh Neo-tree to show the renamed file
+        -- Refresh Neo-tree to show the renamed file
+        vim.schedule(function()
           require("neo-tree.command").execute({ action = "refresh" })
-        end
+          vim.notify("Renamed: " .. old_name .. " → " .. new_name, vim.log.levels.INFO)
+        end)
       end)
     end
 

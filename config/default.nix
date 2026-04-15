@@ -38,6 +38,7 @@
 
     # Cross-cutting tools
     ./tools/linting.nix
+    ./tools/lsp-rename.nix
     ./tools/lsp-keymaps.nix
     ./tools/json-sort-auto.nix
   ];

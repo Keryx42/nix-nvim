@@ -41,10 +41,11 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
     │   ├── json.nix                # JSON language — jsonls, prettier
     │   ├── markdown.nix            # Markdown language — marksman, prettier
     │   └── python.nix              # Python language — pyright, black, ruff
-    └── tools/
-        ├── linting.nix             # Code linting (statix, deadnix)
-        ├── lsp-keymaps.nix         # LSP keybindings (code action, format, rename, diagnostics)
-        └── json-sort-auto.nix      # Auto-sort JSON keys alphabetically on save
+     └── tools/
+         ├── linting.nix             # Code linting (statix, deadnix)
+         ├── lsp-rename.nix          # LSP-aware rename with three-phase protocol
+         ├── lsp-keymaps.nix         # LSP keybindings (code action, format, rename, diagnostics)
+         └── json-sort-auto.nix      # Auto-sort JSON keys alphabetically on save
 ```
 
 Core editor features and plugins are organized at the root level. **Language support is unified** in the `languages/` directory with each language having its own file containing TreeSitter grammars, LSP servers, and formatters. **Cross-cutting tools** live in `tools/` for shared functionality.
@@ -173,6 +174,7 @@ Which-key registers leader-key groups to surface existing keybindings for discov
 | `<leader>cJ` | Sort JSON keys alphabetically |
 | `<leader>cf` | Format buffer (Conform) |
 | `<leader>cr` | Rename symbol |
+| `<leader>cR` | Rename file (with LSP updates for all references) |
 | `<leader>cd` | Line diagnostics (float) |
 | `<leader>xl` | Diagnostics → loclist |
 | `]d` | Next diagnostic |
@@ -261,7 +263,7 @@ UI overhaul that replaces the default Neovim UI with floating windows. Features:
 
 ### neo-tree (`config/neo-tree.nix`)
 
-File explorer with automatic tracking of the current buffer. Provides keymaps to toggle/focus the tree for project root and current working directory (`<leader>e`, `<leader>E`, `<leader>fe`, `<leader>fE`). Press `r` to rename files with LSP support—automatically updates all references across the codebase if LSP is available, falls back to filesystem rename otherwise. For unopened files, automatically opens them temporarily, performs LSP rename if possible, then closes the temporary buffer.
+File explorer with automatic tracking of the current buffer. Provides keymaps to toggle/focus the tree for project root and current working directory (`<leader>e`, `<leader>E`, `<leader>fe`, `<leader>fE`). LSP-aware rename with `r` in Neo-tree or `<leader>cR` from any buffer—uses three-phase LSP protocol (workspace/willRenameFiles → file move → workspace/didRenameFiles) to automatically update all references across the codebase when LSP is available. Coordinates multiple LSP clients simultaneously (e.g., vtsls + vue_ls for .vue files).
 
 ### fzf-lua (`config/fzf.nix`)
 
@@ -402,9 +404,13 @@ Code linter using Nvim-lint with automatic triggers (BufWritePost, BufReadPost, 
 - **Nix files:** `statix`, `deadnix`
 - **Python files:** `ruff` for fast comprehensive linting and style checking
 
+### lsp-rename (`config/tools/lsp-rename.nix`)
+
+Shared LSP rename utility implementing three-phase workspace file operation protocol. Provides `_G.lsp_rename_file()` Lua function used by Neo-tree and `<leader>cR` keybind. Coordinates all active LSP clients: Phase 1 (workspace/willRenameFiles) pre-processes edits, Phase 2 performs file operation, Phase 3 (workspace/didRenameFiles) notifies servers. Supports multi-client scenarios like .vue files (vtsls + vue_ls coordination).
+
 ### lsp-keymaps (`config/tools/lsp-keymaps.nix`)
 
-LSP-focused keybindings: `<leader>ca` opens fzf-lua code action picker. `<leader>cA` filters source actions (fixAll, organizeImports). `<leader>cF` auto-applies fixAll. `<leader>cf` formats via `Conform`. `<leader>cr` renames. `<C-s>` (normal+insert) saves, formats, and shows notification. Definition/declaration lookups use fzf-lua for multiple results, inline edit for single result.
+LSP-focused keybindings: `<leader>ca` opens fzf-lua code action picker. `<leader>cA` filters source actions (fixAll, organizeImports). `<leader>cF` auto-applies fixAll. `<leader>cf` formats via `Conform`. `<leader>cr` renames symbol, `<leader>cR` renames file with LSP updates. `<C-s>` (normal+insert) saves, formats, and shows notification. Definition/declaration lookups use fzf-lua for multiple results, inline edit for single result.
 
 ### json-sort-auto (`config/tools/json-sort-auto.nix`)
 

@@ -101,12 +101,48 @@ end'';
       options = { desc = "Format buffer"; silent = true; };
     }
 
-    # Rename
+    # Rename symbol (LSP)
     {
       mode = "n";
       key = "<leader>cr";
       action.__raw = ''function() vim.lsp.buf.rename() end'';
       options = { desc = "Rename symbol"; silent = true; };
+    }
+
+    # Rename file (LSP-aware with workspace operations)
+    {
+      mode = "n";
+      key = "<leader>cR";
+      action.__raw = ''function()
+  local current_file = vim.api.nvim_buf_get_name(0)
+  if not current_file or current_file == "" then
+    vim.notify("No file open", vim.log.levels.WARN)
+    return
+  end
+
+  local old_name = vim.fn.fnamemodify(current_file, ':t')
+  local dir = vim.fn.fnamemodify(current_file, ':h')
+
+  vim.ui.input({ prompt = "Rename to: ", default = old_name }, function(new_name)
+    if not new_name or new_name == "" or new_name == old_name then
+      return
+    end
+
+    local new_path = dir .. "/" .. new_name
+
+    -- Use shared three-phase LSP rename function
+    _G.lsp_rename_file(current_file, new_path, function()
+      -- PHASE 2: Perform actual file operation
+      vim.fn.rename(current_file, new_path)
+      
+      -- Update buffer with new file path
+      vim.cmd("edit " .. vim.fn.fnameescape(new_path))
+    end)
+
+    vim.notify("Renamed: " .. old_name .. " → " .. new_name, vim.log.levels.INFO)
+  end)
+end'';
+      options = { desc = "Rename file"; silent = true; };
     }
 
     # Line diagnostics (float)
