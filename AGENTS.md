@@ -9,47 +9,47 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
 ├── flake.nix           # Flake inputs (nixpkgs-unstable, nixvim, flake-parts)
 ├── flake.lock
 └── config/
-    ├── default.nix                 # Entry point — imports all modules, sets globals.mapleader = " "
-    ├── auto-save.nix               # Auto-save plugin (extraPlugin — not in nixvim)
-    ├── blink-cmp.nix               # Autocompletion engine with LSP + auto-imports
-    ├── catppuccin.nix              # Colorscheme
-    ├── conform.nix                 # Code formatting (prettier, nixfmt)
-    ├── dashboard.nix               # Startup dashboard (doom theme + quick actions)
-    ├── fzf.nix                     # Fuzzy finder (fzf-lua) + keymaps
-    ├── general-keymaps.nix         # General editor keybindings (clear search highlighting, etc.)
-    ├── gitsigns.nix                # Git hunks visualization & keymaps
-    ├── harpoon.nix                 # File navigation marks with fzf-lua picker
-    ├── lualine.nix                 # Status line with catppuccin theme
-    ├── neo-tree.nix                # File explorer with follow-current-file & LSP-aware rename
-    ├── neogit.nix                  # Git UI (Neogit)
-    ├── noice.nix                   # UI overhaul (centered floating cmdline, messages, popupmenu)
-    ├── persistence.nix             # Session save/restore with git branch tracking
-     ├── spider.nix                  # Smart word motion respecting camelCase and snake_case
-     ├── tailwindcss.nix             # Tailwind CSS LSP server configuration
-     ├── telescope.nix               # Telescope fuzzy finder & fzf-native extension
-     ├── terminal-title.nix          # Terminal window title (folder name + Nixvim)
-     ├── tiny-inline-diagnostic.nix  # Inline diagnostics display (modern preset)
-    ├── treesitter.nix              # Treesitter grammars, highlighting, indentation, folding
-    ├── treesitter-textobjects.nix  # Treesitter textobject navigation (functions, classes, params)
-    ├── ts-autotag.nix              # Auto-close HTML and JSX tags
-    ├── vue-macros.nix              # Editor macros for Vue/TypeScript workflows
-    ├── which-key.nix               # Keybinding hints and group labels
-    ├── yanky.nix                   # Yank history with system clipboard sync
+    ├── default.nix                 # Entry point — imports modules and sets globals.mapleader = " "
+    ├── auto-save.nix               # Auto-save.nvim via extraPlugins + extraConfigLua
+    ├── blink-cmp.nix               # Blink-powered completion (LSP, auto-imports, smart sources)
+    ├── catppuccin.nix              # Catppuccin colorscheme configuration
+    ├── conform.nix                 # Conform.nvim formatter configuration (prettier, nixfmt)
+    ├── dashboard.nix               # Startup dashboard (doom header, quick actions)
+    ├── fzf.nix                     # fzf-lua integration and global keymaps
+    ├── general-keymaps.nix         # Global non-LSP keybindings (e.g. Esc nohl)
+    ├── gitsigns.nix                # Git hunk signs and gitsigns keymaps
+    ├── harpoon.nix                 # Harpoon marks + fzf picker + keymaps
+    ├── lualine.nix                 # Lualine statusline configured with theme
+    ├── neo-tree.nix                # Neo-tree explorer + LSP-aware rename handler
+    ├── neogit.nix                  # Neogit Git UI integration
+    ├── noice.nix                   # Noice UI (centered cmdline, notifications, popupmenu)
+    ├── persistence.nix             # persistence.nvim session save/restore
+    ├── spider.nix                  # nvim-spider word motions (camelCase/snakes)
+    ├── tailwindcss.nix             # Tailwind CSS LSP server and settings
+    ├── telescope.nix               # Telescope + fzf-native configuration
+    ├── terminal-title.nix          # Terminal title updates (folder + Nixvim)
+    ├── tiny-inline-diagnostic.nix  # Inline diagnostics (tiny-inline-diagnostic.nvim)
+    ├── treesitter.nix              # Treesitter grammars and core settings
+    ├── treesitter-textobjects.nix  # Treesitter textobjects and keymaps
+    ├── ts-autotag.nix              # nvim-ts-autotag for closing HTML/JSX tags
+    ├── vue-macros.nix              # Vue/TS editor macros and helper keymaps
+    ├── which-key.nix               # Which-key groups and descriptions
+    ├── yanky.nix                   # Yank history (yanky.nvim) and clipboard sync
     ├── languages/
-    │   ├── _shared.nix             # Shared LSP configuration and hooks
-    │   ├── web.nix                 # Web languages (TS/JS/Vue) — vtsls, vue_ls, eslint, prettier
-    │   ├── nix.nix                 # Nix language — nixd, nixfmt
-    │   ├── json.nix                # JSON language — jsonls, prettier
-    │   ├── markdown.nix            # Markdown language — marksman, prettier
-    │   └── python.nix              # Python language — pyright, black, ruff
-     └── tools/
-         ├── linting.nix             # Code linting (statix, deadnix)
-         ├── lsp-rename.nix          # LSP-aware rename with three-phase protocol
-         ├── lsp-keymaps.nix         # LSP keybindings (code action, format, rename, diagnostics)
-         └── json-sort-auto.nix      # Auto-sort JSON keys alphabetically on save
+    │   ├── _shared.nix             # Shared LSP hooks and utilities
+    │   ├── web.nix                 # Web languages: vtsls, vue_ls, eslint, prettier
+    │   ├── nix.nix                 # Nix language: nixd + nixfmt
+    │   ├── json.nix                # JSON: jsonls + schemas + prettier
+    │   ├── markdown.nix            # Markdown: marksman + prettier
+    │   └── python.nix              # Python: pyright + black + ruff
+    └── tools/
+        ├── linting.nix             # Linter integration (statix, deadnix, ruff)
+        ├── lsp-rename.nix          # Three-phase LSP file rename helper (_G.lsp_rename_file)
+        ├── lsp-keymaps.nix         # LSP-focused keymaps and helper commands
+        └── json-sort-auto.nix      # JSON sort command and autocmds
 ```
 
-Core editor features and plugins are organized at the root level. **Language support is unified** in the `languages/` directory with each language having its own file containing TreeSitter grammars, LSP servers, and formatters. **Cross-cutting tools** live in `tools/` for shared functionality.
+Core editor features and plugins live at the repo root `config/`. Language support is unified under `config/languages/` (each file declares TreeSitter/LSP/formatters). Cross-cutting utilities live under `config/tools/`.
 
 ## How to add a plugin or language
 
@@ -103,6 +103,13 @@ Leader key: `<Space>`
 | `<leader>fG` | Live grep (cwd) |
 | `<leader>/` | Grep current buffer |
 
+### Completion (blink-cmp)
+
+| Key | Action |
+|---|---|
+| `<Enter>` | Accept completion (with auto-imports) |
+| `<Tab>` / `<S-Tab>` | Navigate completion items |
+
 ### Git (Neogit)
 
 | Key | Action |
@@ -113,8 +120,8 @@ Leader key: `<Space>`
 
 | Key | Action |
 |---|---|
-| `<leader>]h` | Next git hunk |
-| `<leader>[h` | Prev git hunk |
+| `]h` | Next git hunk |
+| `[h` | Prev git hunk |
 | `<leader>ghs` | Stage hunk |
 | `<leader>ghr` | Reset hunk |
 | `<leader>ghS` | Stage buffer |
@@ -144,6 +151,17 @@ Leader key: `<Space>`
 | `<leader>8` | Jump to harpoon file 8 |
 | `<leader>9` | Jump to harpoon file 9 |
 | `<leader>M` | Harpoon files with fzf-lua picker |
+
+### Startup dashboard (dashboard.nix)
+
+| Key | Action |
+|---|---|
+| `s` | Restore last session (dashboard center action) |
+| `g` | Live Grep (dashboard center action) |
+| `n` | New File (dashboard center action) |
+| `u` | Open Neogit (dashboard center action) |
+| `c` | Open config files (fzf-lua) |
+| `q` | Quit (dashboard center action) |
 
 ### Noice (noice.nix)
 
@@ -186,6 +204,8 @@ Which-key registers leader-key groups to surface existing keybindings for discov
 
 ### Treesitter textobjects (treesitter-textobjects.nix)
 
+#### Move (Navigation)
+
 | Key | Action |
 |---|---|
 | `]f` / `[f` | Next/Prev function start |
@@ -196,6 +216,19 @@ Which-key registers leader-key groups to surface existing keybindings for discov
 | `]A` / `[A` | Next/Prev parameter end |
 
 Works in normal, visual, and operator-pending modes.
+
+#### Select (Text Objects)
+
+| Key | Action |
+|---|---|
+| `af` / `if` | Around/Inside function |
+| `ac` / `ic` | Around/Inside class |
+| `aa` / `ia` | Around/Inside parameter |
+
+Works in visual and operator-pending modes with automatic lookahead. Examples:
+- `vif` - Select inside function (visual mode)
+- `daf` - Delete around function
+- `cic` - Change inside class
 
 ### Word Navigation (nvim-spider)
 
@@ -278,6 +311,10 @@ File navigation marks allowing quick jumps to frequently-used files. Provides 9 
 
 Git UI for interactive staging, commits, branching, and rebasing. Opened with `<leader>gu`.
 
+### gitsigns (`config/gitsigns.nix`)
+
+Git hunk signs and utilities: next/prev hunk (`]h`/`[h`), stage/reset hunk, stage/reset buffer, preview hunk, and blame line. Keymaps under `<leader>gh*` for hunk actions.
+
 ### Languages and LSP
 
 Language support is organized in `config/languages/` with each language file containing TreeSitter grammar references, LSP server configurations, and formatter setup. TreeSitter grammars are centrally managed in `config/treesitter.nix`.
@@ -331,7 +368,27 @@ Treesitter configuration with 33 language grammars for syntax highlighting, inde
 
 ### treesitter-textobjects (`config/treesitter-textobjects.nix`)
 
-[nvim-treesitter/nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) provides code navigation via treesitter text objects. Eight keybindings jump to functions, classes, and parameters (start/end). Works in normal, visual, and operator-pending modes with auto-generated LazyVim-style descriptions.
+[nvim-treesitter/nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) provides syntax-aware text objects for code navigation and selection. Two modes:
+
+**Move Mode** - Jump between code structures:
+- Navigate to next/previous function, class, or parameter start/end
+- Keybinds: `]f`, `[f`, `]F`, `[F`, `]c`, `[c`, `]C`, `[C`, `]a`, `[a`, `]A`, `[A]`
+- Works in normal, visual, and operator-pending modes
+- Automatically sets jumps in the jumplist
+
+**Select Mode** - Select code structures as text objects:
+- Define custom text objects like Vim's built-in `ap` (around paragraph)
+- Keybinds: `af`/`if`, `ac`/`ic`, `aa`/`ia`
+- Automatic lookahead: jumps forward to the textobject automatically
+- Selection modes: linewise for functions/classes, charwise for parameters
+- Works in visual and operator-pending modes
+
+**Examples:**
+- `vif` - Select inside function (visual mode)
+- `daf` - Delete around function
+- `cic` - Change inside class
+- `]f` - Jump to next function start
+- `[C` - Jump to previous class end
 
 ### ts-autotag (`config/ts-autotag.nix`)
 
