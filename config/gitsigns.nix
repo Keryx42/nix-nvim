@@ -6,7 +6,7 @@
     # Next hunk (respect diff windows)
     {
       mode = "n";
-      key = "<leader>]h";
+      key = "]h";
       action.__raw = ''
 function()
   if vim.wo.diff then return "]h" end
@@ -19,7 +19,7 @@ end
     # Prev hunk
     {
       mode = "n";
-      key = "<leader>[h";
+      key = "[h";
       action.__raw = ''
 function()
   if vim.wo.diff then return "[h" end
