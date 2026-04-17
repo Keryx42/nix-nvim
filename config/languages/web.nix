@@ -30,7 +30,7 @@
           tsserver.globalPlugins = [
             {
               name = "@vue/typescript-plugin";
-              location = "${pkgs.vue-language-server}/lib/language-tools/packages/typescript-plugin";
+              location = "${pkgs.vue-language-server}/lib/language-tools/packages/language-server";
               languages = [ "vue" ];
               configNamespace = "typescript";
               enableForWorkspaceTypeScriptVersions = true;
