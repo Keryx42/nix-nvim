@@ -9,31 +9,32 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
 ├── flake.nix           # Flake inputs (nixpkgs-unstable, nixvim, flake-parts)
 ├── flake.lock
 └── config/
-    ├── default.nix                 # Entry point — imports modules and sets globals.mapleader = " "
-    ├── auto-save.nix               # Auto-save.nvim via extraPlugins + extraConfigLua
-    ├── blink-cmp.nix               # Blink-powered completion (LSP, auto-imports, smart sources)
-    ├── catppuccin.nix              # Catppuccin colorscheme configuration
-    ├── conform.nix                 # Conform.nvim formatter configuration (prettier, nixfmt)
-    ├── dashboard.nix               # Startup dashboard (doom header, quick actions)
-    ├── fzf.nix                     # fzf-lua integration and global keymaps
-    ├── general-keymaps.nix         # Global non-LSP keybindings (e.g. Esc nohl)
-    ├── gitsigns.nix                # Git hunk signs and gitsigns keymaps
-    ├── harpoon.nix                 # Harpoon marks + fzf picker + keymaps
-    ├── lualine.nix                 # Lualine statusline configured with theme
-    ├── neo-tree.nix                # Neo-tree explorer + LSP-aware rename handler
-    ├── neogit.nix                  # Neogit Git UI integration
-    ├── noice.nix                   # Noice UI (centered cmdline, notifications, popupmenu)
-    ├── persistence.nix             # persistence.nvim session save/restore
-    ├── spider.nix                  # nvim-spider word motions (camelCase/snakes)
-    ├── tailwindcss.nix             # Tailwind CSS LSP server and settings
-    ├── telescope.nix               # Telescope + fzf-native configuration
-    ├── terminal-title.nix          # Terminal title updates (folder + Nixvim)
-    ├── tiny-inline-diagnostic.nix  # Inline diagnostics (tiny-inline-diagnostic.nvim)
-    ├── treesitter.nix              # Treesitter grammars and core settings
-    ├── treesitter-textobjects.nix  # Treesitter textobjects and keymaps
-    ├── ts-autotag.nix              # nvim-ts-autotag for closing HTML/JSX tags
-    ├── vue-macros.nix              # Vue/TS editor macros and helper keymaps
-    ├── which-key.nix               # Which-key groups and descriptions
+     ├── default.nix                 # Entry point — imports modules and sets globals.mapleader = " "
+     ├── auto-save.nix               # Auto-save.nvim via extraPlugins + extraConfigLua
+     ├── blink-cmp.nix               # Blink-powered completion (LSP, auto-imports, smart sources)
+     ├── catppuccin.nix              # Catppuccin colorscheme configuration
+     ├── conform.nix                 # Conform.nvim formatter configuration (prettier, nixfmt)
+     ├── dashboard.nix               # Startup dashboard (doom header, quick actions)
+     ├── fzf.nix                     # fzf-lua integration and global keymaps
+     ├── general-keymaps.nix         # Global non-LSP keybindings (e.g. Esc nohl)
+     ├── godot.nix                   # Godot 4 development (godotdev.nvim LSP, GDShader, DAP, docs)
+     ├── gitsigns.nix                # Git hunk signs and gitsigns keymaps
+     ├── harpoon.nix                 # Harpoon marks + fzf picker + keymaps
+     ├── lualine.nix                 # Lualine statusline configured with theme
+     ├── neo-tree.nix                # Neo-tree explorer + LSP-aware rename handler
+     ├── neogit.nix                  # Neogit Git UI integration
+     ├── noice.nix                   # Noice UI (centered cmdline, notifications, popupmenu)
+     ├── persistence.nix             # persistence.nvim session save/restore
+     ├── spider.nix                  # nvim-spider word motions (camelCase/snakes)
+     ├── tailwindcss.nix             # Tailwind CSS LSP server and settings
+     ├── telescope.nix               # Telescope + fzf-native configuration
+     ├── terminal-title.nix          # Terminal title updates (folder + Nixvim)
+     ├── tiny-inline-diagnostic.nix  # Inline diagnostics (tiny-inline-diagnostic.nvim)
+     ├── treesitter.nix              # Treesitter grammars and core settings
+     ├── treesitter-textobjects.nix  # Treesitter textobjects and keymaps
+     ├── ts-autotag.nix              # nvim-ts-autotag for closing HTML/JSX tags
+     ├── vue-macros.nix              # Vue/TS editor macros and helper keymaps
+     ├── which-key.nix               # Which-key groups and descriptions
     ├── yanky.nix                   # Yank history (yanky.nvim) and clipboard sync
     ├── languages/
     │   ├── _shared.nix             # Shared LSP hooks and utilities
@@ -406,6 +407,31 @@ LSP server for Tailwind CSS providing IntelliSense, class completions, color pre
 ### which-key (`config/which-key.nix`)
 
 Keybinding hints showing leader-key groups and available actions for discoverability. Registers groups: `<leader>f` (Find), `<leader>g` (Git), `<leader>m` (Macros), `<leader>c` (LSP), `<leader>q` (Quit).
+
+### godot (`config/godot.nix`)
+
+[godotdev.nvim](https://github.com/Mathijs-Bakker/godotdev.nvim) provides comprehensive Godot 4 development support including GDScript LSP, GDShader syntax highlighting, DAP debugging, automatic formatting, and built-in Godot documentation. Features:
+
+**LSP & Syntax:**
+- GDScript language server on port 6005 (Godot 4.x standard)
+- GDShader TreeSitter syntax highlighting and LSP support
+- Auto-detection of `project.godot` files with connection notifications
+
+**Debugging:**
+- DAP integration for GDScript debugging
+- Debug port 6006 configured
+
+**Development Tools:**
+- Automatic formatting with `gdscript-formatter` (4-space indent)
+- Built-in Godot class documentation: `:GodotDocs [ClassName]`
+- Health checks: `:checkhealth godotdev`
+- Scene runners: `:GodotRunProject`, `:GodotRunCurrentScene`, etc.
+
+**Editor Integration:**
+- Reconnect to Godot LSP: `:GodotReconnectLSP`
+- Optional editor server management: `:GodotStartEditorServer`
+
+Note: Requires Godot 4.x with TCP LSP enabled (Editor Settings → Network → Language Server)
 
 ## Language Support (`config/languages/`)
 

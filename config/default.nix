@@ -9,6 +9,7 @@
     ./dashboard.nix
     ./fzf.nix
     ./general-keymaps.nix
+    ./godot.nix
     ./gitsigns.nix
     ./harpoon.nix
     ./lualine.nix
