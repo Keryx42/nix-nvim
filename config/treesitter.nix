@@ -37,6 +37,9 @@
       vimdoc
       # Framework-specific
       vue
+      # Game development
+      gdscript
+      gdshader
     ];
   };
 
