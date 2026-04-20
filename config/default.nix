@@ -13,6 +13,7 @@
     ./gitsigns.nix
     ./harpoon.nix
     ./lualine.nix
+    ./mini-pairs.nix
     ./neo-tree.nix
     ./neogit.nix
     ./noice.nix

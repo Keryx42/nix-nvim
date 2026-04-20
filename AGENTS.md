@@ -20,8 +20,9 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
      ├── godot.nix                   # Godot 4 development (godotdev.nvim LSP, GDShader, DAP, docs)
      ├── gitsigns.nix                # Git hunk signs and gitsigns keymaps
      ├── harpoon.nix                 # Harpoon marks + fzf picker + keymaps
-     ├── lualine.nix                 # Lualine statusline configured with theme
-     ├── neo-tree.nix                # Neo-tree explorer + LSP-aware rename handler
+      ├── lualine.nix                 # Lualine statusline configured with theme
+      ├── mini-pairs.nix              # mini.pairs automatic bracket/quote pairing
+      ├── neo-tree.nix                # Neo-tree explorer + LSP-aware rename handler
      ├── neogit.nix                  # Neogit Git UI integration
      ├── noice.nix                   # Noice UI (centered cmdline, notifications, popupmenu)
      ├── persistence.nix             # persistence.nvim session save/restore
@@ -281,6 +282,14 @@ Status line with catppuccin theme. Sections:
 - `lualine_x`: encoding, fileformat, filetype
 - `lualine_y`: progress
 - `lualine_z`: location
+
+### mini-pairs (`config/mini-pairs.nix`)
+
+[mini.pairs](https://github.com/nvim-mini/mini.pairs) provides automatic bracket and quote pairing. Features:
+- **Auto-pairing:** Pairs `()`, `[]`, `{}`, `""`, `''`, `` ` ``
+- **Smart closing:** Automatically inserts closing bracket/quote
+- **Context-aware:** Respects surrounding context to avoid pairing in inappropriate places
+- Works automatically with no configuration needed
 
 ### dashboard (`config/dashboard.nix`)
 
