@@ -35,8 +35,9 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
      ├── treesitter-textobjects.nix  # Treesitter textobjects and keymaps
      ├── ts-autotag.nix              # nvim-ts-autotag for closing HTML/JSX tags
      ├── vue-macros.nix              # Vue/TS editor macros and helper keymaps
-     ├── which-key.nix               # Which-key groups and descriptions
-    ├── yanky.nix                   # Yank history (yanky.nvim) and clipboard sync
+     ├── which-key.nix                # Which-key groups and descriptions
+     ├── windows.nix                  # Window/split management (LazyVim-style)
+     ├── yanky.nix                   # Yank history (yanky.nvim) and clipboard sync
     ├── languages/
     │   ├── _shared.nix             # Shared LSP hooks and utilities
     │   ├── web.nix                 # Web languages: vtsls, vue_ls, eslint, prettier
@@ -416,6 +417,29 @@ LSP server for Tailwind CSS providing IntelliSense, class completions, color pre
 ### which-key (`config/which-key.nix`)
 
 Keybinding hints showing leader-key groups and available actions for discoverability. Registers groups: `<leader>f` (Find), `<leader>g` (Git), `<leader>m` (Macros), `<leader>c` (LSP), `<leader>q` (Quit).
+
+### windows (`config/windows.nix`)
+
+LazyVim-style window and split management keymaps. Features:
+
+**Window Navigation (Ctrl+hjkl):**
+- `<C-h>` - Go to left window
+- `<C-j>` - Go to lower window
+- `<C-k>` - Go to upper window
+- `<C-l>` - Go to right window
+
+**Window Resizing (Ctrl+Arrow):**
+- `<C-Up>` - Increase window height
+- `<C-Down>` - Decrease window height
+- `<C-Left>` - Decrease window width
+- `<C-Right>` - Increase window width
+
+**Split Creation (Leader+symbol):**
+- `<leader>-` - Split window below
+- `<leader>|` - Split window right
+
+**Window Management (Leader+w):**
+- `<leader>wd` - Delete window
 
 ### godot (`config/godot.nix`)
 
