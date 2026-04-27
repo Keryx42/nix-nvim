@@ -103,6 +103,7 @@ Leader key: `<Space>`
 | `<leader>fF` | Find files (cwd) |
 | `<leader>fg` | Live grep (root dir) |
 | `<leader>sg` | Live grep (root dir) |
+| `<leader>sm` | Search modified files |
 | `<leader>fG` | Live grep (cwd) |
 | `<leader>/` | Grep current buffer |
 
