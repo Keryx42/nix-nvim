@@ -6,8 +6,8 @@
       src = pkgs.fetchFromGitHub {
         owner = "rachartier";
         repo = "tiny-inline-diagnostic.nvim";
-        rev = "main";
-        hash = "sha256-mJl6yuTH79QsfKRktBGzPOlnL1x3/KoOAWyDGGw/AwM=";
+        rev = "147af4e49f51dd48f41972de26552872b8ba7b25";
+        hash = "sha256-LpZuRNGSK8AHLTIPIWoQlGot89qubFRL/RZ+EMs4bnQ=";
       };
     })
   ];
