@@ -38,6 +38,7 @@
     ./languages/nix.nix
     ./languages/json.nix
     ./languages/markdown.nix
+    ./languages/php.nix
     ./languages/python.nix
 
     # Cross-cutting tools

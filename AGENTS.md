@@ -38,13 +38,14 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
      ├── which-key.nix                # Which-key groups and descriptions
      ├── windows.nix                  # Window/split management (LazyVim-style)
      ├── yanky.nix                   # Yank history (yanky.nvim) and clipboard sync
-    ├── languages/
-    │   ├── _shared.nix             # Shared LSP hooks and utilities
-    │   ├── web.nix                 # Web languages: vtsls, vue_ls, eslint, prettier
-    │   ├── nix.nix                 # Nix language: nixd + nixfmt
-    │   ├── json.nix                # JSON: jsonls + schemas + prettier
-    │   ├── markdown.nix            # Markdown: marksman + prettier
-    │   └── python.nix              # Python: pyright + black + ruff
+     ├── languages/
+     │   ├── _shared.nix             # Shared LSP hooks and utilities
+     │   ├── web.nix                 # Web languages: vtsls, vue_ls, eslint, prettier
+     │   ├── nix.nix                 # Nix language: nixd + nixfmt
+     │   ├── json.nix                # JSON: jsonls + schemas + prettier
+     │   ├── markdown.nix            # Markdown: marksman + prettier
+     │   ├── php.nix                 # PHP: phpactor + pint + phpstan
+     │   └── python.nix              # Python: pyright + black + ruff
     └── tools/
         ├── linting.nix             # Linter integration (statix, deadnix, ruff)
         ├── lsp-rename.nix          # Three-phase LSP file rename helper (_G.lsp_rename_file)
@@ -516,6 +517,14 @@ Python language support with:
 - **Formatter:** black for consistent code formatting
 - **Linting:** Integrated with `ruff` via `tools/linting.nix` for fast diagnostics
 
+### php (`config/languages/php.nix`)
+
+PHP language support with Laravel and Blade focus:
+- **TreeSitter grammars:** PHP syntax highlighting, PHPDoc documentation blocks
+- **LSP server:** `phpactor` for autocompletion, goto-definition, refactoring, and rename
+- **Formatter:** `pint` (Laravel's opinionated PHP code style fixer)
+- **Linting:** Integrated with `phpstan` via `tools/linting.nix` for static analysis
+
 ## Tools (`config/tools/`)
 
 Cross-cutting tools and shared functionality organized in `config/tools/`.
@@ -525,6 +534,7 @@ Cross-cutting tools and shared functionality organized in `config/tools/`.
 Code linter using Nvim-lint with automatic triggers (BufWritePost, BufReadPost, InsertLeave). Configured linters:
 - **Nix files:** `statix`, `deadnix`
 - **Python files:** `ruff` for fast comprehensive linting and style checking
+- **PHP files:** `phpstan` for static analysis
 
 ### lsp-rename (`config/tools/lsp-rename.nix`)
 
