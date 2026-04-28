@@ -394,7 +394,7 @@ Editor macros for Vue 3/TypeScript: storeToRefs wrapper, composable scaffolding,
 
 ### treesitter (`config/treesitter.nix`)
 
-Treesitter configuration with 33 language grammars for syntax highlighting, indentation, and code folding. Languages: bash, c, css, html, javascript, jsdoc, json, lua, nix, tsx, typescript, vim, diff, markdown, printf, query, regex, toml, xml, yaml, luadoc, luap, vimdoc, vue. Foldlevel set to 99 (all folds open by default).
+Treesitter configuration with 34 language grammars for syntax highlighting, indentation, and code folding. Languages: bash, c, css, html, javascript, jsdoc, json, lua, nix, tsx, typescript, vim, diff, markdown, printf, query, regex, toml, xml, yaml, luadoc, luap, vimdoc, vue, php, phpdoc, blade, gdscript, gdshader. Foldlevel set to 99 (all folds open by default).
 
 ### treesitter-textobjects (`config/treesitter-textobjects.nix`)
 
@@ -547,10 +547,11 @@ Python language support with:
 ### php (`config/languages/php.nix`)
 
 PHP language support with Laravel and Blade focus:
-- **TreeSitter grammars:** PHP syntax highlighting, PHPDoc documentation blocks
-- **LSP server:** `phpactor` for autocompletion, goto-definition, refactoring, and rename
-- **Formatter:** `pint` (Laravel's opinionated PHP code style fixer)
+- **TreeSitter grammars:** PHP, PHPDoc documentation blocks, and Blade templates syntax highlighting
+- **LSP server:** `phpactor` for autocompletion, goto-definition, refactoring, and rename (works on both `.php` and `.blade.php` files)
+- **Formatter:** `pint` (Laravel's opinionated PHP code style fixer, applies to both `.php` and `.blade.php`)
 - **Linting:** Integrated with `phpstan` via `tools/linting.nix` for static analysis
+- **Blade templates:** Full support for `.blade.php` files with LSP and formatting via filetype configuration
 
 ## Tools (`config/tools/`)
 
