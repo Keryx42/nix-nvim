@@ -25,6 +25,7 @@
     ./tiny-inline-diagnostic.nix
     ./treesitter.nix
     ./treesitter-textobjects.nix
+    ./trouble.nix
     ./ts-autotag.nix
      ./vue-macros.nix
      ./which-key.nix

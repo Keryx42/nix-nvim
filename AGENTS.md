@@ -31,9 +31,10 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
      ├── telescope.nix               # Telescope + fzf-native configuration
      ├── terminal-title.nix          # Terminal title updates (folder + Nixvim)
      ├── tiny-inline-diagnostic.nix  # Inline diagnostics (tiny-inline-diagnostic.nvim)
-     ├── treesitter.nix              # Treesitter grammars and core settings
-     ├── treesitter-textobjects.nix  # Treesitter textobjects and keymaps
-     ├── ts-autotag.nix              # nvim-ts-autotag for closing HTML/JSX tags
+      ├── treesitter.nix              # Treesitter grammars and core settings
+      ├── treesitter-textobjects.nix  # Treesitter textobjects and keymaps
+      ├── trouble.nix                 # Trouble diagnostics viewer and quickfix integration
+      ├── ts-autotag.nix              # nvim-ts-autotag for closing HTML/JSX tags
      ├── vue-macros.nix              # Vue/TS editor macros and helper keymaps
      ├── which-key.nix                # Which-key groups and descriptions
      ├── windows.nix                  # Window/split management (LazyVim-style)
@@ -176,7 +177,7 @@ Leader key: `<Space>`
 
 ### Which Key Hints (which-key)
 
-Which-key registers leader-key groups to surface existing keybindings for discoverability (no new keybinds introduced). Notable hints:
+Which-key registers leader-key groups to surface existing keybindings for discoverability. Notable hints:
 - `<leader>e` / `<leader>E` / `<leader>fe` / `<leader>fE` — Neo-tree toggles and focus
 - `<leader><space>` / `<leader>ff` / `<leader>fF` / `<leader>fg` / `<leader>fG` — fzf file/find/grep actions
 - `<leader>gu` — Neogit
@@ -184,8 +185,11 @@ Which-key registers leader-key groups to surface existing keybindings for discov
 - `<leader>n` — Notification history (Noice)
 - `<leader>p` — Yank history (yanky.nvim)
 - `<leader>H` / `<leader>h` / `<leader>1-9` — Harpoon file navigation
+- `<leader>c` — LSP and Trouble actions (code actions, rename, symbols, diagnostics)
+- `<leader>x` — Trouble diagnostics, location/quickfix lists
 - `gd` — Go to definition (LSP)
 - `gD` — Go to declaration (LSP)
+- `[q` / `]q` — Navigate Trouble/Quickfix items
 
 ### LSP keymaps (lsp-keymaps.nix)
 
@@ -206,6 +210,19 @@ Which-key registers leader-key groups to surface existing keybindings for discov
 | `gd` | Go to definition (single result edits; multiple → fzf/quickfix) |
 | `gD` | Go to declaration (same behaviour as `gd`) |
 | `<leader>qq` | Quit all (`qa`) |
+
+### Trouble (trouble.nix)
+
+| Key | Action |
+|---|---|
+| `<leader>xx` | Diagnostics (Trouble) |
+| `<leader>xX` | Buffer Diagnostics (Trouble) |
+| `<leader>cs` | Symbols (Trouble) |
+| `<leader>cS` | LSP Definitions / references / ... (Trouble) |
+| `<leader>xL` | Location List (Trouble) |
+| `<leader>xQ` | Quickfix List (Trouble) |
+| `[q` | Previous Trouble/Quickfix Item |
+| `]q` | Next Trouble/Quickfix Item |
 
 ### Treesitter textobjects (treesitter-textobjects.nix)
 
@@ -406,6 +423,16 @@ Treesitter configuration with 33 language grammars for syntax highlighting, inde
 ### ts-autotag (`config/ts-autotag.nix`)
 
 [windwp/nvim-ts-autotag](https://github.com/windwp/nvim-ts-autotag) automatically closes HTML and JSX tags. Typing `<div>` followed by `>` auto-inserts the closing `</div>` tag based on treesitter parsing.
+
+### trouble (`config/trouble.nix`)
+
+[folke/trouble.nvim](https://github.com/folke/trouble.nvim) provides a pretty list for showing diagnostics, references, quickfix and location lists. Features:
+- **Diagnostics viewer** - Navigate project/buffer diagnostics with `<leader>xx` / `<leader>xX`
+- **LSP integration** - View definitions, references, implementations, document symbols
+- **Quickfix/Location lists** - Unified interface for build errors, search results
+- **Document symbols** - Quick outline with `<leader>cs`
+- **Smart navigation** - Navigate items with `[q` / `]q`
+- **LazyVim keybindings** - Full parity with LazyVim configuration
 
 ### Tailwind CSS (`config/tailwindcss.nix`)
 
