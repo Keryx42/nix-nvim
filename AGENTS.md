@@ -283,7 +283,7 @@ Declarative clipboard provider configuration for multi-platform support using ni
 - **Linux X11:** `xclip` (explicit Nix package)
 - **Linux Wayland:** `wl-copy`/`wl-paste` (explicit Nix package)
 
-Neovim auto-detects `DISPLAY` and `WAYLAND_DISPLAY` environment variables at runtime to select the appropriate provider. All yanks sync to system clipboard via `vim.opt.clipboard = "unnamedplus"`. This declarative approach prevents freezes on systems without proper clipboard support.
+Providers are installed but global clipboard sync (`vim.opt.clipboard = "unnamedplus"`) is handled conditionally in `yanky.nix` to prevent freezes on systems without proper clipboard support.
 
 ### lualine (`config/lualine.nix`)
 
@@ -370,7 +370,11 @@ Sets Ghostty terminal window title to current folder name with "Nixvim" suffix (
 
 ### yanky (`config/yanky.nix`)
 
-[yanky.nvim](https://github.com/gbprod/yanky.nvim) provides yank history with system clipboard integration. Mapping: `<leader>p` to open yank ring in normal and visual modes. Clipboard provider configuration is centralized in `clipboard.nix` for safe multi-platform support.
+[yanky.nvim](https://github.com/gbprod/yanky.nvim) provides yank history with conditional system clipboard integration. Mapping: `<leader>p` to open yank ring in normal and visual modes. Clipboard sync via `vim.opt.clipboard = "unnamedplus"` is conditionally enabled only on safe platforms:
+- **macOS:** Always enabled (pbcopy is native)
+- **Linux X11:** Enabled if `DISPLAY` is set (xclip available)
+- **Linux Wayland:** Enabled only if `wl-copy` is available
+- **Other:** Disabled to prevent freezes from unavailable/misconfigured clipboard providers
 
 ### vue-macros (`config/vue-macros.nix`)
 
