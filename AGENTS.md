@@ -360,7 +360,7 @@ Sets Ghostty terminal window title to current folder name with "Nixvim" suffix (
 
 ### yanky (`config/yanky.nix`)
 
-[yanky.nvim](https://github.com/gbprod/yanky.nvim) provides yank history with system clipboard sync. Mapping: `<leader>p` to open yank ring in normal and visual modes. `vim.opt.clipboard = "unnamedplus"` syncs yanks to system clipboard.
+[yanky.nvim](https://github.com/gbprod/yanky.nvim) provides yank history with system clipboard sync. Mapping: `<leader>p` to open yank ring in normal and visual modes. The configuration now enables `vim.opt.clipboard = "unnamedplus"` only when safe: automatically on macOS, on Linux when X11 (`DISPLAY`) is present, or under Wayland when the `wl-copy` helper is available. This avoids freezes on some Wayland setups caused by blocking clipboard helpers.
 
 ### vue-macros (`config/vue-macros.nix`)
 
