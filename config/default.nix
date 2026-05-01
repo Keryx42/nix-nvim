@@ -30,7 +30,7 @@
     ./vue-macros.nix 
     ./which-key.nix
     ./windows.nix
-    ./yanky.nix
+    # ./yanky.nix
 
     # # Language support (unified per-language files with LSP + formatters)
     # Note: TreeSitter grammars are centralized in treesitter.nix
