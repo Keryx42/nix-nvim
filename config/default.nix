@@ -5,6 +5,7 @@
     ./auto-save.nix
     ./blink-cmp.nix
     ./catppuccin.nix
+    ./clipboard.nix
     ./conform.nix
     ./dashboard.nix
     ./fzf.nix
@@ -29,7 +30,7 @@
     ./vue-macros.nix 
     ./which-key.nix
     ./windows.nix
-    #./yanky.nix #resize problens
+    ./yanky.nix
 
     # # Language support (unified per-language files with LSP + formatters)
     # Note: TreeSitter grammars are centralized in treesitter.nix
