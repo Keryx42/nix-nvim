@@ -26,11 +26,12 @@
     ./tiny-inline-diagnostic.nix
     ./treesitter.nix
     ./treesitter-textobjects.nix
-    ./ts-autotag.nix 
-    ./vue-macros.nix 
-    ./which-key.nix
-    ./windows.nix
-    # ./yanky.nix
+    ./trouble.nix
+    ./ts-autotag.nix
+     ./vue-macros.nix
+     ./which-key.nix
+     ./windows.nix
+     # ./yanky.nix
 
     # # Language support (unified per-language files with LSP + formatters)
     # Note: TreeSitter grammars are centralized in treesitter.nix
@@ -39,6 +40,7 @@
     ./languages/nix.nix
     ./languages/json.nix
     ./languages/markdown.nix
+    ./languages/php.nix
     ./languages/python.nix
 
     # Cross-cutting tools

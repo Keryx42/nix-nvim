@@ -32,20 +32,22 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
      ├── telescope.nix               # Telescope + fzf-native configuration
      ├── terminal-title.nix          # Terminal title updates (folder + Nixvim)
      ├── tiny-inline-diagnostic.nix  # Inline diagnostics (tiny-inline-diagnostic.nvim)
-     ├── treesitter.nix              # Treesitter grammars and core settings
-     ├── treesitter-textobjects.nix  # Treesitter textobjects and keymaps
-     ├── ts-autotag.nix              # nvim-ts-autotag for closing HTML/JSX tags
+      ├── treesitter.nix              # Treesitter grammars and core settings
+      ├── treesitter-textobjects.nix  # Treesitter textobjects and keymaps
+      ├── trouble.nix                 # Trouble diagnostics viewer and quickfix integration
+      ├── ts-autotag.nix              # nvim-ts-autotag for closing HTML/JSX tags
      ├── vue-macros.nix              # Vue/TS editor macros and helper keymaps
      ├── which-key.nix                # Which-key groups and descriptions
      ├── windows.nix                  # Window/split management (LazyVim-style)
      ├── yanky.nix                   # Yank history (yanky.nvim) with clipboard integration
-    ├── languages/
-    │   ├── _shared.nix             # Shared LSP hooks and utilities
-    │   ├── web.nix                 # Web languages: vtsls, vue_ls, eslint, prettier
-    │   ├── nix.nix                 # Nix language: nixd + nixfmt
-    │   ├── json.nix                # JSON: jsonls + schemas + prettier
-    │   ├── markdown.nix            # Markdown: marksman + prettier
-    │   └── python.nix              # Python: pyright + black + ruff
+     ├── languages/
+     │   ├── _shared.nix             # Shared LSP hooks and utilities
+     │   ├── web.nix                 # Web languages: vtsls, vue_ls, eslint, prettier
+     │   ├── nix.nix                 # Nix language: nixd + nixfmt
+     │   ├── json.nix                # JSON: jsonls + schemas + prettier
+     │   ├── markdown.nix            # Markdown: marksman + prettier
+     │   ├── php.nix                 # PHP: phpactor + pint + phpstan
+     │   └── python.nix              # Python: pyright + black + ruff
     └── tools/
         ├── linting.nix             # Linter integration (statix, deadnix, ruff)
         ├── lsp-rename.nix          # Three-phase LSP file rename helper (_G.lsp_rename_file)
@@ -176,7 +178,7 @@ Leader key: `<Space>`
 
 ### Which Key Hints (which-key)
 
-Which-key registers leader-key groups to surface existing keybindings for discoverability (no new keybinds introduced). Notable hints:
+Which-key registers leader-key groups to surface existing keybindings for discoverability. Notable hints:
 - `<leader>e` / `<leader>E` / `<leader>fe` / `<leader>fE` — Neo-tree toggles and focus
 - `<leader><space>` / `<leader>ff` / `<leader>fF` / `<leader>fg` / `<leader>fG` — fzf file/find/grep actions
 - `<leader>gu` — Neogit
@@ -184,8 +186,11 @@ Which-key registers leader-key groups to surface existing keybindings for discov
 - `<leader>n` — Notification history (Noice)
 - `<leader>p` — Yank history (yanky.nvim)
 - `<leader>H` / `<leader>h` / `<leader>1-9` — Harpoon file navigation
+- `<leader>c` — LSP and Trouble actions (code actions, rename, symbols, diagnostics)
+- `<leader>x` — Trouble diagnostics, location/quickfix lists
 - `gd` — Go to definition (LSP)
 - `gD` — Go to declaration (LSP)
+- `[q` / `]q` — Navigate Trouble/Quickfix items
 
 ### LSP keymaps (lsp-keymaps.nix)
 
@@ -206,6 +211,19 @@ Which-key registers leader-key groups to surface existing keybindings for discov
 | `gd` | Go to definition (single result edits; multiple → fzf/quickfix) |
 | `gD` | Go to declaration (same behaviour as `gd`) |
 | `<leader>qq` | Quit all (`qa`) |
+
+### Trouble (trouble.nix)
+
+| Key | Action |
+|---|---|
+| `<leader>xx` | Diagnostics (Trouble) |
+| `<leader>xX` | Buffer Diagnostics (Trouble) |
+| `<leader>cs` | Symbols (Trouble) |
+| `<leader>cS` | LSP Definitions / references / ... (Trouble) |
+| `<leader>xL` | Location List (Trouble) |
+| `<leader>xQ` | Quickfix List (Trouble) |
+| `[q` | Previous Trouble/Quickfix Item |
+| `]q` | Next Trouble/Quickfix Item |
 
 ### Treesitter textobjects (treesitter-textobjects.nix)
 
@@ -390,7 +408,7 @@ Editor macros for Vue 3/TypeScript: storeToRefs wrapper, composable scaffolding,
 
 ### treesitter (`config/treesitter.nix`)
 
-Treesitter configuration with 33 language grammars for syntax highlighting, indentation, and code folding. Languages: bash, c, css, html, javascript, jsdoc, json, lua, nix, tsx, typescript, vim, diff, markdown, printf, query, regex, toml, xml, yaml, luadoc, luap, vimdoc, vue. Foldlevel set to 99 (all folds open by default).
+Treesitter configuration with 34 language grammars for syntax highlighting, indentation, and code folding. Languages: bash, c, css, html, javascript, jsdoc, json, lua, nix, tsx, typescript, vim, diff, markdown, printf, query, regex, toml, xml, yaml, luadoc, luap, vimdoc, vue, php, phpdoc, blade, gdscript, gdshader. Foldlevel set to 99 (all folds open by default).
 
 ### treesitter-textobjects (`config/treesitter-textobjects.nix`)
 
@@ -419,6 +437,16 @@ Treesitter configuration with 33 language grammars for syntax highlighting, inde
 ### ts-autotag (`config/ts-autotag.nix`)
 
 [windwp/nvim-ts-autotag](https://github.com/windwp/nvim-ts-autotag) automatically closes HTML and JSX tags. Typing `<div>` followed by `>` auto-inserts the closing `</div>` tag based on treesitter parsing.
+
+### trouble (`config/trouble.nix`)
+
+[folke/trouble.nvim](https://github.com/folke/trouble.nvim) provides a pretty list for showing diagnostics, references, quickfix and location lists. Features:
+- **Diagnostics viewer** - Navigate project/buffer diagnostics with `<leader>xx` / `<leader>xX`
+- **LSP integration** - View definitions, references, implementations, document symbols
+- **Quickfix/Location lists** - Unified interface for build errors, search results
+- **Document symbols** - Quick outline with `<leader>cs`
+- **Smart navigation** - Navigate items with `[q` / `]q`
+- **LazyVim keybindings** - Full parity with LazyVim configuration
 
 ### Tailwind CSS (`config/tailwindcss.nix`)
 
@@ -530,6 +558,15 @@ Python language support with:
 - **Formatter:** black for consistent code formatting
 - **Linting:** Integrated with `ruff` via `tools/linting.nix` for fast diagnostics
 
+### php (`config/languages/php.nix`)
+
+PHP language support with Laravel and Blade focus:
+- **TreeSitter grammars:** PHP, PHPDoc documentation blocks, and Blade templates syntax highlighting
+- **LSP server:** `phpactor` for autocompletion, goto-definition, refactoring, and rename (works on both `.php` and `.blade.php` files)
+- **Formatter:** `pint` (Laravel's opinionated PHP code style fixer, applies to both `.php` and `.blade.php`)
+- **Linting:** Integrated with `phpstan` via `tools/linting.nix` for static analysis
+- **Blade templates:** Full support for `.blade.php` files with LSP and formatting via filetype configuration
+
 ## Tools (`config/tools/`)
 
 Cross-cutting tools and shared functionality organized in `config/tools/`.
@@ -539,6 +576,7 @@ Cross-cutting tools and shared functionality organized in `config/tools/`.
 Code linter using Nvim-lint with automatic triggers (BufWritePost, BufReadPost, InsertLeave). Configured linters:
 - **Nix files:** `statix`, `deadnix`
 - **Python files:** `ruff` for fast comprehensive linting and style checking
+- **PHP files:** `phpstan` for static analysis
 
 ### lsp-rename (`config/tools/lsp-rename.nix`)
 

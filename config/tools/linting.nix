@@ -5,6 +5,7 @@
     lintersByFt = {
       nix = [ "statix" "deadnix" ];
       python = [ "ruff" ];
+      php = [ "phpstan" ];
     };
     # Linting is triggered on these events:
     # - BufWritePost: after file write
