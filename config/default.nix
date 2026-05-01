@@ -25,13 +25,13 @@
     ./tiny-inline-diagnostic.nix
     ./treesitter.nix
     ./treesitter-textobjects.nix
-    ./ts-autotag.nix
-     ./vue-macros.nix
-     ./which-key.nix
-     ./windows.nix
-     ./yanky.nix
+    ./ts-autotag.nix 
+    ./vue-macros.nix 
+    ./which-key.nix
+    ./windows.nix
+    #./yanky.nix #resize problens
 
-    # Language support (unified per-language files with LSP + formatters)
+    # # Language support (unified per-language files with LSP + formatters)
     # Note: TreeSitter grammars are centralized in treesitter.nix
     ./languages/_shared.nix
     ./languages/web.nix
