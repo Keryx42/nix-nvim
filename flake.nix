@@ -18,7 +18,7 @@
       ];
 
       perSystem =
-        { system, ... }:
+        { system, pkgs, ... }:
         let
           nixvimLib = nixvim.lib.${system};
           nixvim' = nixvim.legacyPackages.${system};
@@ -30,7 +30,13 @@
               # inherit (inputs) foo;
             };
           };
-          nvim = nixvim'.makeNixvimWithModule nixvimModule;
+          baseNvim = nixvim'.makeNixvimWithModule nixvimModule;
+          # Add clipboard tools to nixvim runtime closure for multi-platform support
+          # by overriding the derivation's buildInputs
+          nvim = baseNvim.overrideAttrs (old: {
+            buildInputs = (old.buildInputs or []) ++
+              (if pkgs.stdenv.isLinux then [ pkgs.wl-clipboard pkgs.xclip ] else []);
+          });
         in
         {
           checks = {
