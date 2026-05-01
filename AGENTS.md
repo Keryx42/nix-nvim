@@ -13,6 +13,7 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
      ├── auto-save.nix               # Auto-save.nvim via extraPlugins + extraConfigLua
      ├── blink-cmp.nix               # Blink-powered completion (LSP, auto-imports, smart sources)
      ├── catppuccin.nix              # Catppuccin colorscheme configuration
+     ├── clipboard.nix               # Clipboard providers (pbcopy, xclip, wl-copy) multi-platform config
      ├── conform.nix                 # Conform.nvim formatter configuration (prettier, nixfmt)
      ├── dashboard.nix               # Startup dashboard (doom header, quick actions)
      ├── fzf.nix                     # fzf-lua integration and global keymaps
@@ -37,7 +38,7 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
      ├── vue-macros.nix              # Vue/TS editor macros and helper keymaps
      ├── which-key.nix                # Which-key groups and descriptions
      ├── windows.nix                  # Window/split management (LazyVim-style)
-     ├── yanky.nix                   # Yank history (yanky.nvim) and clipboard sync
+     ├── yanky.nix                   # Yank history (yanky.nvim) with clipboard integration
     ├── languages/
     │   ├── _shared.nix             # Shared LSP hooks and utilities
     │   ├── web.nix                 # Web languages: vtsls, vue_ls, eslint, prettier
@@ -275,6 +276,15 @@ General editor keybindings for common operations. Features:
 
 Colorscheme with dark/light variant support. Enabled via `colorschemes.catppuccin.enable = true`.
 
+### clipboard (`config/clipboard.nix`)
+
+Declarative clipboard provider configuration for multi-platform support using nixvim's clipboard module:
+- **macOS/Darwin:** `pbcopy`/`pbpaste` (native OS clipboard)
+- **Linux X11:** `xclip` (explicit Nix package)
+- **Linux Wayland:** `wl-copy`/`wl-paste` (explicit Nix package)
+
+Neovim auto-detects `DISPLAY` and `WAYLAND_DISPLAY` environment variables at runtime to select the appropriate provider. All yanks sync to system clipboard via `vim.opt.clipboard = "unnamedplus"`. This declarative approach prevents freezes on systems without proper clipboard support.
+
 ### lualine (`config/lualine.nix`)
 
 Status line with catppuccin theme. Sections:
@@ -360,7 +370,7 @@ Sets Ghostty terminal window title to current folder name with "Nixvim" suffix (
 
 ### yanky (`config/yanky.nix`)
 
-[yanky.nvim](https://github.com/gbprod/yanky.nvim) provides yank history with system clipboard sync. Mapping: `<leader>p` to open yank ring in normal and visual modes. The configuration now enables `vim.opt.clipboard = "unnamedplus"` only when safe: automatically on macOS, on Linux when X11 (`DISPLAY`) is present, or under Wayland when the `wl-copy` helper is available. This avoids freezes on some Wayland setups caused by blocking clipboard helpers.
+[yanky.nvim](https://github.com/gbprod/yanky.nvim) provides yank history with system clipboard integration. Mapping: `<leader>p` to open yank ring in normal and visual modes. Clipboard provider configuration is centralized in `clipboard.nix` for safe multi-platform support.
 
 ### vue-macros (`config/vue-macros.nix`)
 
