@@ -23,5 +23,7 @@
 
   # Enable system clipboard integration (yanks sync to system clipboard)
   # nixvim's providers will handle this safely based on environment detection
-  vim.opt.clipboard = "unnamedplus";
+  extraConfigLua = ''
+    vim.opt.clipboard = "unnamedplus"
+  '';
 }
