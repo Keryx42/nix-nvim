@@ -8,6 +8,7 @@
     ./clipboard.nix
     ./conform.nix
     ./dashboard.nix
+    ./dap.nix
     ./fzf.nix
     ./general-keymaps.nix
     ./godot.nix
