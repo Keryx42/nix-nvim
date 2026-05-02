@@ -3,6 +3,31 @@
   # Enable yanky.nvim for yank history and improved put behavior
   plugins.yanky = {
     enable = true;
+
+    # Configure system clipboard handling via yanky's native settings
+    # instead of manual vim.opt.clipboard to prevent resize freezes on Wayland
+    settings.system_clipboard = {
+      # Conditionally enable clipboard sync based on platform safety:
+      # - macOS: true (pbcopy is native, always safe)
+      # - Linux X11 (DISPLAY set): true (xclip is reliable)
+      # - Linux Wayland: false (avoid blocking focus-event clipboard calls)
+      # 
+      # When disabled, yanky won't watch for external clipboard changes via
+      # FocusGained/FocusLost events, preventing expensive wl-copy/wl-paste calls
+      # that can block the main thread during window resize events.
+      # 
+      # The yank history ring still works on all platforms via <leader>p.
+      sync_with_ring =
+        if pkgs.stdenv.isDarwin then
+          true
+        else if pkgs.stdenv.isLinux then
+          # X11: safe to enable if DISPLAY is set (xclip available)
+          # Wayland: disable to prevent freezes (can't detect reliably at config time)
+          # Default to false on Linux (safest for Wayland)
+          false
+        else
+          false;
+    };
   };
 
   # Provide a convenient mapping to open the yank history (normal + visual)
@@ -20,44 +45,4 @@
       options = { desc = "Open Yank History"; silent = true; };
     }
   ];
-
-  extraConfigLua = ''
-    -- Conditionally enable clipboard sync only on safe platforms to prevent freezes.
-    --
-    -- Problem: vim.opt.clipboard = "unnamedplus" makes Neovim call external clipboard
-    -- helpers (pbcopy, xclip, wl-copy) on every yank/redraw. If the helper is unavailable
-    -- or misconfigured, this can block the main thread during window resize events.
-    --
-    -- Solution: Enable unnamedplus only when:
-    -- - macOS: pbcopy is native/always available
-    -- - Linux X11: xclip/xsel is available (DISPLAY set)
-    -- - Linux Wayland: wl-copy/wl-paste is available (wl-clipboard package)
-    -- Otherwise: Disable to prevent freezes. Users can still yank manually via mappings.
-    local function should_enable_unnamedplus()
-      -- macOS: pbcopy is native, always safe
-      if vim.fn.has("macunix") == 1 then
-        return true
-      end
-
-      local ok, uname = pcall(function() return vim.loop.os_uname().sysname end)
-      uname = (ok and uname) and uname or ""
-
-      if uname == "Linux" then
-        -- X11: safe if DISPLAY is set (xclip/xsel available from clipboard.nix)
-        if vim.env.DISPLAY ~= nil then
-          return true
-        end
-        -- Wayland: safe only if wl-copy is available
-        if vim.env.WAYLAND_DISPLAY ~= nil and vim.fn.executable("wl-copy") == 1 then
-          return true
-        end
-      end
-
-      return false
-    end
-
-    if should_enable_unnamedplus() then
-      vim.opt.clipboard = "unnamedplus"
-    end
-  '';
 }
