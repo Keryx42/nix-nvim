@@ -3,10 +3,30 @@
   # Enable yanky.nvim for yank history and improved put behavior
   plugins.yanky = {
     enable = true;
-    settings = {
-      system_clipboard = {
-        sync_with_ring = true;
-      };
+
+    # Configure system clipboard handling via yanky's native settings
+    # instead of manual vim.opt.clipboard to prevent resize freezes on Wayland
+    settings.system_clipboard = {
+      # Conditionally enable clipboard sync based on platform safety:
+      # - macOS: true (pbcopy is native, always safe)
+      # - Linux X11 (DISPLAY set): true (xclip is reliable)
+      # - Linux Wayland: false (avoid blocking focus-event clipboard calls)
+      # 
+      # When disabled, yanky won't watch for external clipboard changes via
+      # FocusGained/FocusLost events, preventing expensive wl-copy/wl-paste calls
+      # that can block the main thread during window resize events.
+      # 
+      # The yank history ring still works on all platforms via <leader>p.
+      sync_with_ring =
+        if pkgs.stdenv.isDarwin then
+          true
+        else if pkgs.stdenv.isLinux then
+          # X11: safe to enable if DISPLAY is set (xclip available)
+          # Wayland: disable to prevent freezes (can't detect reliably at config time)
+          # Default to false on Linux (safest for Wayland)
+          false
+        else
+          false;
     };
   };
 
@@ -25,9 +45,4 @@
       options = { desc = "Open Yank History"; silent = true; };
     }
   ];
-
-  extraConfigLua = ''
-    -- Make all yanks copy to the system clipboard (unnamedplus)
-    vim.opt.clipboard = "unnamedplus"
-  '';
-}  
+}

@@ -5,8 +5,10 @@
     ./auto-save.nix
     ./blink-cmp.nix
     ./catppuccin.nix
+    ./clipboard.nix
     ./conform.nix
     ./dashboard.nix
+    ./dap.nix
     ./fzf.nix
     ./general-keymaps.nix
     ./godot.nix
@@ -32,7 +34,7 @@
      ./windows.nix
      ./yanky.nix
 
-    # Language support (unified per-language files with LSP + formatters)
+    # # Language support (unified per-language files with LSP + formatters)
     # Note: TreeSitter grammars are centralized in treesitter.nix
     ./languages/_shared.nix
     ./languages/web.nix
