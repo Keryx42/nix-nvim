@@ -3,6 +3,11 @@
   # Enable yanky.nvim for yank history and improved put behavior
   plugins.yanky = {
     enable = true;
+    settings = {
+      system_clipboard = {
+        sync_with_ring = true;
+      };
+    };
   };
 
   # Provide a convenient mapping to open the yank history (normal + visual)
