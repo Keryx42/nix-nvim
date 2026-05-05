@@ -30,6 +30,13 @@
     };
   };
 
+  # Enable system clipboard integration on macOS
+  # vim.opt.clipboard = "unnamedplus" syncs unnamed register with system clipboard
+  # Safe on macOS (pbcopy is native, no blocking calls) but disabled on Linux
+  # to prevent freeze issues on Wayland with wl-copy/wl-paste
+  vim.opt.clipboard = 
+    if pkgs.stdenv.isDarwin then "unnamedplus" else "";
+
   # Provide a convenient mapping to open the yank history (normal + visual)
   keymaps = [
     {

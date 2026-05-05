@@ -15,9 +15,10 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
      ├── catppuccin.nix              # Catppuccin colorscheme configuration
      ├── clipboard.nix               # Clipboard providers (pbcopy, xclip, wl-copy) multi-platform config
      ├── conform.nix                 # Conform.nvim formatter configuration (prettier, nixfmt)
-     ├── dashboard.nix               # Startup dashboard (doom header, quick actions)
-     ├── fzf.nix                     # fzf-lua integration and global keymaps
-     ├── general-keymaps.nix         # Global non-LSP keybindings (e.g. Esc nohl)
+      ├── dashboard.nix               # Startup dashboard (doom header, quick actions)
+      ├── dap.nix                     # DAP (Debug Adapter Protocol) for debugging
+      ├── fzf.nix                     # fzf-lua integration and global keymaps
+      ├── general-keymaps.nix         # Global non-LSP keybindings (e.g. Esc nohl)
      ├── godot.nix                   # Godot 4 development (godotdev.nvim LSP, GDShader, DAP, docs)
      ├── gitsigns.nix                # Git hunk signs and gitsigns keymaps
      ├── harpoon.nix                 # Harpoon marks + fzf picker + keymaps
@@ -325,6 +326,10 @@ Status line with catppuccin theme. Sections:
 
 Startup dashboard using the `doom` theme with large ASCII art header. Center actions for Find/Restore Session/Live Grep/New File/Git UI/Config/Quit. Footer shows loaded plugin stats. Actions call `fzf-lua` or builtins (e.g. `Neogit`, `enew`).
 
+### dap (`config/dap.nix`)
+
+Debug Adapter Protocol (DAP) support with vim.dap and dap-ui. Provides debugging capabilities for multiple languages with integrated UI for breakpoints, watches, and stack traces.
+
 ### noice (`config/noice.nix`)
 
 UI overhaul that replaces the default Neovim UI with floating windows. Features:
@@ -391,16 +396,16 @@ Sets Ghostty terminal window title to current folder name with "Nixvim" suffix (
 [yanky.nvim](https://github.com/gbprod/yanky.nvim) provides yank history with intelligent clipboard management via nixvim's native plugin settings. Mapping: `<leader>p` to open yank ring in normal and visual modes.
 
 **Clipboard integration strategy:**
-- Uses `plugins.yanky.settings.system_clipboard.sync_with_ring` instead of manual `vim.opt.clipboard` to prevent resize freezes
-- **macOS:** `sync_with_ring = true` (pbcopy is native, always safe for focus-event monitoring)
-- **Linux (X11 & Wayland):** `sync_with_ring = false` (disabled to prevent blocking clipboard provider calls during resize events)
+- **macOS:** Enables both `vim.opt.clipboard = "unnamedplus"` AND `sync_with_ring = true` for seamless system clipboard integration (pbcopy is native, zero risk of freezes)
+- **Linux:** Uses `sync_with_ring = false` without global clipboard setting to prevent blocking calls to `wl-copy`/`wl-paste` during window resize events
 - Yank history ring (`<leader>p`) works on all platforms regardless of clipboard sync status
 - Clipboard providers (pbcopy, xclip, wl-copy) are configured in `clipboard.nix` and available in runtime closure when needed
 
-**Why this approach:**
-- `vim.opt.clipboard = "unnamedplus"` causes Neovim to call external clipboard helpers (wl-copy/wl-paste) on every yank and redraw event, creating blocking calls during window resize → **FREEZE**
-- Yanky's `system_clipboard.sync_with_ring` uses focus-based events (FocusGained/FocusLost) for clipboard monitoring, lower frequency but still safe to disable
-- Disabling on Linux prevents expensive clipboard provider calls while keeping core yank history functionality
+**Why this platform-specific approach:**
+- On **macOS**, `vim.opt.clipboard = "unnamedplus"` is safe and provides transparent system clipboard sync (pbcopy is a native OS call, never blocks)
+- On **Linux Wayland**, `vim.opt.clipboard = "unnamedplus"` would cause Neovim to call external clipboard helpers (wl-copy/wl-paste) on every yank and redraw event, creating blocking calls during window resize → **FREEZE**
+- Yanky's `system_clipboard.sync_with_ring` uses focus-based events (FocusGained/FocusLost) for clipboard monitoring, providing a lower-frequency alternative when global clipboard sync is unsafe
+- Linux users get a safe default (yank history via `<leader>p` always works) while keeping Wayland responsive
 
 ### vue-macros (`config/vue-macros.nix`)
 
