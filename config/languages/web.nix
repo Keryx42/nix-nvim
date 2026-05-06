@@ -27,15 +27,24 @@
             maxInlayHintLength = 30;
             completion.enableServerSideFuzzyMatch = true;
           };
-          tsserver.globalPlugins = [
-            {
-              name = "@vue/typescript-plugin";
-              location = "${pkgs.vue-language-server}/lib/language-tools/packages/language-server";
-              languages = [ "vue" ];
-              configNamespace = "typescript";
-              enableForWorkspaceTypeScriptVersions = true;
-            }
-          ];
+          tsserver = {
+            globalPlugins = [
+              {
+                name = "@vue/typescript-plugin";
+                location = "${pkgs.vue-language-server}/lib/language-tools/packages/language-server";
+                languages = [ "vue" ];
+                configNamespace = "typescript";
+                enableForWorkspaceTypeScriptVersions = true;
+              }
+            ];
+            # Suppress TS6133 ("declared but never used") for Vue template refs
+            # Template refs are declared in <script> but used in <template>
+            # The @vue/typescript-plugin should detect this, but in older versions
+            # there was a regression (v3.1.6+). This suppression is a safety measure
+            # for better Vue 3 support with script setup and template refs.
+            # See: https://github.com/vuejs/language-tools/issues/5815
+            diagnosticsIgnored = [ 6133 ];
+          };
         };
 
         typescript = {

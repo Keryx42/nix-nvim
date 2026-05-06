@@ -542,6 +542,13 @@ Web language support with:
   - `eslint`: Linting for JS/TS/Vue/JSON
 - **Formatter:** Prettier
 
+**Vue 3 Template Refs Support:**
+- Suppresses TS6133 ("declared but never used") diagnostic for template refs
+- Template refs declared in `<script setup>` but used in `<template>` are correctly recognized
+- Works around a known regression in vue-language-tools v3.1.6+ (fixed in v3.2.8+)
+- Once nixpkgs updates to vue-language-tools v3.2.8 or later, this suppression can be removed
+- Reference: [Vue Language Tools Issue #5815](https://github.com/vuejs/language-tools/issues/5815)
+
 ### nix (`config/languages/nix.nix`)
 
 Nix language support with:
