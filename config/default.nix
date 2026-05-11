@@ -6,6 +6,7 @@
     ./blink-cmp.nix
     ./catppuccin.nix
     ./clipboard.nix
+    ./codediff.nix
     ./conform.nix
     ./dashboard.nix
     ./dap.nix

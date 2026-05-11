@@ -9,12 +9,13 @@ A standalone [Nixvim](https://github.com/nix-community/nixvim) configuration —
 ├── flake.nix           # Flake inputs (nixpkgs-unstable, nixvim, flake-parts)
 ├── flake.lock
 └── config/
-     ├── default.nix                 # Entry point — imports modules and sets globals.mapleader = " "
-     ├── auto-save.nix               # Auto-save.nvim via extraPlugins + extraConfigLua
-     ├── blink-cmp.nix               # Blink-powered completion (LSP, auto-imports, smart sources)
-     ├── catppuccin.nix              # Catppuccin colorscheme configuration
-     ├── clipboard.nix               # Clipboard providers (pbcopy, xclip, wl-copy) multi-platform config
-     ├── conform.nix                 # Conform.nvim formatter configuration (prettier, nixfmt)
+      ├── default.nix                 # Entry point — imports modules and sets globals.mapleader = " "
+      ├── auto-save.nix               # Auto-save.nvim via extraPlugins + extraConfigLua
+      ├── blink-cmp.nix               # Blink-powered completion (LSP, auto-imports, smart sources)
+      ├── catppuccin.nix              # Catppuccin colorscheme configuration
+      ├── clipboard.nix               # Clipboard providers (pbcopy, xclip, wl-copy) multi-platform config
+      ├── codediff.nix                # Code diff viewer and comparison plugin
+      ├── conform.nix                 # Conform.nvim formatter configuration (prettier, nixfmt)
       ├── dashboard.nix               # Startup dashboard (doom header, quick actions)
       ├── dap.nix                     # DAP (Debug Adapter Protocol) for debugging
       ├── fzf.nix                     # fzf-lua integration and global keymaps
@@ -303,6 +304,10 @@ Declarative clipboard provider configuration for multi-platform support using ni
 - **Linux Wayland:** `wl-copy`/`wl-paste` (explicit Nix package, added to nixvim runtime closure via flake.nix)
 
 Providers are installed and configured to be available in the nixvim runtime environment. Clipboard sync is managed via `yanky.nix` using the plugin's native `system_clipboard` settings to prevent freezes on platforms with expensive clipboard operations (like Wayland).
+
+### codediff (`config/codediff.nix`)
+
+[codediff.nvim](https://github.com/esmuellert/codediff.nvim) provides a code diff viewer and comparison plugin for viewing differences between files or versions interactively.
 
 ### lualine (`config/lualine.nix`)
 
