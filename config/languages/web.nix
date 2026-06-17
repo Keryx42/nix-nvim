@@ -93,6 +93,12 @@
         "vue"
         "json"
       ];
+      settings = {
+        # In ESLint 9 flat config, "auto" walks up to find eslint.config.js
+        # rather than the nearest package.json, ensuring cwd = project root.
+        # Fixes ENOENT on .gitignore in monorepos with per-module package.json.
+        workingDirectory = { mode = "auto"; };
+      };
     };
   };
 
