@@ -7,6 +7,7 @@
     ./catppuccin.nix
     ./clipboard.nix
     ./codediff.nix
+    ./diffview.nix
     ./conform.nix
     ./dashboard.nix
     ./dap.nix
