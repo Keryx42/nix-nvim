@@ -44,12 +44,22 @@ end'';
 
     {
       mode = "n";
+      key = "<leader>mf";
+      action.__raw = ''function()
+  local path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':.')
+  vim.fn.setreg('+', '@' .. path)
+end'';
+      options = { desc = "Relative filepath"; silent = true; };
+    }
+
+    {
+      mode = "n";
       key = "<leader>ma";
       action.__raw = ''function()
-  local keys = [[<Esc>Iconst<Space>P<S-BS>{}<Space>=<Space><Esc>bbbci}]]
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 'n', true)
+  local path = vim.api.nvim_buf_get_name(0)
+  vim.fn.setreg('+', path)
 end'';
-      options = { desc = "Destruct"; silent = true; };
+      options = { desc = "Absolute filepath"; silent = true; };
     }
   ];
 }
