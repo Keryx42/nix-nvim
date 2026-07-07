@@ -62,12 +62,14 @@ Core editor features and plugins live at the repo root `config/`. Language suppo
 ## How to add a plugin or language
 
 **For a new editor plugin:**
+
 1. Create `config/<plugin>.nix`
 2. Add `./config/<plugin>.nix` to the `imports` list in `config/default.nix`
 3. Use `plugins.<name>.enable = true` for nixvim-managed plugins
 4. For plugins not in nixvim, use `extraPlugins` + `extraConfigLua` (see `auto-save.nix`)
 
 **For a new language:**
+
 1. Create `config/languages/<language>.nix` with LSP servers and formatter config
 2. Add `./languages/<language>.nix` to the `imports` list in `config/default.nix`
 3. Add TreeSitter grammar to `grammarPackages` in `config/treesitter.nix`
@@ -92,7 +94,7 @@ Leader key: `<Space>`
 ### File explorer (Neo-tree)
 
 | Key | Action |
-|---|---|
+| --- | --- |
 | `<leader>e` | Toggle Neo-tree (root dir) |
 | `<leader>E` | Toggle Neo-tree (cwd) |
 | `<leader>fe` | Focus Neo-tree (root dir) |
@@ -102,7 +104,7 @@ Leader key: `<Space>`
 ### Fuzzy finder (fzf-lua)
 
 | Key | Action |
-|---|---|
+| --- | --- |
 | `<leader><space>` | Find files (root dir) |
 | `<leader>ff` | Find files (root dir) |
 | `<leader>fF` | Find files (cwd) |
@@ -115,7 +117,7 @@ Leader key: `<Space>`
 ### Completion (blink-cmp)
 
 | Key | Action |
-|---|---|
+| --- | --- |
 | `<Enter>` | Accept completion (with auto-imports) |
 | `<Tab>` / `<S-Tab>` | Navigate completion items |
 
@@ -128,7 +130,7 @@ Leader key: `<Space>`
 ### Git (gitsigns)
 
 | Key | Action |
-|---|---|
+| --- | --- |
 | `]h` | Next git hunk |
 | `[h` | Prev git hunk |
 | `<leader>ghs` | Stage hunk |
@@ -147,7 +149,7 @@ Leader key: `<Space>`
 ### Harpoon (harpoon.nix)
 
 | Key | Action |
-|---|---|
+| --- | --- |
 | `<leader>H` | Add current file to harpoon |
 | `<leader>h` | Toggle harpoon quick menu |
 | `<leader>1` | Jump to harpoon file 1 |
@@ -164,7 +166,7 @@ Leader key: `<Space>`
 ### Startup dashboard (dashboard.nix)
 
 | Key | Action |
-|---|---|
+| --- | --- |
 | `s` | Restore last session (dashboard center action) |
 | `g` | Live Grep (dashboard center action) |
 | `n` | New File (dashboard center action) |
@@ -181,6 +183,7 @@ Leader key: `<Space>`
 ### Which Key Hints (which-key)
 
 Which-key registers leader-key groups to surface existing keybindings for discoverability. Notable hints:
+
 - `<leader>e` / `<leader>E` / `<leader>fe` / `<leader>fE` — Neo-tree toggles and focus
 - `<leader><space>` / `<leader>ff` / `<leader>fF` / `<leader>fg` / `<leader>fG` — fzf file/find/grep actions
 - `<leader>gu` — Neogit
@@ -197,7 +200,7 @@ Which-key registers leader-key groups to surface existing keybindings for discov
 ### LSP keymaps (lsp-keymaps.nix)
 
 | Key | Action |
-|---|---|
+| --- | --- |
 | `<C-s>` | Save, format, and lint (normal & insert mode) |
 | `<leader>ca` | Code Action (fzf-lua picker) |
 | `<leader>cA` | Source Action (fzf-lua, fixAll/organizeImports) |
@@ -217,7 +220,7 @@ Which-key registers leader-key groups to surface existing keybindings for discov
 ### Trouble (trouble.nix)
 
 | Key | Action |
-|---|---|
+| --- | --- |
 | `<leader>xx` | Diagnostics (Trouble) |
 | `<leader>xX` | Buffer Diagnostics (Trouble) |
 | `<leader>cs` | Symbols (Trouble) |
@@ -232,7 +235,7 @@ Which-key registers leader-key groups to surface existing keybindings for discov
 #### Move (Navigation)
 
 | Key | Action |
-|---|---|
+| --- | --- |
 | `]f` / `[f` | Next/Prev function start |
 | `]F` / `[F` | Next/Prev function end |
 | `]c` / `[c` | Next/Prev class start |
@@ -245,12 +248,13 @@ Works in normal, visual, and operator-pending modes.
 #### Select (Text Objects)
 
 | Key | Action |
-|---|---|
+| --- | --- |
 | `af` / `if` | Around/Inside function |
 | `ac` / `ic` | Around/Inside class |
 | `aa` / `ia` | Around/Inside parameter |
 
 Works in visual and operator-pending modes with automatic lookahead. Examples:
+
 - `vif` - Select inside function (visual mode)
 - `daf` - Delete around function
 - `cic` - Change inside class
@@ -258,7 +262,7 @@ Works in visual and operator-pending modes with automatic lookahead. Examples:
 ### Word Navigation (nvim-spider)
 
 | Key | Action |
-|---|---|
+| --- | --- |
 | `e` | Spider: End of word |
 | `w` | Spider: Start of word |
 | `b` | Spider: Back word |
@@ -268,7 +272,7 @@ Smart word motion respecting camelCase and snake_case boundaries. Works in norma
 ### Session management (persistence.nvim)
 
 | Key | Action |
-|---|---|
+| --- | --- |
 | `<leader>qs` | Restore current session |
 | `<leader>qS` | Select session to load |
 | `<leader>ql` | Restore last session |
@@ -278,7 +282,7 @@ Smart word motion respecting camelCase and snake_case boundaries. Works in norma
 ### Vue macros (vue-macros.nix)
 
 | Key | Action |
-|---|---|
+| --- | --- |
 | `<leader>ms` | Wrap StoreToRefs |
 | `<leader>mc` | Wrap Composable |
 | `<leader>mj` | Go To Definition Alias |
@@ -290,6 +294,7 @@ Smart word motion respecting camelCase and snake_case boundaries. Works in norma
 ### general-keymaps (`config/general-keymaps.nix`)
 
 General editor keybindings for common operations. Features:
+
 - **Clear search highlighting**: Press `<Esc>` to turn off search highlighting after searching with `/`
 
 ### catppuccin (`config/catppuccin.nix`)
@@ -299,6 +304,7 @@ Colorscheme with dark/light variant support. Enabled via `colorschemes.catppucci
 ### clipboard (`config/clipboard.nix`)
 
 Declarative clipboard provider configuration for multi-platform support using nixvim's clipboard module:
+
 - **macOS/Darwin:** `pbcopy`/`pbpaste` (native OS clipboard)
 - **Linux X11:** `xclip` (explicit Nix package)
 - **Linux Wayland:** `wl-copy`/`wl-paste` (explicit Nix package, added to nixvim runtime closure via flake.nix)
@@ -312,6 +318,7 @@ Providers are installed and configured to be available in the nixvim runtime env
 ### lualine (`config/lualine.nix`)
 
 Status line with catppuccin theme. Sections:
+
 - `lualine_a`: vim mode
 - `lualine_b`: git branch
 - `lualine_c`: filename (with modified/readonly symbols)
@@ -322,6 +329,7 @@ Status line with catppuccin theme. Sections:
 ### mini-pairs (`config/mini-pairs.nix`)
 
 [mini.pairs](https://github.com/nvim-mini/mini.pairs) provides automatic bracket and quote pairing. Features:
+
 - **Auto-pairing:** Pairs `()`, `[]`, `{}`, `""`, `''`, `` ` ``
 - **Smart closing:** Automatically inserts closing bracket/quote
 - **Context-aware:** Respects surrounding context to avoid pairing in inappropriate places
@@ -338,6 +346,7 @@ Debug Adapter Protocol (DAP) support with vim.dap and dap-ui. Provides debugging
 ### noice (`config/noice.nix`)
 
 UI overhaul that replaces the default Neovim UI with floating windows. Features:
+
 - **Centered cmdline popup**: Floating command mode centered on screen with 60-char width
 - **Message handling**: Notifications via `nvim-notify` with history tracking
 - **Popupmenu**: NUI-powered completion popup
@@ -376,7 +385,8 @@ Modern Rust-based autocompletion engine with LSP-powered completions. Auto-impor
 ### conform (`config/conform.nix`)
 
 Code formatter using Conform.nvim with format-on-save (500ms timeout). Supports:
-- `prettier`: JavaScript, TypeScript, JSX, TSX, Vue, JSON, CSS, HTML, Markdown
+
+- `prettier`: JavaScript, TypeScript, JSX, TSX, Vue, JSON, CSS, HTML, Markdown — only runs when a prettier config file (`.prettierrc`, `.prettierrc.{js,cjs,mjs,json,json5,yaml,yml}`, `prettier.config.{js,cjs,mjs}`) is found walking upward from the file's directory
 - `nixfmt`: Nix files
 Falls back to LSP `textDocument/formatting` for unsupported filetypes.
 
@@ -401,12 +411,14 @@ Sets Ghostty terminal window title to current folder name with "Nixvim" suffix (
 [yanky.nvim](https://github.com/gbprod/yanky.nvim) provides yank history with intelligent clipboard management via nixvim's native plugin settings. Mapping: `<leader>p` to open yank ring in normal and visual modes.
 
 **Clipboard integration strategy:**
+
 - **macOS:** Enables both `vim.opt.clipboard = "unnamedplus"` AND `sync_with_ring = true` for seamless system clipboard integration (pbcopy is native, zero risk of freezes)
 - **Linux:** Uses `sync_with_ring = false` without global clipboard setting to prevent blocking calls to `wl-copy`/`wl-paste` during window resize events
 - Yank history ring (`<leader>p`) works on all platforms regardless of clipboard sync status
 - Clipboard providers (pbcopy, xclip, wl-copy) are configured in `clipboard.nix` and available in runtime closure when needed
 
 **Why this platform-specific approach:**
+
 - On **macOS**, `vim.opt.clipboard = "unnamedplus"` is safe and provides transparent system clipboard sync (pbcopy is a native OS call, never blocks)
 - On **Linux Wayland**, `vim.opt.clipboard = "unnamedplus"` would cause Neovim to call external clipboard helpers (wl-copy/wl-paste) on every yank and redraw event, creating blocking calls during window resize → **FREEZE**
 - Yanky's `system_clipboard.sync_with_ring` uses focus-based events (FocusGained/FocusLost) for clipboard monitoring, providing a lower-frequency alternative when global clipboard sync is unsafe
@@ -433,12 +445,14 @@ Treesitter configuration with 34 language grammars for syntax highlighting, inde
 [nvim-treesitter/nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) provides syntax-aware text objects for code navigation and selection. Two modes:
 
 **Move Mode** - Jump between code structures:
+
 - Navigate to next/previous function, class, or parameter start/end
 - Keybinds: `]f`, `[f`, `]F`, `[F`, `]c`, `[c`, `]C`, `[C`, `]a`, `[a`, `]A`, `[A]`
 - Works in normal, visual, and operator-pending modes
 - Automatically sets jumps in the jumplist
 
 **Select Mode** - Select code structures as text objects:
+
 - Define custom text objects like Vim's built-in `ap` (around paragraph)
 - Keybinds: `af`/`if`, `ac`/`ic`, `aa`/`ia`
 - Automatic lookahead: jumps forward to the textobject automatically
@@ -446,6 +460,7 @@ Treesitter configuration with 34 language grammars for syntax highlighting, inde
 - Works in visual and operator-pending modes
 
 **Examples:**
+
 - `vif` - Select inside function (visual mode)
 - `daf` - Delete around function
 - `cic` - Change inside class
@@ -459,6 +474,7 @@ Treesitter configuration with 34 language grammars for syntax highlighting, inde
 ### trouble (`config/trouble.nix`)
 
 [folke/trouble.nvim](https://github.com/folke/trouble.nvim) provides a pretty list for showing diagnostics, references, quickfix and location lists. Features:
+
 - **Diagnostics viewer** - Navigate project/buffer diagnostics with `<leader>xx` / `<leader>xX`
 - **LSP integration** - View definitions, references, implementations, document symbols
 - **Quickfix/Location lists** - Unified interface for build errors, search results
@@ -469,6 +485,7 @@ Treesitter configuration with 34 language grammars for syntax highlighting, inde
 ### Tailwind CSS (`config/tailwindcss.nix`)
 
 LSP server for Tailwind CSS providing IntelliSense, class completions, color previews, and code actions. Configured for filetypes: `html`, `vue`, `jsx`, `tsx`, `css`. Features:
+
 - **IntelliSense:** Autocomplete with descriptions
 - **Color preview:** Inline color swatches
 - **Code actions:** Quick fixes and suggestions
@@ -484,22 +501,26 @@ Keybinding hints showing leader-key groups and available actions for discoverabi
 LazyVim-style window and split management keymaps. Features:
 
 **Window Navigation (Ctrl+hjkl):**
+
 - `<C-h>` - Go to left window
 - `<C-j>` - Go to lower window
 - `<C-k>` - Go to upper window
 - `<C-l>` - Go to right window
 
 **Window Resizing (Ctrl+Arrow):**
+
 - `<C-Up>` - Increase window height
 - `<C-Down>` - Decrease window height
 - `<C-Left>` - Decrease window width
 - `<C-Right>` - Increase window width
 
 **Split Creation (Leader+symbol):**
+
 - `<leader>-` - Split window below
 - `<leader>|` - Split window right
 
 **Window Management (Leader+w):**
+
 - `<leader>wd` - Delete window
 
 ### godot (`config/godot.nix`)
@@ -507,21 +528,25 @@ LazyVim-style window and split management keymaps. Features:
 [godotdev.nvim](https://github.com/Mathijs-Bakker/godotdev.nvim) provides comprehensive Godot 4 development support including GDScript LSP, GDShader syntax highlighting, DAP debugging, automatic formatting, and built-in Godot documentation. Features:
 
 **LSP & Syntax:**
+
 - GDScript language server on port 6005 (Godot 4.x standard)
 - GDShader TreeSitter syntax highlighting and LSP support
 - Auto-detection of `project.godot` files with connection notifications
 
 **Debugging:**
+
 - DAP integration for GDScript debugging
 - Debug port 6006 configured
 
 **Development Tools:**
+
 - Automatic formatting with `gdscript-formatter` (4-space indent)
 - Built-in Godot class documentation: `:GodotDocs [ClassName]`
 - Health checks: `:checkhealth godotdev`
 - Scene runners: `:GodotRunProject`, `:GodotRunCurrentScene`, etc.
 
 **Editor Integration:**
+
 - Reconnect to Godot LSP: `:GodotReconnectLSP`
 - Optional editor server management: `:GodotStartEditorServer`
 
@@ -534,20 +559,23 @@ Language support is organized into unified per-language files in `config/languag
 ### _shared (`config/languages/_shared.nix`)
 
 Global LSP configuration shared across all language servers:
+
 - **onAttach hook:** Common setup applied when any LSP attaches (e.g., disabling semantic tokens for certain servers)
 - **LSP utilities:** Shared functions and configurations for LSP behavior
 
 ### web (`config/languages/web.nix`)
 
 Web language support with:
+
 - **TreeSitter grammars:** JavaScript, TypeScript, JSX, TSX, Vue
 - **LSP servers:**
-  - `vtsls`: TypeScript/JavaScript with Vue support via `@vue/typescript-plugin`
-  - `vue_ls`: Vue template support (hybrid mode with vtsls)
-  - `eslint`: Linting for JS/TS/Vue/JSON
+  - `vtsls`: TypeScript/JavaScript with Vue support via `@vue/typescript-plugin` — only attaches when a Node project lock file (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `bun.lock`) or `.git` is found; never falls back to cwd
+  - `vue_ls`: Vue template support (hybrid mode with vtsls) — only attaches when a `package.json` is found
+  - `eslint`: Linting for JS/TS/Vue/JSON — only attaches when an eslint config file (`eslint.config.{js,mjs,cjs}`, `.eslintrc.{js,cjs,yaml,yml,json}`, `.eslintrc`) is found walking upward
 - **Formatter:** Prettier
 
 **Vue 3 Template Refs Support:**
+
 - Suppresses TS6133 ("declared but never used") diagnostic for template refs
 - Template refs declared in `<script setup>` but used in `<template>` are correctly recognized
 - Works around a known regression in vue-language-tools v3.1.6+ (fixed in v3.2.8+)
@@ -557,6 +585,7 @@ Web language support with:
 ### nix (`config/languages/nix.nix`)
 
 Nix language support with:
+
 - **TreeSitter grammar:** Nix syntax highlighting
 - **LSP server:** `nixd` for semantic completions and diagnostics
 - **Formatter:** nixfmt
@@ -564,6 +593,7 @@ Nix language support with:
 ### json (`config/languages/json.nix`)
 
 JSON language support with:
+
 - **TreeSitter grammar:** JSON syntax highlighting
 - **LSP server:** `jsonls` with schema validation (package.json, tsconfig.json, tailwind.config.json, etc.)
 - **Formatter:** Prettier
@@ -571,6 +601,7 @@ JSON language support with:
 ### markdown (`config/languages/markdown.nix`)
 
 Markdown language support with:
+
 - **TreeSitter grammars:** Markdown, markdown_inline
 - **LSP server:** `marksman` for completions, diagnostics, and cross-file references
 - **Formatter:** Prettier
@@ -578,6 +609,7 @@ Markdown language support with:
 ### python (`config/languages/python.nix`)
 
 Python language support with:
+
 - **TreeSitter grammar:** Python syntax highlighting
 - **LSP server:** `pyright` with standard type checking mode for completions and diagnostics
 - **Formatter:** black for consistent code formatting
@@ -586,6 +618,7 @@ Python language support with:
 ### php (`config/languages/php.nix`)
 
 PHP language support with Laravel and Blade focus:
+
 - **TreeSitter grammars:** PHP, PHPDoc documentation blocks, and Blade templates syntax highlighting
 - **LSP server:** `phpactor` for autocompletion, goto-definition, refactoring, and rename (works on both `.php` and `.blade.php` files)
 - **Formatter:** `pint` (Laravel's opinionated PHP code style fixer, applies to both `.php` and `.blade.php`)
@@ -599,6 +632,7 @@ Cross-cutting tools and shared functionality organized in `config/tools/`.
 ### linting (`config/tools/linting.nix`)
 
 Code linter using Nvim-lint with automatic triggers (BufWritePost, BufReadPost, InsertLeave). Configured linters:
+
 - **Nix files:** `statix`, `deadnix`
 - **Python files:** `ruff` for fast comprehensive linting and style checking
 - **PHP files:** `phpstan` for static analysis

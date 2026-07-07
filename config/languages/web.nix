@@ -10,6 +10,22 @@
     # vtsls — handles <script>/<script setup> and all TS/JS features in .vue files
     vtsls = {
       enable = true;
+      rootDir = {
+        __raw = ''
+          function(bufnr, on_dir)
+            local root_markers = { "package-lock.json", "yarn.lock", "pnpm-lock.yaml", "bun.lockb", "bun.lock" }
+            root_markers = vim.fn.has("nvim-0.11.3") == 1 and { root_markers, { ".git" } }
+              or vim.list_extend(root_markers, { ".git" })
+            local deno_root = vim.fs.root(bufnr, { "deno.json", "deno.jsonc" })
+            local deno_lock_root = vim.fs.root(bufnr, { "deno.lock" })
+            local project_root = vim.fs.root(bufnr, root_markers)
+            if deno_lock_root and (not project_root or #deno_lock_root > #project_root) then return end
+            if deno_root and (not project_root or #deno_root >= #project_root) then return end
+            if not project_root then return end
+            on_dir(project_root)
+          end
+        '';
+      };
       filetypes = [
         "typescript"
         "javascript"
@@ -85,6 +101,28 @@
     # eslint LSP for diagnostics across JS/TS/Vue/JSON
     eslint = {
       enable = true;
+      rootDir = {
+        __raw = ''
+          function(filename)
+            local config_file = vim.fs.find(
+              {
+                "eslint.config.js",
+                "eslint.config.mjs",
+                "eslint.config.cjs",
+                ".eslintrc.js",
+                ".eslintrc.cjs",
+                ".eslintrc.yaml",
+                ".eslintrc.yml",
+                ".eslintrc.json",
+                ".eslintrc",
+              },
+              { upward = true, path = vim.fs.dirname(filename) }
+            )[1]
+            if not config_file then return nil end
+            return vim.fs.dirname(config_file)
+          end
+        '';
+      };
       filetypes = [
         "javascript"
         "javascriptreact"

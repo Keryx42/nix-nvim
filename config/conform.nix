@@ -23,14 +23,32 @@
         nix = [ "nixfmt" ];
       };
 
-      # Formatter-specific options (optional)
       formatters = {
         prettier = {
-          # Inherits prettier from flake.nix devShell
+          condition = {
+            __raw = ''
+              function(self, ctx)
+                return vim.fs.find(
+                  {
+                    ".prettierrc",
+                    ".prettierrc.js",
+                    ".prettierrc.cjs",
+                    ".prettierrc.mjs",
+                    ".prettierrc.json",
+                    ".prettierrc.json5",
+                    ".prettierrc.yaml",
+                    ".prettierrc.yml",
+                    "prettier.config.js",
+                    "prettier.config.cjs",
+                    "prettier.config.mjs",
+                  },
+                  { upward = true, path = ctx.dirname }
+                )[1] ~= nil
+              end
+            '';
+          };
         };
-        nixfmt = {
-          # Inherits nixfmt from flake.nix devShell
-        };
+        nixfmt = { };
       };
     };
   };
