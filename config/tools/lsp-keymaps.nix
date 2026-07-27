@@ -232,10 +232,12 @@ end
   local bufnr = 0
   local filetype = vim.bo[bufnr].filetype
   
-  -- Save the buffer first
-  vim.cmd.write()
-  
-  -- JSON files: sort → format → lint chain
+  if vim.api.nvim_buf_get_option(bufnr, 'modified') then
+    vim.api.nvim_buf_call(bufnr, function()
+      vim.cmd('silent! write')
+    end)
+  end
+
   if filetype == "json" or filetype == "jsonc" then
     -- Step 1: Sort JSON keys alphabetically
     vim.lsp.buf_request(bufnr, "json/sort", {
