@@ -2,7 +2,7 @@
   plugins.lualine = {
     enable = true;
     settings = {
-      options.theme = "auto";
+      options.theme = "catppuccin";
       sections = {
         lualine_a = [ "mode" ];
         lualine_b = [ "branch" ];

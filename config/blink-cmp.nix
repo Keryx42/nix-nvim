@@ -35,11 +35,9 @@
         };
 
         # Menu appearance
-        menu = {
-          draw = {
-            # Use treesitter for syntax highlighting in completion menu
-            treesitter = [ "lsp" ];
-          };
+        draw = {
+          # Use treesitter for syntax highlighting in completion menu
+          treesitter = [ "lsp" ];
         };
 
         # Completion list behavior and selection
