@@ -20,7 +20,14 @@
         defer_save = {},
         cancel_deferred_save = { "InsertEnter" },
       },
-      condition = nil,
+      condition = function(buffer_handle)
+        local buffer_name = vim.api.nvim_buf_get_name(buffer_handle)
+        local buffer_tail = vim.fn.fnamemodify(buffer_name, ':t')
+        return vim.bo[buffer_handle].buftype == ""
+          and vim.bo[buffer_handle].modified
+          and buffer_name ~= ""
+          and not buffer_tail:match("^neo%-tree")
+      end,
       write_all_buffers = false,
       noautocmd = false,
       lockmarks = false,

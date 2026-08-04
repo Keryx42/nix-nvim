@@ -229,48 +229,72 @@ end
       mode = ["n" "i"];
       key = "<C-s>";
       action.__raw = ''function()
-  local bufnr = 0
+  local bufnr = vim.api.nvim_get_current_buf()
   local filetype = vim.bo[bufnr].filetype
-  
-  if vim.api.nvim_buf_get_option(bufnr, 'modified') then
-    vim.api.nvim_buf_call(bufnr, function()
-      vim.cmd('silent! write')
-    end)
+  local buffer_name = vim.api.nvim_buf_get_name(bufnr)
+  local buffer_tail = vim.fn.fnamemodify(buffer_name, ':t')
+  local is_regular_file = vim.bo[bufnr].buftype == ""
+    and vim.bo[bufnr].modifiable
+    and not vim.bo[bufnr].readonly
+    and buffer_name ~= ""
+    and not buffer_tail:match("^neo%-tree")
+  local buffer_is_modified = vim.bo[bufnr].modified
+
+  if buffer_is_modified and not is_regular_file then
+    vim.notify('Cannot save this buffer', vim.log.levels.WARN)
+    return
+  end
+
+  local did_write = false
+  if buffer_is_modified then
+    local write_succeeded, save_error_message = pcall(vim.cmd, 'write')
+    if not write_succeeded then
+      vim.notify('Save failed: ' .. tostring(save_error_message), vim.log.levels.ERROR)
+      return
+    end
+    did_write = true
   end
 
   if filetype == "json" or filetype == "jsonc" then
-    -- Step 1: Sort JSON keys alphabetically
     vim.lsp.buf_request(bufnr, "json/sort", {
       uri = vim.uri_from_bufnr(bufnr),
       options = {}
-    }, function(err, result)
-      if result and #result > 0 then
-        -- Use vim.fn.bufnr() to get current buffer in this async context
-        vim.lsp.util.apply_text_edits(result, vim.fn.bufnr(), "utf-8")
+    }, function(request_error, result)
+      if request_error then
+        vim.notify('JSON sort failed: ' .. tostring(request_error.message), vim.log.levels.ERROR)
+        return
       end
-      
-      -- Step 2: Format with Conform (prettier) after sort completes
+      if result and #result > 0 then
+        vim.lsp.util.apply_text_edits(result, bufnr, "utf-8")
+        local resave_succeeded, resave_error_message = pcall(vim.api.nvim_buf_call, bufnr, function()
+          vim.cmd('write')
+        end)
+        if not resave_succeeded then
+          vim.notify('Save failed after JSON sort: ' .. tostring(resave_error_message), vim.log.levels.ERROR)
+          return
+        end
+      end
       vim.schedule(function()
         require('conform').format({
           async = false,
-          bufnr = vim.fn.bufnr(),
+          bufnr = bufnr,
         })
-        
-        -- Step 3: Run linters after format completes
         vim.schedule(function()
           require('lint').try_lint()
-          vim.notify('File saved, sorted, formatted, and linted', vim.log.levels.INFO)
+          local saved_note = did_write and 'File saved, sorted, formatted, and linted' or 'File sorted, formatted, and linted'
+          vim.notify(saved_note, vim.log.levels.INFO)
         end)
       end)
     end)
-  else
-    -- Non-JSON files: just format and lint
-    require('conform').format({
-      async = true,
-      bufnr = 0,
-    })
-    vim.notify('File saved and formatted', vim.log.levels.INFO)
+    return
   end
+
+  require('conform').format({
+    async = true,
+    bufnr = bufnr,
+  })
+  local saved_note = did_write and 'File saved and formatted' or 'File formatted'
+  vim.notify(saved_note, vim.log.levels.INFO)
 end'';
       options = { desc = "Save, format, and lint"; silent = true; };
     }
