@@ -51,6 +51,7 @@
     ./tools/lsp-rename.nix
     ./tools/lsp-keymaps.nix
     ./tools/json-sort-auto.nix
+    ./tools/wipe-buffers.nix
   ];
 
   globals.mapleader = " ";
