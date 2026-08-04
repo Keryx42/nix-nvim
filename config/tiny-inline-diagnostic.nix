@@ -7,7 +7,7 @@
         owner = "rachartier";
         repo = "tiny-inline-diagnostic.nvim";
         rev = "main";
-        hash = "sha256-mJl6yuTH79QsfKRktBGzPOlnL1x3/KoOAWyDGGw/AwM=";
+        hash = "sha256-dG4eCcIRaHOPj75DNOBJAqo2Vy7LAQ0QfWOVD94FloA=";
       };
     })
   ];
