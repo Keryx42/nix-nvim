@@ -1,7 +1,5 @@
 { pkgs, ... }:
 {
-  # Enable persistence.nvim for automatic session save/restore
-  # Sessions are stored in ~/.local/state/nvim/sessions/ with git branch tracking
   extraPlugins = [
     (pkgs.vimUtils.buildVimPlugin {
       name = "persistence-nvim";
@@ -42,10 +40,24 @@
   ];
 
   extraConfigLua = ''
+    local function normalize_buffer_names()
+      for _, buffer_handle in ipairs(vim.api.nvim_list_bufs()) do
+        local buffer_name = vim.api.nvim_buf_get_name(buffer_handle)
+        if buffer_name ~= "" then
+          local clean_name = buffer_name:gsub("^%./", ""):gsub("/%./", "/")
+          if clean_name ~= buffer_name then
+            pcall(vim.api.nvim_buf_set_name, buffer_handle, clean_name)
+          end
+        end
+      end
+    end
+
     require("persistence").setup({
       dir = vim.fn.stdpath("state") .. "/sessions/",
       need = 1,
       branch = true,
+      pre_save = normalize_buffer_names,
+      post_restore = normalize_buffer_names,
     })
   '';
 }
